@@ -5,16 +5,18 @@ import PostNew from "./../posts/PostNew";
 import PostList from "./../posts/PostList";
 
 import ScoreList from "../score/ScoreList";
+/*
 
+<Header></Header>
+      <ScoreList></ScoreList>
+   
+      */
 const Feed = () => {
   return (
     <div>
-      <Header></Header>
-      <ScoreList></ScoreList>
-      <PostNew></PostNew>
-      <PostList></PostList>
-
-      <h2>Este va ser el Feed</h2>
+       <PostNew></PostNew>
+       <PostList></PostList>
+      
     </div>
   );
 };

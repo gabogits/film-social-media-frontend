@@ -1,32 +1,33 @@
 import React from "react";
 import ReplyList from "../replies/ReplyList";
 
-const Post = () => {
+const Post = ({post}) => {
+
+  const {text, avatar, picture, creator, registry} = post;
+  const onChangeValue = e =>{
+  
+  }
   return (
     <div className="post">
       <div className="post-head">
         <div className="post-user-info">
           <div className="post-avatar-small">
-            <img src="images/1.jpg" />
+            <img src={`images/${avatar}`}   alt="img" />
           </div>
           <div className="post-name-date">
-            <p>Diego Perez</p>
-            <p>12 horas</p>
+            <p>{creator}</p>
+            <p>{registry}</p>
           </div>
         </div>
       </div>
       <div className="post-body">
         <div className="post-body-txt">
           <p>
-            orem ipsum dolor sit amet, consectetur adipiscing elit. Sed semper
-            dolor nec ipsum consectetur volutpat. Quisque mattis eleifend nunc,
-            et molestie quam vehicula quis. Cras viverra quam non molestie
-            ornare. Duis nec ex id enim ultricies efficitur. Duis semper, tortor
-            hendrerit tempus blandit, magna libero semper urna,
+          {text}
           </p>
         </div>
         <div className="post-body-picture">
-          <img src="images/1.jpg" />
+          {picture ? ( <img src={`images/${picture}`} alt="img"  />): null}
         </div>
       </div>
       <div className="post-rsm-feed">
@@ -35,13 +36,41 @@ const Post = () => {
         </p>
       </div>
       <div className="post-actions">
-        <button>calificar </button>
+      <div className="score-bullets">
+        <ul>
+          <li>
+            <div className="radio-score">
+                <input type="radio" value={2}  name="score"   onChange={onChangeValue} ></input>
+            </div>
+          </li>
+          <li>
+            <div className="radio-score">
+                <input type="radio" value={4}   name="score"   onChange={onChangeValue} ></input>
+            </div>
+          </li>
+          <li>
+            <div className="radio-score">
+                <input type="radio" value={6}   name="score"   onChange={onChangeValue} ></input>
+            </div>
+          </li>
+          <li>
+            <div className="radio-score">
+                <input type="radio" value={8}   name="score"   onChange={onChangeValue} ></input>
+            </div>
+          </li>
+          <li>
+            <div className="radio-score">
+                <input type="radio" value={10}   name="score"   onChange={onChangeValue} ></input>
+            </div>
+          </li>
+        </ul>
+      </div>
         <button>commentar</button>
       </div>
 
-      <ReplyList />
+    
     </div>
   );
 };
-
+//  <ReplyList  />
 export default Post;

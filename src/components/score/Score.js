@@ -1,10 +1,10 @@
 import React from "react";
 
-const Score = () => {
+const Score = ({scoreItem}) => {
   return (
     <div className="ranking-item">
       <div className="ranking-img">
-        <img src="images/1.jpg" />
+        <img src="images/1.jpg"  alt="img"  />
       </div>
       <div className="ranking-text">
         <h5>atypical </h5>

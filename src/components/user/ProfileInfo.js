@@ -1,23 +1,35 @@
 import React from "react";
 
 const ProfileInfo = () => {
+  const profile = {
+    id:3,
+    name: "juanito",
+    correo: "correo@test.com",
+    description: "lorem impussslkk s",
+    avatar: "1.jpg",
+  };
+
+  const { name, correo, description, avatar, id } = profile;
+
+  const editarInfo = id => {
+    
+  }
   return (
     <div>
       <div className="avatar">
-        <img src="images/1.jpg" />
+        <img src={`images/${avatar}`} alt="img" />
       </div>
       <p>
-        Nombre: <strong>Diego lopéz martinez</strong>
+        Nombre: <strong>{name}</strong>
       </p>
       <p>
-        Correo: <strong>diego@test.com</strong>
+        Correo: <strong>{correo}</strong>
       </p>
       <p>
-        Lo que más te gusta del cine y la musica:{" "}
-        <strong>Rock , metal, drama suspenso</strong>
+       {description}
       </p>
 
-      <button>editar infromacion</button>
+      <button onClick={()=>editarInfo(id)}>editar infromacion</button>
     </div>
   );
 };

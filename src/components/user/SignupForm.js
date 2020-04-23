@@ -1,19 +1,57 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-const Login = () => {
+const SignupForm = () => {
+  const [user, saveUser] = useState({
+    name: "",
+    email: "",
+    password: "",
+    description: "",
+    avatar: "",
+  });
+  const { name, email, password, description, avatar } = user;
+  const onChangeValue = (e) => {
+    saveUser({
+      ...user,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const SigupFormSubmit = (e) => {
+    e.preventDefault();
+
+    if (name.trim() === "" || email.trim() === "" || password.trim() === "") {
+      console.log("hay campos vacios");
+      return;
+    }
+  };
+
   return (
     <section className="section-format">
-      <form>
+      <form onSubmit={SigupFormSubmit}>
         <h2>Crea tu cuenta</h2>
         <div className="campo">
           <label>Nombre</label>
-          <input type="text" className="u-full-width" placeholder="Nombre" />
+          <input
+            type="text"
+            className="u-full-width"
+            placeholder="Nombre"
+            name="name"
+            value={name}
+            onChange={onChangeValue}
+          />
         </div>
 
         <div className="campo">
           <label>Correo</label>
-          <input type="text" className="u-full-width" placeholder="Correo" />
+          <input
+            type="text"
+            className="u-full-width"
+            placeholder="Correo"
+            name="email"
+            value={email}
+            onChange={onChangeValue}
+          />
         </div>
 
         <div className="campo">
@@ -22,6 +60,9 @@ const Login = () => {
             type="password"
             className="u-full-width"
             placeholder="Contraseña"
+            name="password"
+            value={password}
+             onChange={onChangeValue}
           />
         </div>
         <div className="campo">
@@ -29,11 +70,20 @@ const Login = () => {
           <textarea
             className="u-full-width"
             placeholder="Hard rock, metal, Drama, suspenso etc"
+            name="description"
+            value={description}
+            onChange={onChangeValue}
           />
         </div>
         <div className="campo">
           <label>sube alguna foto o avatar que te represente</label>
-          <input type="file" className="u-full-width" />
+          <input
+            type="file"
+            className="u-full-width"
+            name="avatar"
+            value={avatar}
+            onChange={onChangeValue}
+          />
         </div>
 
         <button
@@ -53,4 +103,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignupForm;

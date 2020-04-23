@@ -1,11 +1,14 @@
 import React from "react";
 import Header from "./Header";
+import PostItem from "./../posts/Post";
 
 const Post = () => {
+  
+
   return (
     <div>
       <Header></Header>
-      <h2>Este va ser el Post</h2>
+      <PostItem></PostItem>
     </div>
   );
 };

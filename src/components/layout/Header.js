@@ -5,11 +5,11 @@ const Header = () => {
     <header>
       <div className="container">
         <div className="header-logo">
-          <img src="images/1.jpg" />
+          <img src="images/1.jpg"  alt="img"  />
         </div>
 
         <div className="user-active">
-          <img src="images/1.jpg" />
+          <img src="images/1.jpg"  alt="img"  />
         </div>
         <ul>
           <li>Inicio</li>
