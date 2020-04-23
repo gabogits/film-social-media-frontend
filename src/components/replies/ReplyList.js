@@ -1,35 +1,30 @@
-import React from "react";
+import React, { useEffect, useContext } from "react";
+import ReplyContext from "./../../context/reply/ReplyContext";
 import Reply from "./../replies/Reply";
-import ReplyNew from "./../replies/ReplyNew";
-const ReplyList = () => {
 
-  const replies = [
-    {
-      id: "223",
-      text: "Cras viverra quam non molestie ornare. Duis nec ex i",      
-      creator: "diego lopez",
-    
-    },
-    {
-      id: "3324",
-      text: "Duis nec ex i",      
-      creator: "pepe pecas",
-      registry: "25 de octubre",
-      avatar: "2.jpg",
-    }
-  ];
-console.log(replies)
+
+const ReplyList = ({post}) => {
+  const {_id } =post;
+  const replyContext = useContext(ReplyContext);
+  const {replies, getReplies } = replyContext;
+  
+ 
+  console.log(replies)
+
+
   return (
-    
+    <div>
+      {replies.length === 0 ? "no ha post": null}
     <div className="post-replies">
       <div className="post-replies-content">
 
       {replies.map(reply => (
-        <Reply key={reply.id} reply={reply} />
+        <Reply key={reply._id} reply={reply} />
       ))}
       </div>
 
-      <ReplyNew />
+    
+      </div>
     </div>
   );
 };

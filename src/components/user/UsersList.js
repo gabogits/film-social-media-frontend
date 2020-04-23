@@ -1,25 +1,17 @@
-import React from "react";
+import React, {useContext, useEffect} from "react";
 import User from "./User";
+import UserContext from "./../../context/user/UserContext"
 
 const UsersList = () => {
-  
-  const users = [
-    {
-      id: 1,
-      name: "juan",
-      avatar: "1.pg"
-    },
-    {
-      id: 2,
-      name: "pedro",
-      avatar: "2.pg"
-    },
-    {
-      id: 3,
-      name: "pepe",
-      avatar: "3.pg"
-    },
-  ]
+
+  const userContext = useContext(UserContext)
+  const { users, getUsers} = userContext;
+  console.log(users)
+  useEffect(()=>{
+    getUsers()
+     // eslint-disable-next-line
+   }, [])
+
   return (
     <div className="UsersList">
       <h4>
@@ -27,7 +19,7 @@ const UsersList = () => {
       </h4>
       <ul>
         {users.map(user => (
-            <User key={user.id} user={user} />
+            <User key={user._id} user={user} />
         ))}
        
       </ul>

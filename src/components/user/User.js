@@ -9,7 +9,7 @@ const User = ({user}) => {
   return (
     <li>
       <div className="user-avatar-medium" onClick={()=> goProfileUser(id)}>
-        <img src={`images/${avatar}`} alt="img" />
+        <img width="30px" src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}`}  />
         <span>{name}</span>
       </div>
     </li>

@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 
+import UserContext from "./../../context/user/UserContext";
+
 const SignupForm = () => {
+  const userContext = useContext(UserContext)
+  const {signUpUser} = userContext;
+
   const [user, saveUser] = useState({
     name: "",
     email: "",
@@ -9,11 +14,11 @@ const SignupForm = () => {
     description: "",
     avatar: "",
   });
-  const { name, email, password, description, avatar } = user;
+  const { name, email, password, description } = user;
   const onChangeValue = (e) => {
     saveUser({
       ...user,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.name !== "avatar" ? e.target.value : e.target.files[0]
     });
   };
 
@@ -24,6 +29,18 @@ const SignupForm = () => {
       console.log("hay campos vacios");
       return;
     }
+
+    signUpUser(user);
+
+    saveUser(
+      {
+        name: "",
+        email: "",
+        password: "",
+        description: "",
+        avatar: "",
+      }
+    )
   };
 
   return (
@@ -81,7 +98,6 @@ const SignupForm = () => {
             type="file"
             className="u-full-width"
             name="avatar"
-            value={avatar}
             onChange={onChangeValue}
           />
         </div>

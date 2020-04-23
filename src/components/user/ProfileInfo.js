@@ -1,15 +1,19 @@
-import React from "react";
+import React, {useContext, useEffect} from "react";
+import UserContext from "./../../context/user/UserContext"
 
 const ProfileInfo = () => {
-  const profile = {
-    id:3,
-    name: "juanito",
-    correo: "correo@test.com",
-    description: "lorem impussslkk s",
-    avatar: "1.jpg",
-  };
 
-  const { name, correo, description, avatar, id } = profile;
+  const userContext = useContext(UserContext)
+  const { user, getUserById} = userContext;
+
+  console.log(user)
+
+  useEffect(()=>{
+    getUserById("5ea1f5140693610259f4962c")
+     // eslint-disable-next-line
+   }, [])
+
+  const { name, email, genres, avatar, id } = user;
 
   const editarInfo = id => {
     
@@ -17,16 +21,16 @@ const ProfileInfo = () => {
   return (
     <div>
       <div className="avatar">
-        <img src={`images/${avatar}`} alt="img" />
+        <img  width="100px" src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}`} alt="img" />
       </div>
       <p>
         Nombre: <strong>{name}</strong>
       </p>
       <p>
-        Correo: <strong>{correo}</strong>
+        Correo: <strong>{email}</strong>
       </p>
       <p>
-       {description}
+       {genres}
       </p>
 
       <button onClick={()=>editarInfo(id)}>editar infromacion</button>

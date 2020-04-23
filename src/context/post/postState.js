@@ -3,7 +3,7 @@ import PostContext from "./PostContext";
 import PostReducer from "./PostReducer";
 import axiosClient from "./../../config/axios";
 
-import { CREAR_POST, GET_POST } from "../../types";
+import { CREATE_POST, GET_POST } from "../../types";
 
 const PostState = (props) => {
   const initialState = {
@@ -23,8 +23,9 @@ const PostState = (props) => {
     
     try {
       const postItem = await axiosClient.post('/api/post',  data )
+      console.log( postItem.data.post)
       dispatch({
-        type: CREAR_POST,
+        type: CREATE_POST,
         payload: postItem.data.post,
       });
     } catch (error) {
@@ -34,8 +35,9 @@ const PostState = (props) => {
   };
   const getPosts = async () => {
     const posts = await axiosClient.get('/api/post');
-
-
+    console.log(posts)
+    
+  
     dispatch({
       type: GET_POST,
       payload: posts.data

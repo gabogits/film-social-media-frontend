@@ -5,17 +5,20 @@ const PostList = () => {
 
 
  const postContext = useContext(PostContext);
- const {posts,  getPosts} = postContext;
+ const {posts, getPosts} = postContext;
  console.log(posts)
  useEffect(()=>{
   getPosts()
+
    // eslint-disable-next-line
  }, [])
+ if( posts.lenght === 0 ) return;
   return (
     <div>
-      {posts.length === 0 ? "no ha post": null}
+     
       {posts.map(post => (
         <Post key={post._id} post={post} />
+    
       ))}
     </div>
   );

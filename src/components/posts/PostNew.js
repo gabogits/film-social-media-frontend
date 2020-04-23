@@ -26,10 +26,6 @@ const {newPost} = postContext;
    
   }
 
-  const onChangeValueFile = e => {
-    console.log(e.target.files[0])
-   
-  }
   const postFormSubmit = e =>  {
     e.preventDefault();
   

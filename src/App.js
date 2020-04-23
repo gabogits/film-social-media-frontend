@@ -6,10 +6,14 @@ import Feed from "./components/layout/Feed";
 import Post from "./components/layout/Post";
 import Profile from "./components/layout/Profile";
 import PostState from "./context/post/PostState";
+import ReplyState from "./context/reply/ReplyState";
+import UserState from "./context/user/UserState";
 
 function App() {
   return (
+    <UserState>
     <PostState>
+      <ReplyState>
       <Router>
         <Switch>
           <Route exact path="/login" component={Login} />
@@ -19,7 +23,10 @@ function App() {
           <Route exact path="/profile" component={Profile} />
         </Switch>
       </Router>
+      </ReplyState>
+      
     </PostState>
+    </UserState>
   );
 }
 

@@ -1,9 +1,12 @@
 import React from "react";
 import ReplyList from "../replies/ReplyList";
-
+import ReplyNew from "../replies/ReplyNew";
 const Post = ({post}) => {
 
-  const {text, avatar, picture, creator, registry} = post;
+  const {text, avatar, picture, creator, registry, _id} = post;
+
+
+
   const onChangeValue = e =>{
   
   }
@@ -12,7 +15,7 @@ const Post = ({post}) => {
       <div className="post-head">
         <div className="post-user-info">
           <div className="post-avatar-small">
-            <img src={`images/${avatar}`}   alt="img" />
+          {avatar ? <img width="30px" src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}`}   alt="img" /> : null}
           </div>
           <div className="post-name-date">
             <p>{creator}</p>
@@ -27,7 +30,7 @@ const Post = ({post}) => {
           </p>
         </div>
         <div className="post-body-picture">
-          {picture ? ( <img src={`images/${picture}`} alt="img"  />): null}
+          {picture ? ( <img width="100px"  src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${picture}`} alt="img"  />): null}
         </div>
       </div>
       <div className="post-rsm-feed">
@@ -67,10 +70,10 @@ const Post = ({post}) => {
       </div>
         <button>commentar</button>
       </div>
-
-    
+      <ReplyList post={post}  />
+      <ReplyNew  post={post} />
     </div>
   );
 };
-//  <ReplyList  />
+
 export default Post;
