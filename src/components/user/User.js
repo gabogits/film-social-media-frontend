@@ -4,7 +4,7 @@ const User = ({user}) => {
   
   const {name, avatar, id} = user;
   const goProfileUser = id => {
-    
+   
   }
   return (
     <li>

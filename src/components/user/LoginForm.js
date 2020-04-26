@@ -1,7 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-const Login = () => {
+import UserContext from "./../../context/user/UserContext";
+
+const Login = (props) => {
+  const userContext = useContext(UserContext);
+  const { userLogin,  auth } = userContext;
+  useEffect(() => {
+   if(auth) {
+     props.history.push('/feed')
+   }
+  }, [ props.history])
   const [user, saveUser] = useState({
     email: "",
     password: "",
@@ -21,7 +30,9 @@ const Login = () => {
       console.log("hay campos vacios");
       return;
     }
+    userLogin(user)
     console.log(user);
+
   };
 
   return (

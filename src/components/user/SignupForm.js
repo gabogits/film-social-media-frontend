@@ -1,24 +1,39 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import UserContext from "./../../context/user/UserContext";
 
-const SignupForm = () => {
-  const userContext = useContext(UserContext)
-  const {signUpUser} = userContext;
+const SignupForm = (props) => {
+  console.log(props)
+  const userContext = useContext(UserContext);
+  const { signUpUser, userSelect, updateUser, auth } = userContext;
 
-  const [user, saveUser] = useState({
+  const userInitialState = {
     name: "",
     email: "",
     password: "",
     description: "",
     avatar: "",
-  });
-  const { name, email, password, description } = user;
+  };
+
+  useEffect(() => {
+    if(auth  &&  userSelect === null ) {
+       props.history.push('/feed')
+    }
+    if (userSelect === null) {
+      saveUser(userInitialState);
+    } else {
+      saveUser(userSelect);
+    }
+  }, [userSelect, props.history]);
+
+  const [user, saveUser] = useState(userInitialState);
+  const { name, email, password, description, avatar } = user;
   const onChangeValue = (e) => {
     saveUser({
       ...user,
-      [e.target.name]: e.target.name !== "avatar" ? e.target.value : e.target.files[0]
+      [e.target.name]:
+        e.target.name !== "avatar" ? e.target.value : e.target.files[0],
     });
   };
 
@@ -29,18 +44,13 @@ const SignupForm = () => {
       console.log("hay campos vacios");
       return;
     }
+    if (userSelect === null) {
+      signUpUser(user);
+    } else {
+      updateUser(user);
+    }
 
-    signUpUser(user);
-
-    saveUser(
-      {
-        name: "",
-        email: "",
-        password: "",
-        description: "",
-        avatar: "",
-      }
-    )
+    saveUser(userInitialState);
   };
 
   return (
@@ -79,7 +89,7 @@ const SignupForm = () => {
             placeholder="Contraseña"
             name="password"
             value={password}
-             onChange={onChangeValue}
+            onChange={onChangeValue}
           />
         </div>
         <div className="campo">
@@ -95,6 +105,7 @@ const SignupForm = () => {
         <div className="campo">
           <label>sube alguna foto o avatar que te represente</label>
           <input
+     
             type="file"
             className="u-full-width"
             name="avatar"

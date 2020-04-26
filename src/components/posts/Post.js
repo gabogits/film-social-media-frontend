@@ -1,18 +1,29 @@
-import React from "react";
+import React, {useContext} from "react";
 import ReplyList from "../replies/ReplyList";
 import ReplyNew from "../replies/ReplyNew";
+import PostContext from './../../context/post/PostContext';
+import ReplyContext from './../../context/reply/ReplyContext'
+
 const Post = ({post}) => {
 
+  const postContext = useContext(PostContext);
+  const  {getPost, deletePost}  = postContext;
+
+    const replyContext = useContext(ReplyContext)
+  const {formReplyEdit} =replyContext;
+
   const {text, avatar, picture, creator, registry, _id} = post;
-
-
 
   const onChangeValue = e =>{
   
   }
+
+
   return (
     <div className="post">
       <div className="post-head">
+        <button onClick={()=>getPost(post)} >Editar post</button>
+        <button onClick={()=>deletePost(post)} >Borrar post</button>
         <div className="post-user-info">
           <div className="post-avatar-small">
           {avatar ? <img width="30px" src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}`}   alt="img" /> : null}
@@ -70,8 +81,8 @@ const Post = ({post}) => {
       </div>
         <button>commentar</button>
       </div>
-      <ReplyList post={post}  />
-      <ReplyNew  post={post} />
+      {!formReplyEdit ? <ReplyList post={post}  />: <ReplyNew  post={post} /> } 
+      
     </div>
   );
 };

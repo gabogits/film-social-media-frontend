@@ -1,4 +1,4 @@
-exports.keysAppend = (object) => {
+export function keysAppend(object) {
   const data = new FormData;
     const keys = Object.keys(object);
     for (const key of keys) {

@@ -2,3 +2,11 @@
     width:150px;
     height: 150px;
 }
+
+.post-reply {
+    background-color: lightsteelblue;
+}
+
+.post {
+background-color: lightslategray;
+}

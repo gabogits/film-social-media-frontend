@@ -11,22 +11,23 @@ import UserState from "./context/user/UserState";
 
 function App() {
   return (
-    <UserState>
-    <PostState>
-      <ReplyState>
-      <Router>
-        <Switch>
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/nueva-cuenta" component={Signup} />
-          <Route exact path="/feed" component={Feed} />
-          <Route exact path="/post" component={Post} />
-          <Route exact path="/profile" component={Profile} />
-        </Switch>
-      </Router>
-      </ReplyState>
-      
-    </PostState>
-    </UserState>
+
+      <UserState>
+        <PostState>
+          <ReplyState>
+            <Router>
+              <Switch>
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/nueva-cuenta" component={Signup} />
+                <Route exact path="/feed" component={Feed} />
+                <Route exact path="/post" component={Post} />
+                <Route exact path="/profile" component={Profile} />
+              </Switch>
+            </Router>
+          </ReplyState>
+        </PostState>
+      </UserState>
+
   );
 }
 

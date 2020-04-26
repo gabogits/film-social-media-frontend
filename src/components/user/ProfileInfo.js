@@ -4,20 +4,19 @@ import UserContext from "./../../context/user/UserContext"
 const ProfileInfo = () => {
 
   const userContext = useContext(UserContext)
-  const { user, getUserById} = userContext;
+  const { user, getUserById, editUser} = userContext;
 
-  console.log(user)
 
+console.log(user)
   useEffect(()=>{
-    getUserById("5ea1f5140693610259f4962c")
-     // eslint-disable-next-line
-   }, [])
-
-  const { name, email, genres, avatar, id } = user;
-
-  const editarInfo = id => {
+    //getUserById("5ea1f5140693610259f4962c")
     
-  }
+     // eslint-disable-next-line
+   }, [user])
+
+  const { name, email, description, avatar } = user;
+
+
   return (
     <div>
       <div className="avatar">
@@ -30,10 +29,10 @@ const ProfileInfo = () => {
         Correo: <strong>{email}</strong>
       </p>
       <p>
-       {genres}
+       {description}
       </p>
 
-      <button onClick={()=>editarInfo(id)}>editar infromacion</button>
+      <button onClick={()=> editUser(user)}>editar infromacion</button>
     </div>
   );
 };

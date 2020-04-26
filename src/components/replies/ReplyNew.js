@@ -1,24 +1,31 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import ReplyContext from "../../context/reply/ReplyContext";
 
-const ReplyNew = ({post}) => {
-  
-  const {_id } =post;
-  const replyContext = useContext(ReplyContext)
-  const {newReply} =replyContext;
-console.log(_id)
-  const [reply, saveReply] = useState({
+const ReplyNew = ({ post }) => {
+  const { _id } = post;
+  const replyContext = useContext(ReplyContext);
+  const { newReply, selectReply, updateReply, cancelEdit } = replyContext;
+
+  const replyinitialState = {
     text: "",
     picture: "",
-  });
+  };
+  useEffect(() => {
+    if (selectReply === null) {
+      saveReply(replyinitialState);
+    } else {
+      saveReply(selectReply);
+    }
+  }, []);
+  const [reply, saveReply] = useState(replyinitialState);
 
   const { text, picture } = reply;
 
   const onChangeValue = (e) => {
-
     saveReply({
       ...reply,
-       [e.target.name]: e.target.name !== "picture" ?  e.target.value : e.target.files[0]
+      [e.target.name]:
+        e.target.name !== "picture" ? e.target.value : e.target.files[0],
     });
   };
 
@@ -28,18 +35,14 @@ console.log(_id)
     if (text.trim() === "") {
       return;
     }
-   
-    try {
-      reply.post = _id;
-      newReply(reply)
-    } catch (error) {
-      console.log(error);
-    }
 
-    saveReply({
-      text: "",
-      picture: "",
-    });
+
+    if (selectReply === null) {
+      reply.post = _id;
+      newReply(reply);
+    }else {
+      updateReply(reply);
+    }
   };
 
   return (
@@ -62,15 +65,22 @@ console.log(_id)
               type="file"
               className="u-full-width"
               name="picture"
-
-      
               onChange={onChangeValue}
             />
           </div>
           <button
+            type="button"
+            className="button-primary u-full-width"
+            value="Cancelar"
+            onClick={cancelEdit}
+          >
+           Cancelar
+          </button>
+          <button
             type="submit"
             className="button-primary u-full-width"
             value="Publicar"
+           
           >
             Publicar
           </button>
