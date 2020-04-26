@@ -5,7 +5,7 @@ const Header = () => {
   const userContext = useContext(UserContext);
   const { user, signOut } = userContext;
 
-  const {name, avatar } = user
+
   return (
     <header>
       <div className="container">
@@ -14,18 +14,20 @@ const Header = () => {
         </div>
 
         <div className="user-active">
-          {name}
-           <img width="30px" src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}`}   alt="img" />
+        
+        
         </div>
         <ul>
           <li>Inicio</li>
           <li>Iniciar sesión</li>
           <li>Crear cuenta</li>
-          <li onClick={signOut}>Cerrar sesión</li>
+          <button onClick={signOut}>Cerrar sesión</button>
         </ul>
       </div>
     </header>
   );
 };
-
+//  {user ? name: null}
+//   <img width="30px" src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}`}   alt="img" />
+//  const {name, avatar } = user;
 export default Header;

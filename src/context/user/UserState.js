@@ -19,16 +19,7 @@ import axiosClient from "../../config/axios";
 const UserState = (props) => {
   const initialState = {
     token: localStorage.getItem("token"),
-    user: {
-      avatar: "n/a",
-      email: "genial@test.com",
-      name: "mi chavo",
-      password: "$2a$10$g7d0HWf1dQBHl8TCQ08ig.C2CEooeyw1/utDmItIH0c/kbmnwtb5S",
-      registry: "2020-04-23T16:25:21.029Z",
-      __v: 0,
-      _id: "5ea1f5140693610259f4962c",
-      description: "hola que tal"
-    },
+    user: null,
     users: [],
     formEdit: false,
     userSelect: null,
