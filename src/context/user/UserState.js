@@ -76,12 +76,12 @@ const UserState = (props) => {
   };
 
   const userLogin =  async user => {
-    const userLog = await axiosClient.post("api/auth" , user);
+    const userLog = await axiosClient.post("/api/auth" , user);
     console.log(userLog)
     try {
       dispatch({
         type: LOGIN_USER,
-        payload: userLog.data.userAuth,
+        payload: userLog.data,
       });
       userAuth();
     } catch (error) {
@@ -133,7 +133,8 @@ const UserState = (props) => {
         editUser,
         updateUser,
         signOut,
-        signOut
+        signOut,
+        userAuth
       }}
     >
       {props.children}

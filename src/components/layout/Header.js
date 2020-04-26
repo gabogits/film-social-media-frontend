@@ -1,10 +1,13 @@
-import React, {useContext} from  "react";
+import React, {useContext, useEffect} from  "react";
 import UserContext from "./../../context/user/UserContext";
 
 const Header = () => {
   const userContext = useContext(UserContext);
-  const { user, signOut } = userContext;
-
+  const { user, signOut, userAuth } = userContext;
+  useEffect(()=> {
+    userAuth();
+    //eslint-disable-next-line
+  }, [])
 
   return (
     <header>

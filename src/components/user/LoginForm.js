@@ -3,15 +3,11 @@ import { Link } from "react-router-dom";
 
 import UserContext from "./../../context/user/UserContext";
 
-const Login = (props) => {
+const Login = () => {
   const userContext = useContext(UserContext);
-  const { userLogin,  auth } = userContext;
-  useEffect(() => {
-   if(auth) {
-     props.history.push('/feed')
-   }
-  }, [ props.history])
-  const [user, saveUser] = useState({
+  const { userLogin } = userContext;
+  
+  const [user,  saveUser] = useState({
     email: "",
     password: "",
   });

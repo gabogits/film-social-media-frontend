@@ -17,15 +17,12 @@ const SignupForm = (props) => {
   };
 
   useEffect(() => {
-    if(auth  &&  userSelect === null ) {
-       props.history.push('/feed')
-    }
     if (userSelect === null) {
       saveUser(userInitialState);
     } else {
       saveUser(userSelect);
     }
-  }, [userSelect, props.history]);
+  }, [userSelect]);
 
   const [user, saveUser] = useState(userInitialState);
   const { name, email, password, description, avatar } = user;
