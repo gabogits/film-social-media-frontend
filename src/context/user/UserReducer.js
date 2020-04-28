@@ -61,6 +61,7 @@ export default (state, action) => {
         localStorage.removeItem("token");
         return {
           ...state,
+          token:null,
           user:null,
           auth: false,
           loading: true,

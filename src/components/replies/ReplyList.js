@@ -4,13 +4,11 @@ import Reply from "./../replies/Reply";
 
 
 const ReplyList = ({post}) => {
-  const {_id } =post;
-  const replyContext = useContext(ReplyContext);
-  const {replies, getReplies } = replyContext;
   
- 
-  console.log(replies)
-
+  //const {_id } =post;
+  const replyContext = useContext(ReplyContext);
+  const { replies } = post;
+  
 
   return (
     <div>

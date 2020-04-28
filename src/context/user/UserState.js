@@ -33,7 +33,7 @@ const UserState = (props) => {
   const signUpUser = async (user) => {
     const userObj = keysAppend(user);
     const userSignUp = await axiosClient.post("/api/user", userObj);
-    console.log(userSignUp);
+
 
     dispatch({
       type: SIGNUP_USER,
@@ -51,7 +51,7 @@ const UserState = (props) => {
   };
   const getUserById = async (id) => {
     const user = await axiosClient.get(`/api/user/${id}`);
-    console.log(user);
+
     dispatch({
       type: GET_USERBYID,
       payload: user.data,
@@ -68,7 +68,7 @@ const UserState = (props) => {
     const userObj = keysAppend(user);
 
     const userEdit = await axiosClient.post(`/api/user/${user._id}`, userObj);
-    console.log(userEdit);
+   
     dispatch({
       type: UPDATE_USER,
       payload: userEdit.data,
@@ -77,7 +77,7 @@ const UserState = (props) => {
 
   const userLogin =  async user => {
     const userLog = await axiosClient.post("/api/auth" , user);
-    console.log(userLog)
+
     try {
       dispatch({
         type: LOGIN_USER,

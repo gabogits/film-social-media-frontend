@@ -41,10 +41,13 @@ const PostNew = () => {
     if (score === "") {
       return;
     }
+    console.log(postSelect)
     if (postSelect === null) {
       newPost(post);
     } else {
+      console.log("newPost")
       updatePost(post);
+      console.log("updatePost")
     }
 
     savePost(postInitValues);

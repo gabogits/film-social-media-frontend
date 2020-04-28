@@ -10,23 +10,19 @@ const PostState = (props) => {
   const initialState = {
     posts: [],
     post: null,
-    postSelect: "",
+    postSelect: null,
     formPostEdit: false
   };
 
   const [state, dispatch] = useReducer(PostReducer, initialState);
 
   const newPost =  async (post) => {
-     const {text, picture, score } = post;
-     console.log(post)
-    let data = new FormData();
-    data.append("text", text);
-    data.append("picture", picture);
-    data.append("score", score);
-    
+    console.log(post)
+    const objPost = keysAppend(post)
+    console.log(objPost)
     try {
-      const postItem = await axiosClient.post('/api/post',  data )
-      console.log( postItem.data.post)
+      const postItem = await axiosClient.post('/api/post', objPost )
+    
       dispatch({
         type: CREATE_POST,
         payload: postItem.data.post,
@@ -36,9 +32,23 @@ const PostState = (props) => {
     }
    
   };
-  const getPosts = async () => {
-    const posts = await axiosClient.get('/api/post');
+  const getPosts = async (creator) => {
+    const posts = await axiosClient.get('/api/post', {params: creator});
     console.log(posts)
+  
+        console.log(creator)
+    const postTree = [];
+    for (const postItem of posts.data) {
+        const post  = postItem._id;
+        console.log(post)
+        const repliesPost = await  axiosClient.get("api/reply", {params: {post}});
+        postItem.replies = repliesPost.data;
+        postTree.push(postItem)
+
+     
+    }
+    console.log(postTree)
+   
     dispatch({
       type: GET_POSTS,
       payload: posts.data

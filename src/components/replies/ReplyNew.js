@@ -1,11 +1,14 @@
 import React, { useState, useContext, useEffect } from "react";
 import ReplyContext from "../../context/reply/ReplyContext";
+import UserContext from "../../context/user/UserContext";
 
 const ReplyNew = ({ post }) => {
-  const { _id } = post;
   const replyContext = useContext(ReplyContext);
   const { newReply, selectReply, updateReply, cancelEdit } = replyContext;
+  const userContext = useContext(UserContext);
+  const {  user } = userContext;
 
+  const {name, avatar} = user;
   const replyinitialState = {
     text: "",
     picture: "",
@@ -16,7 +19,7 @@ const ReplyNew = ({ post }) => {
     } else {
       saveReply(selectReply);
     }
-  }, []);
+  }, [selectReply]);
   const [reply, saveReply] = useState(replyinitialState);
 
   const { text, picture } = reply;
@@ -35,14 +38,19 @@ const ReplyNew = ({ post }) => {
     if (text.trim() === "") {
       return;
     }
-
+console.log(selectReply)
 
     if (selectReply === null) {
-      reply.post = _id;
+      reply.post = post._id;
+      console.log("newReply")
       newReply(reply);
+     
     }else {
+      console.log("updateReply")
       updateReply(reply);
     }
+
+    saveReply(replyinitialState)
   };
 
   return (
@@ -50,11 +58,11 @@ const ReplyNew = ({ post }) => {
       <div className="post-add-repply-inner">
         <form onSubmit={replyFormSubmit}>
           <div className="post-reply-avatar-small">
-            <img src="images/1.jpg" alt="img" />
+          <img width="30px" src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}`}  />
           </div>
           <div className="post-reply-input">
             <textarea
-              placeholder="agrega una publicacion"
+              placeholder="agrega alguna respuesta"
               name="text"
               value={text}
               onChange={onChangeValue}

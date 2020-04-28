@@ -36,16 +36,18 @@ const ReplyState = (props) => {
     }
   };
 
-  const getReplies = async (idPost) => {
-    console.log(idPost);
-    // const repliesPost = await  axiosClient.get("api/reply", {params: {idPost}});
+  const getReplies = async (post) => {
+    console.log(post);
+    /*
+    const repliesPost = await  axiosClient.get("api/reply", {params: {post}});
 
-    const repliesPost = await axiosClient.get("api/reply");
-    console.log(repliesPost);
+   // const repliesPost = await axiosClient.get("api/reply");
+
     dispatch({
       type: GET_REPLIES,
       payload: repliesPost.data,
     });
+    */
   };
 
   const getReply = (reply) => {
@@ -56,6 +58,7 @@ const ReplyState = (props) => {
   };
   const updateReply = async (reply) => {
     const replyObj = keysAppend(reply);
+    console.log(reply._id)
     const replyEdit = await axiosClient.post(`api/reply/${reply._id}`, replyObj);
 
     dispatch({
@@ -70,7 +73,6 @@ const ReplyState = (props) => {
   }
   const deleteReply = async (reply) => {
     const replyDelete = await axiosClient.delete(`api/reply/${reply._id}`);
-    console.log(replyDelete)
     try {
       dispatch({
         type: DELETE_REPLY,

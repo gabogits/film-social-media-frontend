@@ -1,8 +1,13 @@
 import React, {useContext} from "react";
 import ReplyContext from "../../context/reply/ReplyContext"
+import UserContext from "../../context/user/UserContext";
 
 const Reply = ({reply}) => {
-  const {text, avatar, picture, creator, registry, id} = reply;
+  const userContext = useContext(UserContext);
+  const { user } = userContext;
+  const { name, avatar } = user;
+
+  const {text, picture, creator, registry, id} = reply;
   const replyContext = useContext(ReplyContext)
   const {getReply, deleteReply} =replyContext;
   return (
@@ -10,7 +15,7 @@ const Reply = ({reply}) => {
               <button onClick={()=>getReply(reply)} >Editar reply</button>
         <button onClick={()=>deleteReply(reply)} >Borrar reply</button>
       <div className="post-reply-avatar-small">
-      <img src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}`}    alt="img" />
+      <img  width="30px" src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}`}    alt="img" />
       </div>
       <div className="post-reply-txt">
   
