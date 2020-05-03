@@ -12,7 +12,6 @@ import UserState from "./context/user/UserState";
 import tokenAuth from "./config/token";
 import PrivateRoute from "./components/routes/PrivateRoute"
 const token = localStorage.getItem("token");
-
 if(token){
   tokenAuth(token)
 }
@@ -25,10 +24,10 @@ function App() {
             <Router>
               <Switch>
                 <Route exact path="/login" component={Login} />
-                <Route exact path="/nueva-cuenta" component={Signup} />
+                <Route exact path="/" component={Signup} />
                 <PrivateRoute exact path="/feed" component={Feed} />
-                <PrivateRoute exact path="/post" component={Post} />
-                <PrivateRoute exact path="/profile" component={Profile} />
+                <PrivateRoute  path="/post" component={Post} />
+                <PrivateRoute  path="/profile" component={Profile} />
               </Switch>
             </Router>
           </ReplyState>

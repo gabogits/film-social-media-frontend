@@ -5,13 +5,13 @@ import UserContext from "./../../context/user/UserContext";
 
 const Login = (props) => {
   const userContext = useContext(UserContext);
-  const {  auth } = userContext;
+  const {  auth, userAuth } = userContext;
   useEffect(() => {
-    console.log(auth)
-   if(auth) {
-     props.history.push('/feed')
-   }
-  }, [ auth, props.history])
+      userAuth();
+    if (auth) {
+      props.history.push("/feed");
+    }
+  }, [auth, props.history]);
   
   return (
     <div>

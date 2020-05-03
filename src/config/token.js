@@ -1,7 +1,7 @@
 import axiosClient from './axios';
 
 const tokenAuth = token => {
-    console.log(token)
+
     if(token) {
         axiosClient.defaults.headers.common['auth-token'] = token;
     }else {

@@ -18,6 +18,10 @@ export const GET_USER = "GET_USER";
 export const EDIT_USER = "EDIT_USER";
 export const UPDATE_USER = "UPDATE_USER";
 export const GET_USERBYID = "GET_USERBYID";
+export const CANCEL_EDIT_USER = "CANCEL_EDIT_USER";
 
 export const LOGIN_USER = "LOGIN_USER";
 export const SIGN_OUT = "SIGN_OUT";
+
+export const LOGIN_ERROR = "LOGIN_ERROR";
+

@@ -4,9 +4,14 @@ import { Link } from "react-router-dom";
 import UserContext from "./../../context/user/UserContext";
 
 const SignupForm = (props) => {
-  console.log(props)
   const userContext = useContext(UserContext);
-  const { signUpUser, userSelect, updateUser, auth } = userContext;
+  const {
+    signUpUser,
+    userSelect,
+    updateUser,
+    cancelEditUser,
+    auth,
+  } = userContext;
 
   const userInitialState = {
     name: "",
@@ -15,7 +20,6 @@ const SignupForm = (props) => {
     description: "",
     avatar: "",
   };
-
   useEffect(() => {
     if (userSelect === null) {
       saveUser(userInitialState);
@@ -23,9 +27,8 @@ const SignupForm = (props) => {
       saveUser(userSelect);
     }
   }, [userSelect]);
-
   const [user, saveUser] = useState(userInitialState);
-  const { name, email, password, description, avatar } = user;
+  const { name, email, description, password, avatar } = user;
   const onChangeValue = (e) => {
     saveUser({
       ...user,
@@ -36,14 +39,18 @@ const SignupForm = (props) => {
 
   const SigupFormSubmit = (e) => {
     e.preventDefault();
-
-    if (name.trim() === "" || email.trim() === "" || password.trim() === "") {
-      console.log("hay campos vacios");
+    if (name.trim() === "" || email.trim() === "") {
       return;
+    }
+    if (!userSelect) {
+      if (password.trim() === "") {
+        return;
+      }
     }
     if (userSelect === null) {
       signUpUser(user);
     } else {
+      console.log(user);
       updateUser(user);
     }
 
@@ -77,18 +84,20 @@ const SignupForm = (props) => {
             onChange={onChangeValue}
           />
         </div>
+        {!userSelect ? (
+          <div className="campo">
+            <label>Contraseña</label>
+            <input
+              type="password"
+              className="u-full-width"
+              placeholder="Contraseña"
+              name="password"
+              value={password}
+              onChange={onChangeValue}
+            />
+          </div>
+        ) : null}
 
-        <div className="campo">
-          <label>Contraseña</label>
-          <input
-            type="password"
-            className="u-full-width"
-            placeholder="Contraseña"
-            name="password"
-            value={password}
-            onChange={onChangeValue}
-          />
-        </div>
         <div className="campo">
           <label>Meciona algunos, generos, musicales y cinematograficos</label>
           <textarea
@@ -102,7 +111,6 @@ const SignupForm = (props) => {
         <div className="campo">
           <label>sube alguna foto o avatar que te represente</label>
           <input
-     
             type="file"
             className="u-full-width"
             name="avatar"
@@ -117,7 +125,11 @@ const SignupForm = (props) => {
         >
           enviar
         </button>
-        <button type="button" className="button-secondary  u-full-width">
+        <button
+          type="button"
+          className="button-secondary  u-full-width"
+          onClick={cancelEditUser}
+        >
           Cancelar
         </button>
 

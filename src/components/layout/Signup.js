@@ -5,13 +5,12 @@ import UserContext from "./../../context/user/UserContext";
 
 const SignUp = (props) => {
   const userContext = useContext(UserContext);
-  const {  auth, userSelect } = userContext;
+  const {  auth, userSelect, userAuth, user, token, loading } = userContext;
   useEffect(() => {
-    if(auth  &&  userSelect === null ) {
-       props.history.push('/feed')
-    }
+
+ 
   
-  }, [auth, userSelect, props.history]);
+  }, [auth, userSelect, token, props.history]);
 
   return (
     <div>

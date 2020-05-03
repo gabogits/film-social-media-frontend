@@ -1,30 +1,36 @@
-import React, {useContext, useEffect} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import UserContext from "./../../context/user/UserContext"
 
-const ProfileInfo = (props) => {
-
+const ProfileInfo = ({profileInfo}) => {
   const userContext = useContext(UserContext)
-  const { user, getUserById, editUser, auth, userAuth} = userContext;
-
-
+  const {user, editUser} = userContext;
 
   
+  const {name, avatar, email, description, _id} =profileInfo;
   return (
     <div>
       <div className="avatar">
-
+      {avatar ? (
+              <img
+                width="30px"
+                src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}`}
+                alt="img"
+              />
+            ) : null}
       </div>
       <p>
-        Nombre: <strong></strong>
+        Nombre: <strong>{name}</strong>
       </p>
       <p>
-        Correo: <strong></strong>
+        Correo: <strong>{email}</strong>
       </p>
       <p>
-  
+        Description <strong>{description}</strong>
       </p>
-
-      <button>editar infromacion</button>
+      {_id === user._id ? 
+        (
+      <button onClick={() => editUser(profileInfo)}>editar infromacion</button>
+        ) : null};
     </div>
   );
 };

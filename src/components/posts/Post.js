@@ -4,6 +4,7 @@ import ReplyNew from "../replies/ReplyNew";
 import PostContext from "./../../context/post/PostContext";
 import ReplyContext from "./../../context/reply/ReplyContext";
 import UserContext from "../../context/user/UserContext";
+import { Link } from "react-router-dom";
 
 const Post = ({ post }) => {
   const postContext = useContext(PostContext);
@@ -13,30 +14,43 @@ const Post = ({ post }) => {
   const { formReplyEdit } = replyContext;
 
   const userContext = useContext(UserContext);
-  const { user } = userContext;
-  const { name, avatar } = user;
+  const { user, setEvaluations } = userContext;
 
-  const { text, picture, creator, registry, _id } = post;
+  const { text, picture, creator, registry, author, pic, _id } = post;
 
-  const onChangeValue = (e) => {};
+  const onChangeValue = (e, postId, user, creator) => {
+    console.log(e.target.value);
+    const evaluation = {
+      post: postId,
+      score: e.target.value,
+    };
 
+    setEvaluations(evaluation, user, creator);
+  };
+
+  if (!post) return null;
   return (
     <div className="post">
       <div className="post-head">
-        <button onClick={() => getPost(post)}>Editar post</button>
-        <button onClick={() => deletePost(post)}>Borrar post</button>
+        {creator === user._id ? (
+          <div className="menu-opciones-item">
+            <button onClick={() => getPost(_id)}>Editar post</button>
+            <button onClick={() => deletePost(_id)}>Borrar post</button>
+          </div>
+        ) : null}
+        ;<Link to={`/post/${_id}`}>Obtener post</Link>
         <div className="post-user-info">
           <div className="post-avatar-small">
-            {avatar ? (
+            {pic ? (
               <img
                 width="30px"
-                src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}`}
+                src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${pic}`}
                 alt="img"
               />
             ) : null}
           </div>
           <div className="post-name-date">
-            <p>{creator}</p>
+            <p> creatorname {author}</p>
             <p>{registry}</p>
           </div>
         </div>
@@ -69,7 +83,7 @@ const Post = ({ post }) => {
                   type="radio"
                   value={2}
                   name="score"
-                  onChange={onChangeValue}
+                  onChange={(e) => onChangeValue(e, _id, user, creator)}
                 ></input>
               </div>
             </li>
@@ -79,7 +93,7 @@ const Post = ({ post }) => {
                   type="radio"
                   value={4}
                   name="score"
-                  onChange={onChangeValue}
+                  onChange={(e) => onChangeValue(e, _id, user, creator)}
                 ></input>
               </div>
             </li>
@@ -89,7 +103,7 @@ const Post = ({ post }) => {
                   type="radio"
                   value={6}
                   name="score"
-                  onChange={onChangeValue}
+                  onChange={(e) => onChangeValue(e, _id, user, creator)}
                 ></input>
               </div>
             </li>
@@ -99,7 +113,7 @@ const Post = ({ post }) => {
                   type="radio"
                   value={8}
                   name="score"
-                  onChange={onChangeValue}
+                  onChange={(e) => onChangeValue(e, _id, user, creator)}
                 ></input>
               </div>
             </li>
@@ -109,7 +123,7 @@ const Post = ({ post }) => {
                   type="radio"
                   value={10}
                   name="score"
-                  onChange={onChangeValue}
+                  onChange={(e) => onChangeValue(e, _id, user, creator)}
                 ></input>
               </div>
             </li>

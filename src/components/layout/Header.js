@@ -1,18 +1,15 @@
-import React, {useContext, useEffect} from  "react";
+import React, {useContext, useEffect, Fragment} from  "react";
+import { Link } from "react-router-dom";
 import UserContext from "./../../context/user/UserContext";
 
-const Header = () => {
+
+const Header = (props) => {
   const userContext = useContext(UserContext);
-  const {  signOut, user, userAuth } = userContext;
+  const {  signOut, userAuth, user, auth } = userContext;
 
 
 
-  
-  useEffect(()=> {
-    userAuth();
-    //eslint-disable-next-line
-  }, [])
-  return (
+   return (
     
     <header>
       <div className="container">
@@ -25,10 +22,20 @@ const Header = () => {
         {user ? (<p>hola {user.name} </p> ) : null}
         </div>
         <ul>
-          <li>Inicio</li>
+         
+          {!user ? (
+          <Fragment>
           <li>Iniciar sesión</li>
-          <li>Crear cuenta</li>
-          <button onClick={signOut}>Cerrar sesión</button>
+          <li>Crear cuenta</li> 
+
+        
+          </Fragment>
+          )
+          : <Fragment>
+             <li><Link to={"/feed"}>Inicio</Link></li>
+              <Link to={"/profile"}>Profile</Link>
+          <div onClick={signOut}>Cerrar sesión</div>
+            </Fragment>}
         </ul>
       </div>
     </header>

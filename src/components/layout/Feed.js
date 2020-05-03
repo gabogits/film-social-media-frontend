@@ -5,30 +5,29 @@ import PostList from "./../posts/PostList";
 import ScoreList from "../score/ScoreList";
 import PostContext from "../../context/post/PostContext";
 import UserContext from "../../context/user/UserContext";
-
-/*
-
-
-      <ScoreList></ScoreList>
-   
-      */
+import UsersList from "./../user/UsersList";
 
 const Feed = (props) => {
 
 
   const userContext = useContext(UserContext);
-  const { auth } = userContext;
-  useEffect(() => {
-    console.log(auth);
+  const { auth, userAuth, user, token, loading } = userContext;
+
+
+  useEffect(()   => {
+     userAuth();
     if (!auth) {
-      props.history.push("/login");
+    
+      props.history.push("/");
     }
   }, [auth, props.history]);
 
   // {formPostEdit ? <PostNew /> : <PostList></PostList> }
+  if(!auth && !loading) return null;
   return (
     <div>
-      <Header></Header>
+       <Header></Header>
+      <UsersList />
       <PostNew />
       <PostList></PostList>
     </div>

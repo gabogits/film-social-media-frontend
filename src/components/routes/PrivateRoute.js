@@ -4,14 +4,14 @@ import UserContext from "../../context/user/UserContext"
 
 const PrivateRoute = ({Component: Component, ...props}) => {
     const userContext = useContext(UserContext);
-    const {auth, userAuth} = userContext;
+    const {auth, loading, userAuth} = userContext;
 
     useEffect(() => {
         userAuth()
     }, []);
 
     return (
-        <Route {...props} render={(props) => !auth ? <Redirect to="/login"  />: <Component {...props} />} />
+        <Route {...props} render={(props) => !auth && !loading? <Redirect to="/"  />: <Component {...props} />} />
     )
 }
 export default PrivateRoute;

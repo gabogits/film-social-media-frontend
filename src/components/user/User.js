@@ -1,17 +1,19 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const User = ({user}) => {
   
-  const {name, avatar, id} = user;
+  const {name, avatar, _id} = user;
   const goProfileUser = id => {
-   
+    console.log(id)
+    
   }
   return (
     <li>
-      <div className="user-avatar-medium" onClick={()=> goProfileUser(id)}>
+      <Link className="user-avatar-medium" to={`/profile/${_id}`}>
         <img width="30px" src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}`}  />
         <span>{name}</span>
-      </div>
+      </Link>
     </li>
   );
 };

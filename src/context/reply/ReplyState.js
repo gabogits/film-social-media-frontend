@@ -23,9 +23,11 @@ const ReplyState = (props) => {
   const [state, dispatch] = useReducer(ReplyReducer, initialState);
 
   const newReply = async (reply) => {
+    console.log(reply)
     const replyObj = keysAppend(reply);
+    console.log(replyObj)
     const replyItem = await axiosClient.post("api/reply", replyObj);
-
+    console.log(replyItem)
     try {
       dispatch({
         type: CREATE_REPLY,
@@ -37,7 +39,7 @@ const ReplyState = (props) => {
   };
 
   const getReplies = async (post) => {
-    console.log(post);
+
     /*
     const repliesPost = await  axiosClient.get("api/reply", {params: {post}});
 
@@ -58,7 +60,7 @@ const ReplyState = (props) => {
   };
   const updateReply = async (reply) => {
     const replyObj = keysAppend(reply);
-    console.log(reply._id)
+
     const replyEdit = await axiosClient.post(`api/reply/${reply._id}`, replyObj);
 
     dispatch({

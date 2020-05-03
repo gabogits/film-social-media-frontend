@@ -11,35 +11,35 @@ import {
   GET_USERBYID,
   EDIT_USER,
   UPDATE_USER,
+  CANCEL_EDIT_USER,
   SIGN_OUT,
-  LOGIN_USER
+  LOGIN_USER,
+  LOGIN_ERROR,
 } from "./../../types/";
 import axiosClient from "../../config/axios";
 
 const UserState = (props) => {
   const initialState = {
-    token: localStorage.getItem("token"),
+    token: null,
     user: null,
-    users: [],
+    users: null,
     formEdit: false,
     userSelect: null,
     auth: false,
-    loading:false
+    loading: true,
   };
   const [state, dispatch] = useReducer(UserReducer, initialState);
-
-
 
   const signUpUser = async (user) => {
     const userObj = keysAppend(user);
     const userSignUp = await axiosClient.post("/api/user", userObj);
-
+    console.log(userSignUp);
 
     dispatch({
       type: SIGNUP_USER,
       payload: userSignUp.data.newUser,
     });
-    userAuth()
+    userAuth();
   };
 
   const getUsers = async () => {
@@ -50,11 +50,10 @@ const UserState = (props) => {
     });
   };
   const getUserById = async (id) => {
-    const user = await axiosClient.get(`/api/user/${id}`);
-
+    const userProfile = state.users.find((user) => user._id === id);
     dispatch({
       type: GET_USERBYID,
-      payload: user.data,
+      payload: userProfile,
     });
   };
   const editUser = (user) => {
@@ -65,18 +64,19 @@ const UserState = (props) => {
   };
 
   const updateUser = async (user) => {
-    const userObj = keysAppend(user);
+    delete user.password;
 
+    const userObj = keysAppend(user);
     const userEdit = await axiosClient.post(`/api/user/${user._id}`, userObj);
-   
+
     dispatch({
       type: UPDATE_USER,
       payload: userEdit.data,
     });
   };
 
-  const userLogin =  async user => {
-    const userLog = await axiosClient.post("/api/auth" , user);
+  const userLogin = async (user) => {
+    const userLog = await axiosClient.post("/api/auth", user);
 
     try {
       dispatch({
@@ -85,37 +85,80 @@ const UserState = (props) => {
       });
       userAuth();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  
-  } 
-  const userAuth = async  () => {
-    const token = localStorage.getItem("token");
-    if(token) {
-      tokenAuth(token)
+  };
+  const userAuth = async () => {
+    const token = await localStorage.getItem("token");
+    if (token) {
+      tokenAuth(token);
     }
     try {
       const userAuth = await axiosClient.get("api/auth");
-      //aqui en este llamado se mandan los headers el servidor los recibe y busca el token, que se tomo a su vez del localstorage, 
+      //aqui en este llamado se mandan los headers el servidor los recibe y busca el token, que se tomo a su vez del localstorage,
       //cuyo token se seteo en el local storage cuando se logueo o cuando se registro cuenta
-       dispatch({
-         type:GET_USER,
-         payload: userAuth.data.userAuth
-       })
+
+      dispatch({
+        type: GET_USER,
+        payload: userAuth.data.userAuth,
+      });
     } catch (error) {
-      console.log(error)
+      dispatch({
+        type: LOGIN_ERROR,
+      });
     }
-
-  }
-
-  const signOut = () =>{
+  };
+  const cancelEditUser = async () => {
     dispatch({
-      type:SIGN_OUT,
-    })
-  }
+      type: CANCEL_EDIT_USER,
+    });
+  };
+  const signOut = async () => {
+    dispatch({
+      type: SIGN_OUT,
+    });
+  };
 
+  const setEvaluations = async (evaluation, user, creator) => {
+    let evaluations = user.evaluations.filter(
+      (item) => item.post !== evaluation.post
+    );
+    evaluations.push(evaluation);
+    user.evaluations = evaluations;
+    console.log(user);
 
+    delete user.password;
 
+    const userEdit = await axiosClient.post(`/api/user/${user._id}`, user);
+    dispatch({
+      type: UPDATE_USER,
+      payload: userEdit.data,
+    });
+
+    const creatorPost = state.users.find(
+      (userItem) => userItem._id === creator
+    );
+    console.log(creatorPost);
+
+    let ranking = creatorPost.ranking.filter(
+      (item) => item.post !== evaluation.post
+    );
+
+    const itemRanking = {
+      post: evaluation.post,
+      user: user._id,
+      score: evaluation.score,
+    };
+    ranking.push(itemRanking);
+
+    creatorPost.ranking = ranking;
+
+    console.log(creatorPost);
+    delete creatorPost.password;
+
+    await axiosClient.post(`/api/user/${creator}`, creatorPost);
+    getUsers();
+  };
 
   return (
     <UserContext.Provider
@@ -125,7 +168,7 @@ const UserState = (props) => {
         formEdit: state.formEdit,
         userSelect: state.userSelect,
         auth: state.auth,
-        loading:state.loading,
+        loading: state.loading,
         signUpUser,
         userLogin,
         getUsers,
@@ -134,7 +177,9 @@ const UserState = (props) => {
         updateUser,
         signOut,
         signOut,
-        userAuth
+        userAuth,
+        setEvaluations,
+        cancelEditUser,
       }}
     >
       {props.children}

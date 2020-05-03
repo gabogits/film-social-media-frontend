@@ -23,11 +23,11 @@ const Login = () => {
     e.preventDefault();
 
     if (email.trim() === "" || password.trim() === "") {
-      console.log("hay campos vacios");
+
       return;
     }
     userLogin(user)
-    console.log(user);
+  
 
   };
 
@@ -70,7 +70,7 @@ const Login = () => {
           Cancelar
         </button>
 
-        <Link to={"/nueva-cuenta"}>Crea tu cuenta</Link>
+        <Link to={"/"}>Crea tu cuenta</Link>
       </form>
     </section>
   );

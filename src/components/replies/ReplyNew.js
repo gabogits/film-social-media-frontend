@@ -8,7 +8,9 @@ const ReplyNew = ({ post }) => {
   const userContext = useContext(UserContext);
   const {  user } = userContext;
 
-  const {name, avatar} = user;
+  const {name, avatar, _id} = user;
+  
+
   const replyinitialState = {
     text: "",
     picture: "",
@@ -38,15 +40,15 @@ const ReplyNew = ({ post }) => {
     if (text.trim() === "") {
       return;
     }
-console.log(selectReply)
+
 
     if (selectReply === null) {
       reply.post = post._id;
-      console.log("newReply")
+      reply.author = user.name;
+      reply.pic = user.avatar;
       newReply(reply);
      
     }else {
-      console.log("updateReply")
       updateReply(reply);
     }
 

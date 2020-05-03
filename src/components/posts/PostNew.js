@@ -1,10 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
 import PostContext from "../../context/post/PostContext";
+import UserContext from "../../context/user/UserContext";
 
 const PostNew = () => {
   const postContext = useContext(PostContext);
   const { newPost, postSelect, updatePost, formPostEdit, cancelPost } = postContext;
-
+  const userContext = useContext(UserContext);
+  const {  user } = userContext;
   const postInitValues = {
     text: "",
     picture: "",
@@ -23,7 +25,7 @@ const PostNew = () => {
   const { text, score } = post;
 
   const onChangeValue = (e) => {
-    console.log(e.target.name);
+
 
     savePost({
       ...post,
@@ -41,13 +43,16 @@ const PostNew = () => {
     if (score === "") {
       return;
     }
-    console.log(postSelect)
+
     if (postSelect === null) {
+      post.author = user.name;
+      post.pic = user.avatar;
       newPost(post);
+     
     } else {
-      console.log("newPost")
+
       updatePost(post);
-      console.log("updatePost")
+   
     }
 
     savePost(postInitValues);
