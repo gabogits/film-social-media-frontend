@@ -41,7 +41,7 @@ const PostState = (props) => {
       console.log(error);
     }
   };
-  const getPosts = async (creator) => {
+  const getPosts = async (creator, user) => {
     const posts = await axiosClient.get("/api/post", { params: creator });
 
     const postTree = [];
@@ -52,9 +52,20 @@ const PostState = (props) => {
         params: { post },
       });
       postItem.replies = repliesPost.data;
+      const evaluation =  user.evaluations.find( (item) => item.post == post)
+
+      if(evaluation) {
+        postItem.score = evaluation.score;
+      }
+     
       postTree.push(postItem);
     }
-
+    /*
+    user.evaluations.find(
+      (item) => item.post == post
+    );
+    */
+    
     dispatch({
       type: GET_POSTS,
       payload: posts.data,

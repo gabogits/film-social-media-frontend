@@ -2,15 +2,9 @@ import React, {useContext, useEffect} from "react";
 import User from "./User";
 import UserContext from "./../../context/user/UserContext"
 
-const UsersList = () => {
+const UsersList = ({users}) => {
 
-  const userContext = useContext(UserContext)
-  const { users, getUsers} = userContext;
 
-  useEffect(()=>{
-    getUsers()
-     // eslint-disable-next-line
-   }, [])
    if(!users) return null;
   return (
     <div className="UsersList">

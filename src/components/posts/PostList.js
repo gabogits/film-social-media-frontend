@@ -6,14 +6,16 @@ import UserContext from "./../../context/user/UserContext";
 
 const PostList = (creator) => {
   const userContext = useContext(UserContext);
-  const {  userSelect } = userContext;
+  const {  userSelect, user, userAuth } = userContext;
  const postContext = useContext(PostContext);
  const {posts, getPosts} = postContext;
  const replyContext = useContext(ReplyContext)
  const {newReply} =replyContext;
 
  useEffect(()=>{
-  getPosts(creator)
+  userAuth();
+
+  getPosts(creator, user)
    // eslint-disable-next-line
 
  }, [newReply, userSelect])

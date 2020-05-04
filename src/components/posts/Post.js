@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import ReplyList from "../replies/ReplyList";
 import ReplyNew from "../replies/ReplyNew";
 import PostContext from "./../../context/post/PostContext";
@@ -16,13 +16,31 @@ const Post = ({ post }) => {
   const userContext = useContext(UserContext);
   const { user, setEvaluations } = userContext;
 
-  const { text, picture, creator, registry, author, pic, _id } = post;
+  const { text, picture, creator, registry, author, pic, _id, score } = post;
+  const rankingItems = [
+    { id: 1, value: 2 },
+    { id: 2, value: 4 },
+    { id: 3, value: 6 },
+    { id: 4, value: 8 },
+    { id: 5, value: 10 },
+  ];
 
-  const onChangeValue = (e, postId, user, creator) => {
-    console.log(e.target.value);
+  const scoreInit = 0;
+  useEffect(() => {
+    if (score > 0) {
+      setStarts(score);
+    } else {
+      setStarts(scoreInit);
+    }
+  }, []);
+
+  const [starts, setStarts] = useState(scoreInit);
+
+  const onClickStar = (value, postId, user, creator) => {
+    setStarts(value);
     const evaluation = {
       post: postId,
-      score: e.target.value,
+      score: value,
     };
 
     setEvaluations(evaluation, user, creator);
@@ -75,60 +93,22 @@ const Post = ({ post }) => {
         </p>
       </div>
       <div className="post-actions">
+        {creator !==  user._id ? (
         <div className="score-bullets">
-          <ul>
-            <li>
-              <div className="radio-score">
-                <input
-                  type="radio"
-                  value={2}
-                  name="score"
-                  onChange={(e) => onChangeValue(e, _id, user, creator)}
-                ></input>
+          <div className="ranking">
+            {rankingItems.map((item) => (
+              <div
+                className={`radio-score ${
+                  item.id <= starts / 2 ? " activeScore" : null
+                }`}
+                key={item.id}
+                onClick={() => onClickStar(item.value, _id, user, creator)}
+              >
+                {item.value}
               </div>
-            </li>
-            <li>
-              <div className="radio-score">
-                <input
-                  type="radio"
-                  value={4}
-                  name="score"
-                  onChange={(e) => onChangeValue(e, _id, user, creator)}
-                ></input>
-              </div>
-            </li>
-            <li>
-              <div className="radio-score">
-                <input
-                  type="radio"
-                  value={6}
-                  name="score"
-                  onChange={(e) => onChangeValue(e, _id, user, creator)}
-                ></input>
-              </div>
-            </li>
-            <li>
-              <div className="radio-score">
-                <input
-                  type="radio"
-                  value={8}
-                  name="score"
-                  onChange={(e) => onChangeValue(e, _id, user, creator)}
-                ></input>
-              </div>
-            </li>
-            <li>
-              <div className="radio-score">
-                <input
-                  type="radio"
-                  value={10}
-                  name="score"
-                  onChange={(e) => onChangeValue(e, _id, user, creator)}
-                ></input>
-              </div>
-            </li>
-          </ul>
-        </div>
+            ))}
+          </div>
+        </div> ) :null }
         <button>commentar</button>
       </div>
       <ReplyNew post={post} />

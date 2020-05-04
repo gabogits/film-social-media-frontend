@@ -21,6 +21,7 @@ const SignupForm = (props) => {
     avatar: "",
   };
   useEffect(() => {
+    console.log("pasa por aca")
     if (userSelect === null) {
       saveUser(userInitialState);
     } else {

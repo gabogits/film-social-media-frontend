@@ -11,10 +11,15 @@ const Feed = (props) => {
 
 
   const userContext = useContext(UserContext);
-  const { auth, userAuth, user, token, loading } = userContext;
+  const { auth, userAuth, user, token, loading, users, getUsers} = userContext;
+
+
+
+  
 
 
   useEffect(()   => {
+    getUsers();
      userAuth();
     if (!auth) {
     
@@ -26,8 +31,10 @@ const Feed = (props) => {
   if(!auth && !loading) return null;
   return (
     <div>
+      
        <Header></Header>
-      <UsersList />
+       <ScoreList users={users} />
+       <UsersList users={users} />
       <PostNew />
       <PostList></PostList>
     </div>
