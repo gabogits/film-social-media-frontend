@@ -23,11 +23,11 @@ const ReplyState = (props) => {
   const [state, dispatch] = useReducer(ReplyReducer, initialState);
 
   const newReply = async (reply) => {
-    console.log(reply)
+
     const replyObj = keysAppend(reply);
-    console.log(replyObj)
+ 
     const replyItem = await axiosClient.post("api/reply", replyObj);
-    console.log(replyItem)
+ 
     try {
       dispatch({
         type: CREATE_REPLY,

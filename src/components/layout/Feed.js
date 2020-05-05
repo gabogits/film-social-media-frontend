@@ -3,39 +3,37 @@ import Header from "./Header";
 import PostNew from "./../posts/PostNew";
 import PostList from "./../posts/PostList";
 import ScoreList from "../score/ScoreList";
-import PostContext from "../../context/post/PostContext";
-import UserContext from "../../context/user/UserContext";
 import UsersList from "./../user/UsersList";
+import UserContext from "../../context/user/UserContext";
+import PostContext from "../../context/post/PostContext";
+import ReplyContext from "../../context/reply/ReplyContext";
+
+
 
 const Feed = (props) => {
 
-
   const userContext = useContext(UserContext);
-  const { auth, userAuth, user, token, loading, users, getUsers} = userContext;
-
-
-
-  
-
-
-  useEffect(()   => {
+  const { userAuth, user, loading, users, getUsers, userSelect, auth } = userContext;
+  const postContext = useContext(PostContext);
+  const {posts, getPosts, post, resetSelectPost} = postContext;
+  const replyContext = useContext(ReplyContext)
+  const {newReply} =replyContext;
+  useEffect(() => {
+ 
+    userAuth();
     getUsers();
-     userAuth();
-    if (!auth) {
-    
-      props.history.push("/");
-    }
-  }, [auth, props.history]);
+    resetSelectPost()
+      // eslint-disable-next-line
+  }, [ newReply, userSelect, auth]);
 
   // {formPostEdit ? <PostNew /> : <PostList></PostList> }
-  if(!auth && !loading) return null;
+  if(!user) return null;
   return (
     <div>
-      
-       <Header></Header>
-       <ScoreList users={users} />
-       <UsersList users={users} />
-      <PostNew />
+      <Header></Header>
+      <ScoreList users={users} />
+      <UsersList users={users} />
+      <PostNew  />
       <PostList></PostList>
     </div>
   );

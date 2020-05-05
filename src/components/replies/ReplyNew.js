@@ -46,6 +46,7 @@ const ReplyNew = ({ post }) => {
       reply.post = post._id;
       reply.author = user.name;
       reply.pic = user.avatar;
+      reply.creator = user._id;
       newReply(reply);
      
     }else {

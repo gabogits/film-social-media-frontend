@@ -46,26 +46,27 @@ const Post = ({ post }) => {
     setEvaluations(evaluation, user, creator);
   };
 
-  if (!post) return null;
+  if (!post || !user) return null;
   return (
     <div className="post">
       <div className="post-head">
         {creator === user._id ? (
           <div className="menu-opciones-item">
-            <button onClick={() => getPost(_id)}>Editar post</button>
+            <Link to={`/post/edit/${_id}`}>editar post</Link>
+            
             <button onClick={() => deletePost(_id)}>Borrar post</button>
           </div>
-        ) : null}
-        ;<Link to={`/post/${_id}`}>Obtener post</Link>
+        ) : null} ;
+        <Link to={`/post/${_id}`}>Obtener post</Link>
         <div className="post-user-info">
           <div className="post-avatar-small">
-            {pic ? (
+           
               <img
                 width="30px"
-                src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${pic}`}
+                src={ pic !== "n/a" &&  pic !== undefined ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${pic}` :  `./no-avatar.svg` }
                 alt="img"
               />
-            ) : null}
+     
           </div>
           <div className="post-name-date">
             <p> creatorname {author}</p>
@@ -78,7 +79,7 @@ const Post = ({ post }) => {
           <p>{text}</p>
         </div>
         <div className="post-body-picture">
-          {picture ? (
+          {picture !== "n/a" && picture !== undefined  ? (
             <img
               width="100px"
               src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${picture}`}
@@ -111,8 +112,7 @@ const Post = ({ post }) => {
         </div> ) :null }
         <button>commentar</button>
       </div>
-      <ReplyNew post={post} />
-      <ReplyList post={post} />
+      {!formReplyEdit ? <ReplyList post={post}  />: <ReplyNew  post={post} /> }
     </div>
   );
 };

@@ -1,9 +1,12 @@
 export const CREATE_POST = "CREATE_POST";
 export const GET_POSTS = "GET_POSTS";
 export const GET_ONEPOST = "GET_ONEPOST";
+export const GET_ONEPOSTEDIT = "GET_ONEPOSTEDIT";
 export const UPDATE_POST = "UPDATE_POST";
 export const DELETE_POST = "DELETE_POST";
 export const CANCEL_POST = "CANCEL_POST";
+export const RESET_POST_SELECT = "RESET_POST_SELECT";
+
 
 export const CREATE_REPLY = "CREATE_POST";
 export const GET_REPLIES = "GET_POST";

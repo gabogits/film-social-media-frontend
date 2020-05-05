@@ -11,7 +11,7 @@ const User = ({user}) => {
   return (
     <li>
       <Link className="user-avatar-medium" to={`/profile/${_id}`}>
-        <img width="30px" src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}`}  />
+        <img width="30px" src={avatar !== "n/a" && avatar !== undefined   ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}` : `./no-avatar.svg`}  />
         <span>{name}  {userScoreTotal}</span>
       </Link>
     </li>

@@ -5,9 +5,8 @@ import UserContext from "./../../context/user/UserContext";
 
 const Login = (props) => {
   const userContext = useContext(UserContext);
-  const {  auth, userAuth } = userContext;
+  const {  auth } = userContext;
   useEffect(() => {
-      userAuth();
     if (auth) {
       props.history.push("/feed");
     }

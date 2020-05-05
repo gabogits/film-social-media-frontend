@@ -21,7 +21,7 @@ const SignupForm = (props) => {
     avatar: "",
   };
   useEffect(() => {
-    console.log("pasa por aca")
+ 
     if (userSelect === null) {
       saveUser(userInitialState);
     } else {
@@ -51,7 +51,7 @@ const SignupForm = (props) => {
     if (userSelect === null) {
       signUpUser(user);
     } else {
-      console.log(user);
+  
       updateUser(user);
     }
 

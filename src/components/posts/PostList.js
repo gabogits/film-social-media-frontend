@@ -13,13 +13,13 @@ const PostList = (creator) => {
  const {newReply} =replyContext;
 
  useEffect(()=>{
-  userAuth();
-
-  getPosts(creator, user)
+  if(user) {
+    getPosts(creator, user)
+  } 
    // eslint-disable-next-line
-
  }, [newReply, userSelect])
- if( posts.lenght === 0 ) return;
+ if( posts.length === 0   ) return null;
+
   return (
     <div>
      

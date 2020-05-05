@@ -3,8 +3,6 @@ import User from "./User";
 import UserContext from "./../../context/user/UserContext"
 
 const UsersList = ({users}) => {
-
-
    if(!users) return null;
   return (
     <div className="UsersList">

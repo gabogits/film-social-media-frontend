@@ -10,26 +10,24 @@ import UserContext from "./../../context/user/UserContext";
 
 const Profile = (props) => {
   const userContext = useContext(UserContext);
-  const { formEdit, auth, user, userAuth, getUserById, userSelect } = userContext;
+  const { formEdit, auth, user, users, userAuth, getUserById, getUsers, userSelect } = userContext;
 
   const query = props.location.pathname.split("/")
   const profile = query[2];
 
 useEffect( () =>{
   userAuth();
-  if (!auth) {
-    props.history.push("/");
-  }
-  if(auth && profile){
+  getUsers();
+  if(profile && users){
       getUserById(profile)
   }
- }, [profile, auth, props.history])
-  if(!auth) return null; 
+ }, [profile])
+   if(!user) return null;
   return (
     <div>
       <h2>Este va ser el Profile</h2>
       <Header></Header>
-      <UsersList />
+      <UsersList users={users} />
       
       {!formEdit ? <ProfileInfo profileInfo={userSelect ? userSelect  : user} />  :  <SignupForm />}
       {!profile || profile === user._id ? <PostNew /> : null }

@@ -1,4 +1,13 @@
-import { CREATE_POST, GET_POSTS, GET_ONEPOST, DELETE_POST, UPDATE_POST, CANCEL_POST } from "../../types";
+import {
+  CREATE_POST,
+  GET_POSTS,
+  GET_ONEPOST,
+  GET_ONEPOSTEDIT,
+  DELETE_POST,
+  UPDATE_POST,
+  RESET_POST_SELECT,
+  CANCEL_POST,
+} from "../../types";
 
 export default (state, action) => {
   switch (action.type) {
@@ -16,25 +25,38 @@ export default (state, action) => {
       return {
         ...state,
         postSelect: action.payload,
+        formPostEdit: false,
+      };
+    case GET_ONEPOSTEDIT:
+      return {
+        ...state,
+        postSelect: action.payload,
         formPostEdit: true,
       };
     case UPDATE_POST:
       return {
         ...state,
+        posts:[],
         post: action.payload,
         formPostEdit: false,
       };
-
-      case CANCEL_POST:
+      case RESET_POST_SELECT:
         return {
           ...state,
+          postSelect: null,
           formPostEdit: false,
         };
-        case DELETE_POST:
-            return {
-              ...state,
-              posts: state.posts.filter((post) => post._id !== action.payload._id )
-            };
+      
+    case CANCEL_POST:
+      return {
+        ...state,
+        formPostEdit: false,
+      };
+    case DELETE_POST:
+      return {
+        ...state,
+        posts: state.posts.filter((post) => post._id !== action.payload._id),
+      };
     default:
       return state;
   }

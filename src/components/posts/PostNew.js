@@ -2,17 +2,19 @@ import React, { useState, useContext, useEffect } from "react";
 import PostContext from "../../context/post/PostContext";
 import UserContext from "../../context/user/UserContext";
 
-const PostNew = () => {
+const PostNew = ({props}) => {
   const postContext = useContext(PostContext);
   const { newPost, postSelect, updatePost, formPostEdit, cancelPost } = postContext;
   const userContext = useContext(UserContext);
-  const {  user } = userContext;
+  const { user, userAuth} = userContext;
+
   const postInitValues = {
     text: "",
     picture: "",
     score: 0,
   };
   useEffect(() => {
+
     if (postSelect === null) {
       savePost(postInitValues);
     } else {
@@ -50,19 +52,21 @@ const PostNew = () => {
       newPost(post);
      
     } else {
-
+  
       updatePost(post);
-   
+      props.history.push(`/post/${post._id}`);
     }
 
     savePost(postInitValues);
   };
-
+  if (!user) return null;
+  const { name, avatar, _id } = user;
   return (
     <div className="post-new">
       <h4>Agrega alguna publicación</h4>
       <div className="post-avatar-medium">
-        <img src="images/1.jpg" alt="img" />
+      <img width="30px" src={avatar !== "n/a" &&  avatar !== undefined  ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}` : `./no-avatar.svg`}  />
+        
       </div>
       <form onSubmit={postFormSubmit}>
         <div className="post-new-content">
@@ -83,60 +87,6 @@ const PostNew = () => {
               onChange={onChangeValue}
             />
           </div>
-        </div>
-        <div className="score-bullets">
-          <ul>
-            <li>
-              <div className="radio-score">
-                <input
-                  type="radio"
-                  value={2}
-                  name="score"
-                  onChange={onChangeValue}
-                ></input>
-              </div>
-            </li>
-            <li>
-              <div className="radio-score">
-                <input
-                  type="radio"
-                  value={4}
-                  name="score"
-                  onChange={onChangeValue}
-                ></input>
-              </div>
-            </li>
-            <li>
-              <div className="radio-score">
-                <input
-                  type="radio"
-                  value={6}
-                  name="score"
-                  onChange={onChangeValue}
-                ></input>
-              </div>
-            </li>
-            <li>
-              <div className="radio-score">
-                <input
-                  type="radio"
-                  value={8}
-                  name="score"
-                  onChange={onChangeValue}
-                ></input>
-              </div>
-            </li>
-            <li>
-              <div className="radio-score">
-                <input
-                  type="radio"
-                  value={10}
-                  name="score"
-                  onChange={onChangeValue}
-                ></input>
-              </div>
-            </li>
-          </ul>
         </div>
         <button
           type="button"

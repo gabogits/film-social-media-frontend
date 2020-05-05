@@ -11,6 +11,7 @@ const Reply = ({reply}) => {
 
   const replyContext = useContext(ReplyContext)
   const {getReply, deleteReply} =replyContext;
+
   return (
     <div className="post-reply">
          {creator === _id ? 
@@ -26,15 +27,15 @@ const Reply = ({reply}) => {
 
 
       <div className="post-reply-avatar-small">
-      <img  width="30px" src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${reply.pic}`}    alt="img" />
+      <img  width="30px" src={pic !== "n/a" && pic !== undefined  ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${pic}`:  `./no-avatar.svg`}    alt="img" />
    
       </div>
       <div className="post-reply-txt">
   
-            <p> nombre{reply.author}</p>
+            <p> nombre{author}</p>
             <p>{registry}</p>
             <p>{text}</p>
-            {picture ? ( <img src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${picture}`}  alt="img"  />): null}
+            {picture   !== "n/a" &&  picture !== undefined ? ( <img src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${picture}`}  alt="img"  />): null}
       </div>
     </div>
   );

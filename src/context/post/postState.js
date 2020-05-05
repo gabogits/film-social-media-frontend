@@ -9,9 +9,11 @@ import {
   CREATE_POST,
   GET_POSTS,
   GET_ONEPOST,
+  GET_ONEPOSTEDIT,
   UPDATE_POST,
   DELETE_POST,
   CANCEL_POST,
+  RESET_POST_SELECT
 } from "../../types";
 
 const PostState = (props) => {
@@ -38,10 +40,12 @@ const PostState = (props) => {
         payload: postItem.data.post,
       });
     } catch (error) {
-      console.log(error);
+
     }
   };
   const getPosts = async (creator, user) => {
+
+
     const posts = await axiosClient.get("/api/post", { params: creator });
 
     const postTree = [];
@@ -72,12 +76,22 @@ const PostState = (props) => {
     });
   };
 
-  const getPost = async (postId) => {
+  const getPost = async (postId, edit) => {
     const postSel = state.posts.find((post) => post._id === postId);
-    dispatch({
-      type: GET_ONEPOST,
-      payload: postSel,
-    });
+
+
+    if(edit) {
+      dispatch({
+        type: GET_ONEPOSTEDIT,
+        payload: postSel,
+      });
+    }else {
+      dispatch({
+        type: GET_ONEPOST,
+        payload: postSel,
+      });
+    }
+  
   };
 
   const updatePost = async (post) => {
@@ -89,7 +103,7 @@ const PostState = (props) => {
         payload: postEdited.data,
       });
     } catch (error) {
-      console.log(error);
+     
     }
   };
   const cancelPost = () => {
@@ -108,6 +122,15 @@ const PostState = (props) => {
       console.log(error);
     }
   };
+  const resetSelectPost = () => {
+    try {
+      dispatch({
+        type: RESET_POST_SELECT,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <PostContext.Provider
@@ -122,6 +145,7 @@ const PostState = (props) => {
         updatePost,
         cancelPost,
         deletePost,
+        resetSelectPost,
       }}
     >
       {props.children}

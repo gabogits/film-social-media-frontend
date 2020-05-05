@@ -25,7 +25,7 @@ const UserState = (props) => {
     users: null,
     formEdit: false,
     userSelect: null,
-    auth: false,
+    auth: null,
     loading: true,
   };
   const [state, dispatch] = useReducer(UserReducer, initialState);
@@ -33,7 +33,7 @@ const UserState = (props) => {
   const signUpUser = async (user) => {
     const userObj = keysAppend(user);
     const userSignUp = await axiosClient.post("/api/user", userObj);
-    console.log(userSignUp);
+   
 
     dispatch({
       type: SIGNUP_USER,
@@ -89,7 +89,7 @@ const UserState = (props) => {
     }
   };
   const userAuth = async () => {
-    const token = await localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     if (token) {
       tokenAuth(token);
     }
@@ -125,7 +125,7 @@ const UserState = (props) => {
     );
     evaluations.push(evaluation);
     user.evaluations = evaluations;
-    console.log(user);
+
 
     delete user.password;
 
@@ -138,7 +138,7 @@ const UserState = (props) => {
     const creatorPost = state.users.find(
       (userItem) => userItem._id === creator
     );
-    console.log(creatorPost);
+
 
     let ranking = creatorPost.ranking.filter(
       (item) => item.post !== evaluation.post
@@ -153,7 +153,7 @@ const UserState = (props) => {
 
     creatorPost.ranking = ranking;
 
-    console.log(creatorPost);
+ 
     delete creatorPost.password;
 
     await axiosClient.post(`/api/user/${creator}`, creatorPost);
