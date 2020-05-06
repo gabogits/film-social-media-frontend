@@ -1,11 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const User = ({ user }) => {
+const User = ({ user, idx }) => {
   const { name, avatar, _id, userScoreTotal } = user;
+
+  console.log(idx)
   return (
     <li>
       <Link className="user-avatar-medium" to={`/profile/${_id}`}>
+        <div className="number-ranking">{idx + 1}</div>
+        <div className="avatar-dinamic">
         <img
           width="30px"
           src={
@@ -14,9 +18,15 @@ const User = ({ user }) => {
               : `./no-avatar.svg`
           }
         />
-        <span>
-          {name} {userScoreTotal}
-        </span>
+        </div>
+        <div className="user-info">
+          
+            <strong className="name-user"> {name}</strong>
+          <small className="score-user">
+            {userScoreTotal}
+          </small>
+        </div>
+        
       </Link>
     </li>
   );

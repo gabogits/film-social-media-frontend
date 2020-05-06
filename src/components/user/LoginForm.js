@@ -12,6 +12,7 @@ const Login = () => {
     password: "",
   });
   const { email, password } = user;
+  const [requerid, saveRequerid] = useState(true);
   const onChangeValue = (e) => {
     saveUser({
       ...user,
@@ -23,8 +24,10 @@ const Login = () => {
     e.preventDefault();
 
     if (email.trim() === "" || password.trim() === "") {
+      saveRequerid(false)
       return;
     }
+    saveRequerid(true)
     userLogin(user);
   };
   return (
@@ -58,6 +61,7 @@ const Login = () => {
         message === "contraseña incorrecta" ? (
           <Error msg={"Usuario o contraseña incorrecta"} />
         ) : null}
+         {!requerid ?  <Error msg={'Faltan campos por llenar'} /> : null}
         <button
           type="submit"
           className="button-primary u-full-width"

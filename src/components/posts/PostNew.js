@@ -67,33 +67,27 @@ const PostNew = ({ props }) => {
     cancelPost();
   };
   if (!user) return null;
-  const { name, avatar} = user;
+  const { name, avatar } = user;
   return (
-    <div className="post-new">
-      <h4>Agrega alguna publicación</h4>
-      <div className="post-avatar-medium">
-        <img
-          width="30px"
-          src={
-            avatar !== "n/a" && avatar !== undefined
-              ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}`
-              : `./no-avatar.svg`
-          }
-        />
-        {name}
+    <div className="post-new box-format">
+      <div className="box-title">
+        <h4>Agrega alguna publicación</h4>
       </div>
+      <div className="new-content">
+        <div className="avatar-medium">
+          <img
+            src={
+              avatar !== "n/a" && avatar !== undefined
+                ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}`
+                : `./no-avatar.svg`
+            }
+          />
+      
+      </div>
+    <div className="new-content-form">
       <form onSubmit={postFormSubmit}>
-        <div className="post-new-content">
-          <textarea
-            placeholder="agrega una publicacion"
-            name="text"
-            value={text}
-            onChange={onChangeValue}
-          ></textarea>
-        </div>
-
-        <div className="post-new-actions">
-          <div className="post-new-addimage">
+        <div className="new-content-textarea textarea-1">
+        <div className="add-image">
             <input
               type="file"
               className="u-full-width"
@@ -101,6 +95,16 @@ const PostNew = ({ props }) => {
               onChange={onChangeValue}
             />
           </div>
+          <textarea
+            placeholder={`agrega una publicacion ${name}`}
+            name="text"
+            value={text}
+            onChange={onChangeValue}
+          ></textarea>
+        </div>
+
+        <div className="new-content-actions">
+          
         </div>
         {formPostEdit ? (
           <button
@@ -112,14 +116,18 @@ const PostNew = ({ props }) => {
             cancelar
           </button>
         ) : null}
-        <button
-          type="submit"
-          className="button-primary u-full-width"
-          value="Publicar"
-        >
-          Publicar
-        </button>
+        {text.trim() !== "" ? (
+          <button
+            type="submit"
+            className="button-primary u-full-width"
+            value="Publicar"
+          >
+            Publicar
+          </button>
+        ) : null}
       </form>
+      </div>
+      </div>
     </div>
   );
 };

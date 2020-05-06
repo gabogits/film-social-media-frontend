@@ -59,7 +59,6 @@ const UserState = (props) => {
 
   const getUsers = async () => {
     const users = await axiosClient.get("/api/user");
-    console.log(users);
     dispatch({
       type: GET_USERS,
       payload: users.data,

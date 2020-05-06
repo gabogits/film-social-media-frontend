@@ -24,13 +24,17 @@ const Feed = () => {
 
   if (!user || !users) return null;
   return (
-    <div>
+    <main>
       <Header></Header>
-      <ScoreList users={users} />
-      <UsersList users={users} />
-      <PostNew />
-      <PostList></PostList>
-    </div>
+      <div className="sidebar">
+        <ScoreList users={users} />
+        <UsersList users={users} />
+      </div>
+      <div className="content-center">
+        <PostNew />
+        <PostList></PostList>
+      </div>
+    </main>
   );
 };
 

@@ -4,19 +4,18 @@ import Reply from "./../replies/Reply";
 const ReplyList = ({ post }) => {
   const { replies } = post;
 
-  if (!replies) return null;
+  if (!replies || replies.length === 0 ) return null;
   return (
-    <div>
-      {replies.length === 0 ? "no ha post" : null}
-      <div className="post-replies">
-        <div className="post-replies-content">
-          <p>comentariors {replies.length}</p>
+    
+      <div className="box-replies">
+        <div className="box-replies-content">
+
           {replies.map((reply) => (
             <Reply key={reply._id} reply={reply} />
           ))}
         </div>
       </div>
-    </div>
+
   );
 };
 

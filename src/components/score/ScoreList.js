@@ -17,13 +17,17 @@ const RankingList = ({ users }) => {
 
   return (
     <Fragment>
-      <h2>Usuarios</h2>
-      <div className="ranking">
+    <div className="box-title">
+        <h4>  Ranking</h4>
+      </div>
+      <div className="ranking-list">
+        <ul>
         {users
           .sort((a, b) => b.userScoreTotal - a.userScoreTotal)
-          .map((user) => (
-            <User key={user._id} user={user} />
+          .map((user, idx) => (
+            <User key={user._id} user={user} idx={idx} />
           ))}
+          </ul>
       </div>
     </Fragment>
   );

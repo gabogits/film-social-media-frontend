@@ -30,6 +30,8 @@ const SignupForm = () => {
     }
   }, [userSelect]);
   const [user, saveUser] = useState(userInitialState);
+  const [requerid, saveRequerid] = useState(true);
+
   const { name, email, description, password, avatar } = user;
 
   const onChangeValue = (e) => {
@@ -43,10 +45,13 @@ const SignupForm = () => {
   const SigupFormSubmit = (e) => {
     e.preventDefault();
     if (name.trim() === "" || email.trim() === "") {
+      saveRequerid(false)
       return;
+    
     }
     if (!userSelect) {
       if (password.trim() === "") {
+        saveRequerid(false)
         return;
       }
     }
@@ -56,7 +61,7 @@ const SignupForm = () => {
     } else {
       updateUser(user);
     }
-
+    saveRequerid(true)
     saveUser(userInitialState);
   };
 
@@ -121,7 +126,7 @@ const SignupForm = () => {
             onChange={onChangeValue}
           />
         </div>
-
+         {!requerid ?  <Error msg={'Faltan campos por llenar'} /> : null}
         <button
           type="submit"
           className="button-primary u-full-width"
@@ -138,7 +143,7 @@ const SignupForm = () => {
             Cancelar
           </button>
         ) : null}
-
+  
         <Link to={"/login"}>Ya tienes cuenta, ingresa aqui</Link>
       </form>
     </section>

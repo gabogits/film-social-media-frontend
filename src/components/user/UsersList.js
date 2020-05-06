@@ -5,9 +5,10 @@ const UsersList = ({ users }) => {
   if (!users) return null;
   return (
     <div className="UsersList">
-      <h4>
-        Usuarios <strong>({users.length})</strong>
-      </h4>
+
+      <div className="box-title">
+        <h4>  Usuarios <strong>({users.length})</strong></h4>
+      </div>
       <form>
         <ul>
           {users.map((user) => (

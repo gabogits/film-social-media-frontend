@@ -1,10 +1,13 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, Fragment } from "react";
+import { format, register } from "timeago.js";
 import ReplyList from "../replies/ReplyList";
 import ReplyNew from "../replies/ReplyNew";
 import PostContext from "./../../context/post/PostContext";
 import ReplyContext from "./../../context/reply/ReplyContext";
 import UserContext from "../../context/user/UserContext";
 import { Link } from "react-router-dom";
+import { localeFunc } from "./../../helpers/";
+register("es_ES", localeFunc);
 
 const Post = ({ post }) => {
   const postContext = useContext(PostContext);
@@ -16,7 +19,7 @@ const Post = ({ post }) => {
   const userContext = useContext(UserContext);
   const { user, setEvaluations } = userContext;
 
-  const { text, picture, creator, registry, author, pic, _id, score } = post;
+  const { text, picture, creator, registry, author, pic, _id, score, replies } = post;
   const rankingItems = [
     { id: 1, value: 2 },
     { id: 2, value: 4 },
@@ -35,6 +38,7 @@ const Post = ({ post }) => {
   }, []);
 
   const [starts, setStarts] = useState(scoreInit);
+  const [menuOptions, saveMenuOptions] = useState(false);
 
   const onClickStar = (value, postId, user, creator) => {
     setStarts(value);
@@ -46,22 +50,40 @@ const Post = ({ post }) => {
     setEvaluations(evaluation, user, creator);
   };
 
+  const showMenuOptions = () => {
+    saveMenuOptions(!menuOptions);
+  };
   if (!post || !user) return null;
   return (
-    <div className="post">
-      <div className="post-head">
-        {creator === user._id ? (
-          <div className="menu-opciones-item">
-            <Link to={`/post/edit/${_id}`}>editar post</Link>
-
-            <button onClick={() => deletePost(_id)}>Borrar post</button>
+    <div className="post box-format">
+      <div className="box-head">
+        <div className="menu-options">
+          <div className="menu-options-show" onClick={() => showMenuOptions()}>
+            mostrar menu
           </div>
-        ) : null}{" "}
-        ;<Link to={`/post/${_id}`}>Obtener post</Link>
-        <div className="post-user-info">
-          <div className="post-avatar-small">
+          {menuOptions ? (
+            <ul>
+              {creator === user._id ? (
+                <Fragment>
+                  <li>
+                    <Link to={`/post/edit/${_id}`}>editar post</Link>
+                  </li>
+                  <li>
+                    <a href="#!" onClick={() => deletePost(_id)}>
+                      Borrar post
+                    </a>
+                  </li>
+                </Fragment>
+              ) : null}
+              <li>
+                <Link to={`/post/${_id}`}>Obtener post</Link>
+              </li>
+            </ul>
+          ) : null}
+        </div>
+        <div className="box-info">
+          <div className="avatar-small">
             <img
-              width="30px"
               src={
                 pic !== "n/a" && pic !== undefined
                   ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${pic}`
@@ -70,27 +92,26 @@ const Post = ({ post }) => {
               alt="img"
             />
           </div>
-          <div className="post-name-date">
-            <p> creatorname {author}</p>
-            <p>{registry}</p>
+          <div className="box-name-date">
+            <strong>{author}</strong>
+            <span> {format(registry, "es_ES")}</span>
           </div>
         </div>
       </div>
-      <div className="post-body">
-        <div className="post-body-txt">
+      <div className="box-body">
+        <div className="box-body-txt">
           <p>{text}</p>
         </div>
-        <div className="post-body-picture">
+        <div className="box-body-picture">
           {picture !== "n/a" && picture !== undefined ? (
             <img
-              width="100px"
               src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${picture}`}
               alt="img"
             />
           ) : null}
         </div>
       </div>
-      <div className="post-actions">
+      <div className="box-body-actions">
         {creator !== user._id ? (
           <div className="score-bullets">
             <div className="ranking">
@@ -108,7 +129,13 @@ const Post = ({ post }) => {
             </div>
           </div>
         ) : null}
-        <button className="mobile-element">commentar</button>
+        <Link to={`/post/${_id}`} className="mobile-element">Comentar</Link>
+
+        {replies.length > 0 ? (
+          <Link to={`/post/${_id}`} className="number-comments">
+            <strong>{replies.length}</strong> comentarios
+          </Link>
+        ) : null}
       </div>
       <ReplyList post={post} />
 

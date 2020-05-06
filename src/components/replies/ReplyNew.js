@@ -108,6 +108,7 @@ const ReplyNew = ({ post }) => {
               Cancelar
             </button>
           ) : null}
+         {text.trim() !== "" ?
           <button
             type="submit"
             className="button-primary u-full-width"
@@ -115,6 +116,8 @@ const ReplyNew = ({ post }) => {
           >
             Publicar
           </button>
+          : null 
+          }
         </form>
       </div>
     </div>
