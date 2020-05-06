@@ -13,13 +13,11 @@ import {
   UPDATE_POST,
   DELETE_POST,
   CANCEL_POST,
-  RESET_POST_SELECT
+  RESET_POST_SELECT,
+  RESET_POSTS,
 } from "../../types";
 
 const PostState = (props) => {
-  const userContext = useContext(UserContext);
-  const { user } = userContext;
-
   const initialState = {
     posts: [],
     post: null,
@@ -39,13 +37,9 @@ const PostState = (props) => {
         type: CREATE_POST,
         payload: postItem.data.post,
       });
-    } catch (error) {
-
-    }
+    } catch (error) {}
   };
   const getPosts = async (creator, user) => {
-
-
     const posts = await axiosClient.get("/api/post", { params: creator });
 
     const postTree = [];
@@ -56,20 +50,15 @@ const PostState = (props) => {
         params: { post },
       });
       postItem.replies = repliesPost.data;
-      const evaluation =  user.evaluations.find( (item) => item.post == post)
+      const evaluation = user.evaluations.find((item) => item.post == post);
 
-      if(evaluation) {
+      if (evaluation) {
         postItem.score = evaluation.score;
       }
-     
+
       postTree.push(postItem);
     }
-    /*
-    user.evaluations.find(
-      (item) => item.post == post
-    );
-    */
-    
+
     dispatch({
       type: GET_POSTS,
       payload: posts.data,
@@ -79,19 +68,17 @@ const PostState = (props) => {
   const getPost = async (postId, edit) => {
     const postSel = state.posts.find((post) => post._id === postId);
 
-
-    if(edit) {
+    if (edit) {
       dispatch({
         type: GET_ONEPOSTEDIT,
         payload: postSel,
       });
-    }else {
+    } else {
       dispatch({
         type: GET_ONEPOST,
         payload: postSel,
       });
     }
-  
   };
 
   const updatePost = async (post) => {
@@ -102,9 +89,7 @@ const PostState = (props) => {
         type: UPDATE_POST,
         payload: postEdited.data,
       });
-    } catch (error) {
-     
-    }
+    } catch (error) {}
   };
   const cancelPost = () => {
     dispatch({
@@ -130,7 +115,16 @@ const PostState = (props) => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
+  const resetPosts = () => {
+    try {
+      dispatch({
+        type: RESET_POSTS,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <PostContext.Provider
@@ -146,6 +140,7 @@ const PostState = (props) => {
         cancelPost,
         deletePost,
         resetSelectPost,
+        resetPosts,
       }}
     >
       {props.children}

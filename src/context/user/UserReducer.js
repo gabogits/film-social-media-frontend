@@ -8,7 +8,9 @@ import {
   LOGIN_USER,
   EDIT_USER,
   SIGN_OUT,
-  LOGIN_ERROR
+  LOGIN_ERROR,
+  SIGNUP_ERROR,
+  HIDE_ERROR,
 } from "../../types";
 
 export default (state, action) => {
@@ -17,7 +19,7 @@ export default (state, action) => {
       localStorage.setItem("token", action.payload.token);
       return {
         ...state,
-        users: [action.payload, ...state.users],
+        users: [...state.users, action.payload.newUser],
         auth: true,
         loading: false,
       };
@@ -28,7 +30,6 @@ export default (state, action) => {
       };
     case GET_USER:
       return {
-      
         ...state,
         token: localStorage.getItem("token"),
         user: action.payload,
@@ -66,21 +67,26 @@ export default (state, action) => {
         auth: true,
         loading: false,
       };
-      case LOGIN_ERROR:
-      case SIGN_OUT:
-
-        localStorage.removeItem("token");
-        localStorage.clear();
-        return {
-          ...state,
-          user: null,
-          token:null,
-          userSelect:null,
-          users:null,        
-          auth: false,
-          loading: false,
-        };
-      
+    case LOGIN_ERROR:
+    case SIGN_OUT:
+    case SIGNUP_ERROR:
+      localStorage.removeItem("token");
+      localStorage.clear();
+      return {
+        ...state,
+        user: null,
+        token: null,
+        userSelect: null,
+        users: null,
+        auth: false,
+        loading: false,
+        message: action.payload,
+      };
+    case HIDE_ERROR:
+      return {
+        ...state,
+        message: null,
+      };
     default:
       return state;
   }

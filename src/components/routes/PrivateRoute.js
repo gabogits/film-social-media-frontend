@@ -1,22 +1,22 @@
-import React, {useContext, useEffect} from 'react';
-import {Route, Redirect} from "react-router-dom";
-import UserContext from "../../context/user/UserContext"
+import React, { useContext, useEffect } from "react";
+import { Route, Redirect } from "react-router-dom";
+import UserContext from "../../context/user/UserContext";
 
-const PrivateRoute = ({component: Component, ...props}) => {
-    const userContext = useContext(UserContext);
-    const {auth, loading, userAuth} = userContext;
+const PrivateRoute = ({ component: Component, ...props }) => {
+  const userContext = useContext(UserContext);
+  const { auth, loading, userAuth } = userContext;
 
-    useEffect(() => {
-        userAuth()
-    }, []);
+  useEffect(() => {
+    userAuth();
+  }, []);
 
-    return (
-        <Route 
-        {...props}
-         render={(props) =>
-         !auth && !loading ? <Redirect to="/"  />: <Component {...props} /> 
-        } 
-        />
-    );
+  return (
+    <Route
+      {...props}
+      render={(props) =>
+        !auth && !loading ? <Redirect to="/" /> : <Component {...props} />
+      }
+    />
+  );
 };
 export default PrivateRoute;

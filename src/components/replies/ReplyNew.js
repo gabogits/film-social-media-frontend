@@ -1,15 +1,24 @@
 import React, { useState, useContext, useEffect } from "react";
-import ReplyContext from "../../context/reply/ReplyContext";
 import UserContext from "../../context/user/UserContext";
+import PostContext from "../../context/post/PostContext";
+import ReplyContext from "../../context/reply/ReplyContext";
+import { useLocation } from "react-router-dom";
 
 const ReplyNew = ({ post }) => {
+  let location = useLocation();
   const replyContext = useContext(ReplyContext);
-  const { newReply, selectReply, updateReply, cancelEdit } = replyContext;
+  const {
+    newReply,
+    selectReply,
+    updateReply,
+    cancelEdit,
+    formReplyEdit,
+  } = replyContext;
   const userContext = useContext(UserContext);
-  const {  user } = userContext;
-
-  const {name, avatar, _id} = user;
-  
+  const { user } = userContext;
+  const postContext = useContext(PostContext);
+  const { resetPosts } = postContext;
+  const { avatar } = user;
 
   const replyinitialState = {
     text: "",
@@ -19,7 +28,9 @@ const ReplyNew = ({ post }) => {
     if (selectReply === null) {
       saveReply(replyinitialState);
     } else {
-      saveReply(selectReply);
+      if (!post) {
+        saveReply(selectReply);
+      }
     }
   }, [selectReply]);
   const [reply, saveReply] = useState(replyinitialState);
@@ -41,19 +52,24 @@ const ReplyNew = ({ post }) => {
       return;
     }
 
-
     if (selectReply === null) {
       reply.post = post._id;
       reply.author = user.name;
       reply.pic = user.avatar;
       reply.creator = user._id;
       newReply(reply);
-     
-    }else {
+    } else {
       updateReply(reply);
     }
 
-    saveReply(replyinitialState)
+    const query = location.pathname.split("/");
+    const postItem = query[1];
+
+    if (postItem === "post") {
+      resetPosts();
+    }
+
+    saveReply(replyinitialState);
   };
 
   return (
@@ -61,7 +77,10 @@ const ReplyNew = ({ post }) => {
       <div className="post-add-repply-inner">
         <form onSubmit={replyFormSubmit}>
           <div className="post-reply-avatar-small">
-          <img width="30px" src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}`}  />
+            <img
+              width="30px"
+              src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}`}
+            />
           </div>
           <div className="post-reply-input">
             <textarea
@@ -79,19 +98,20 @@ const ReplyNew = ({ post }) => {
               onChange={onChangeValue}
             />
           </div>
-          <button
-            type="button"
-            className="button-primary u-full-width"
-            value="Cancelar"
-            onClick={cancelEdit}
-          >
-           Cancelar
-          </button>
+          {formReplyEdit ? (
+            <button
+              type="button"
+              className="button-primary u-full-width"
+              value="Cancelar"
+              onClick={cancelEdit}
+            >
+              Cancelar
+            </button>
+          ) : null}
           <button
             type="submit"
             className="button-primary u-full-width"
             value="Publicar"
-           
           >
             Publicar
           </button>

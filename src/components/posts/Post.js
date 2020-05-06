@@ -8,10 +8,10 @@ import { Link } from "react-router-dom";
 
 const Post = ({ post }) => {
   const postContext = useContext(PostContext);
-  const { getPost, deletePost } = postContext;
+  const { deletePost } = postContext;
 
   const replyContext = useContext(ReplyContext);
-  const { formReplyEdit } = replyContext;
+  const { formReplyEdit, selectReply } = replyContext;
 
   const userContext = useContext(UserContext);
   const { user, setEvaluations } = userContext;
@@ -53,20 +53,22 @@ const Post = ({ post }) => {
         {creator === user._id ? (
           <div className="menu-opciones-item">
             <Link to={`/post/edit/${_id}`}>editar post</Link>
-            
+
             <button onClick={() => deletePost(_id)}>Borrar post</button>
           </div>
-        ) : null} ;
-        <Link to={`/post/${_id}`}>Obtener post</Link>
+        ) : null}{" "}
+        ;<Link to={`/post/${_id}`}>Obtener post</Link>
         <div className="post-user-info">
           <div className="post-avatar-small">
-           
-              <img
-                width="30px"
-                src={ pic !== "n/a" &&  pic !== undefined ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${pic}` :  `./no-avatar.svg` }
-                alt="img"
-              />
-     
+            <img
+              width="30px"
+              src={
+                pic !== "n/a" && pic !== undefined
+                  ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${pic}`
+                  : `./no-avatar.svg`
+              }
+              alt="img"
+            />
           </div>
           <div className="post-name-date">
             <p> creatorname {author}</p>
@@ -79,7 +81,7 @@ const Post = ({ post }) => {
           <p>{text}</p>
         </div>
         <div className="post-body-picture">
-          {picture !== "n/a" && picture !== undefined  ? (
+          {picture !== "n/a" && picture !== undefined ? (
             <img
               width="100px"
               src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${picture}`}
@@ -88,31 +90,31 @@ const Post = ({ post }) => {
           ) : null}
         </div>
       </div>
-      <div className="post-rsm-feed">
-        <p>
-          <strong>2</strong> comentarios
-        </p>
-      </div>
       <div className="post-actions">
-        {creator !==  user._id ? (
-        <div className="score-bullets">
-          <div className="ranking">
-            {rankingItems.map((item) => (
-              <div
-                className={`radio-score ${
-                  item.id <= starts / 2 ? " activeScore" : null
-                }`}
-                key={item.id}
-                onClick={() => onClickStar(item.value, _id, user, creator)}
-              >
-                {item.value}
-              </div>
-            ))}
+        {creator !== user._id ? (
+          <div className="score-bullets">
+            <div className="ranking">
+              {rankingItems.map((item) => (
+                <div
+                  className={`radio-score ${
+                    item.id <= starts / 2 ? " activeScore" : null
+                  }`}
+                  key={item.id}
+                  onClick={() => onClickStar(item.value, _id, user, creator)}
+                >
+                  {item.value}
+                </div>
+              ))}
+            </div>
           </div>
-        </div> ) :null }
-        <button>commentar</button>
+        ) : null}
+        <button className="mobile-element">commentar</button>
       </div>
-      {!formReplyEdit ? <ReplyList post={post}  />: <ReplyNew  post={post} /> }
+      <ReplyList post={post} />
+
+      {formReplyEdit && _id === selectReply.post ? null : (
+        <ReplyNew post={post} />
+      )}
     </div>
   );
 };

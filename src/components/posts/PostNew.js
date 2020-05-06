@@ -2,11 +2,17 @@ import React, { useState, useContext, useEffect } from "react";
 import PostContext from "../../context/post/PostContext";
 import UserContext from "../../context/user/UserContext";
 
-const PostNew = ({props}) => {
+const PostNew = ({ props }) => {
   const postContext = useContext(PostContext);
-  const { newPost, postSelect, updatePost, formPostEdit, cancelPost } = postContext;
+  const {
+    newPost,
+    postSelect,
+    updatePost,
+    formPostEdit,
+    cancelPost,
+  } = postContext;
   const userContext = useContext(UserContext);
-  const { user, userAuth} = userContext;
+  const { user } = userContext;
 
   const postInitValues = {
     text: "",
@@ -14,7 +20,6 @@ const PostNew = ({props}) => {
     score: 0,
   };
   useEffect(() => {
-
     if (postSelect === null) {
       savePost(postInitValues);
     } else {
@@ -27,8 +32,6 @@ const PostNew = ({props}) => {
   const { text, score } = post;
 
   const onChangeValue = (e) => {
-
-
     savePost({
       ...post,
       [e.target.name]:
@@ -50,23 +53,34 @@ const PostNew = ({props}) => {
       post.author = user.name;
       post.pic = user.avatar;
       newPost(post);
-     
     } else {
-  
       updatePost(post);
       props.history.push(`/post/${post._id}`);
     }
 
     savePost(postInitValues);
   };
+
+  const cancelEdit = (e) => {
+    props.history.push(`/post/${post._id}`);
+    e.preventDefault();
+    cancelPost();
+  };
   if (!user) return null;
-  const { name, avatar, _id } = user;
+  const { name, avatar} = user;
   return (
     <div className="post-new">
       <h4>Agrega alguna publicación</h4>
       <div className="post-avatar-medium">
-      <img width="30px" src={avatar !== "n/a" &&  avatar !== undefined  ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}` : `./no-avatar.svg`}  />
-        
+        <img
+          width="30px"
+          src={
+            avatar !== "n/a" && avatar !== undefined
+              ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}`
+              : `./no-avatar.svg`
+          }
+        />
+        {name}
       </div>
       <form onSubmit={postFormSubmit}>
         <div className="post-new-content">
@@ -88,14 +102,16 @@ const PostNew = ({props}) => {
             />
           </div>
         </div>
-        <button
-          type="button"
-          className="button-primary u-full-width"
-          value="cancelar"
-          onClick = {cancelPost}
-        >
-          cancelar
-        </button>
+        {formPostEdit ? (
+          <button
+            type="button"
+            className="button-primary u-full-width"
+            value="cancelar"
+            onClick={cancelEdit}
+          >
+            cancelar
+          </button>
+        ) : null}
         <button
           type="submit"
           className="button-primary u-full-width"

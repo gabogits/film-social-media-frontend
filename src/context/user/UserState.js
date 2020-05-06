@@ -1,4 +1,4 @@
-import React, { useReducer, useContext } from "react";
+import React, { useReducer } from "react";
 import UserContext from "./UserContext";
 import UserReducer from "./UserReducer";
 import { keysAppend } from "../../helpers";
@@ -15,6 +15,8 @@ import {
   SIGN_OUT,
   LOGIN_USER,
   LOGIN_ERROR,
+  SIGNUP_ERROR,
+  HIDE_ERROR,
 } from "./../../types/";
 import axiosClient from "../../config/axios";
 
@@ -22,28 +24,42 @@ const UserState = (props) => {
   const initialState = {
     token: null,
     user: null,
-    users: null,
+    users: [],
     formEdit: false,
     userSelect: null,
     auth: null,
     loading: true,
+    message: null,
   };
   const [state, dispatch] = useReducer(UserReducer, initialState);
 
   const signUpUser = async (user) => {
     const userObj = keysAppend(user);
-    const userSignUp = await axiosClient.post("/api/user", userObj);
-   
+    try {
+      const userSignUp = await axiosClient.post("/api/user", userObj);
 
-    dispatch({
-      type: SIGNUP_USER,
-      payload: userSignUp.data.newUser,
-    });
-    userAuth();
+      dispatch({
+        type: SIGNUP_USER,
+        payload: userSignUp.data,
+      });
+      userAuth();
+    } catch (error) {
+      dispatch({
+        type: SIGNUP_ERROR,
+        payload: error.response.data.msg,
+      });
+
+      setTimeout(() => {
+        dispatch({
+          type: HIDE_ERROR,
+        });
+      }, 5000);
+    }
   };
 
   const getUsers = async () => {
     const users = await axiosClient.get("/api/user");
+    console.log(users);
     dispatch({
       type: GET_USERS,
       payload: users.data,
@@ -76,16 +92,25 @@ const UserState = (props) => {
   };
 
   const userLogin = async (user) => {
-    const userLog = await axiosClient.post("/api/auth", user);
-
+    console.log(user);
     try {
+      const userLog = await axiosClient.post("/api/auth", user);
       dispatch({
         type: LOGIN_USER,
         payload: userLog.data,
       });
       userAuth();
     } catch (error) {
-      console.log(error);
+      dispatch({
+        type: SIGNUP_ERROR,
+        payload: error.response.data.msg,
+      });
+
+      setTimeout(() => {
+        dispatch({
+          type: HIDE_ERROR,
+        });
+      }, 5000);
     }
   };
   const userAuth = async () => {
@@ -126,7 +151,6 @@ const UserState = (props) => {
     evaluations.push(evaluation);
     user.evaluations = evaluations;
 
-
     delete user.password;
 
     const userEdit = await axiosClient.post(`/api/user/${user._id}`, user);
@@ -138,7 +162,6 @@ const UserState = (props) => {
     const creatorPost = state.users.find(
       (userItem) => userItem._id === creator
     );
-
 
     let ranking = creatorPost.ranking.filter(
       (item) => item.post !== evaluation.post
@@ -153,7 +176,6 @@ const UserState = (props) => {
 
     creatorPost.ranking = ranking;
 
- 
     delete creatorPost.password;
 
     await axiosClient.post(`/api/user/${creator}`, creatorPost);
@@ -169,6 +191,7 @@ const UserState = (props) => {
         userSelect: state.userSelect,
         auth: state.auth,
         loading: state.loading,
+        message: state.message,
         signUpUser,
         userLogin,
         getUsers,

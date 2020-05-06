@@ -6,7 +6,7 @@ export const UPDATE_POST = "UPDATE_POST";
 export const DELETE_POST = "DELETE_POST";
 export const CANCEL_POST = "CANCEL_POST";
 export const RESET_POST_SELECT = "RESET_POST_SELECT";
-
+export const RESET_POSTS = "RESET_POSTS";
 
 export const CREATE_REPLY = "CREATE_POST";
 export const GET_REPLIES = "GET_POST";
@@ -27,4 +27,5 @@ export const LOGIN_USER = "LOGIN_USER";
 export const SIGN_OUT = "SIGN_OUT";
 
 export const LOGIN_ERROR = "LOGIN_ERROR";
-
+export const SIGNUP_ERROR = "SIGNUP_ERROR";
+export const HIDE_ERROR = "HIDE_ERROR";

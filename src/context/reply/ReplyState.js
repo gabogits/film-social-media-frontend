@@ -1,7 +1,6 @@
 import React, { useReducer } from "react";
 import {
   CREATE_REPLY,
-  GET_REPLIES,
   GET_ONEREPLY,
   UPDATE_REPLY,
   DELETE_REPLY,
@@ -10,7 +9,7 @@ import {
 import ReplyContext from "./ReplyContext";
 import ReplyReducer from "./ReplyReducer";
 import axiosClient from "../../config/axios";
-import {keysAppend } from "../../helpers/";
+import { keysAppend } from "../../helpers/";
 
 const ReplyState = (props) => {
   const initialState = {
@@ -23,11 +22,10 @@ const ReplyState = (props) => {
   const [state, dispatch] = useReducer(ReplyReducer, initialState);
 
   const newReply = async (reply) => {
-
     const replyObj = keysAppend(reply);
- 
+
     const replyItem = await axiosClient.post("api/reply", replyObj);
- 
+
     try {
       dispatch({
         type: CREATE_REPLY,
@@ -38,19 +36,7 @@ const ReplyState = (props) => {
     }
   };
 
-  const getReplies = async (post) => {
-
-    /*
-    const repliesPost = await  axiosClient.get("api/reply", {params: {post}});
-
-   // const repliesPost = await axiosClient.get("api/reply");
-
-    dispatch({
-      type: GET_REPLIES,
-      payload: repliesPost.data,
-    });
-    */
-  };
+  const getReplies = async (post) => {};
 
   const getReply = (reply) => {
     dispatch({
@@ -61,7 +47,10 @@ const ReplyState = (props) => {
   const updateReply = async (reply) => {
     const replyObj = keysAppend(reply);
 
-    const replyEdit = await axiosClient.post(`api/reply/${reply._id}`, replyObj);
+    const replyEdit = await axiosClient.post(
+      `api/reply/${reply._id}`,
+      replyObj
+    );
 
     dispatch({
       type: UPDATE_REPLY,
@@ -72,7 +61,7 @@ const ReplyState = (props) => {
     dispatch({
       type: CANCEL_EDITREPLY,
     });
-  }
+  };
   const deleteReply = async (reply) => {
     const replyDelete = await axiosClient.delete(`api/reply/${reply._id}`);
     try {
@@ -95,7 +84,7 @@ const ReplyState = (props) => {
         getReply,
         updateReply,
         deleteReply,
-        cancelEdit
+        cancelEdit,
       }}
     >
       {props.children}

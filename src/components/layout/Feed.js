@@ -8,32 +8,27 @@ import UserContext from "../../context/user/UserContext";
 import PostContext from "../../context/post/PostContext";
 import ReplyContext from "../../context/reply/ReplyContext";
 
-
-
-const Feed = (props) => {
-
+const Feed = () => {
   const userContext = useContext(UserContext);
-  const { userAuth, user, loading, users, getUsers, userSelect, auth } = userContext;
+  const { userAuth, user, users, getUsers, userSelect, auth } = userContext;
   const postContext = useContext(PostContext);
-  const {posts, getPosts, post, resetSelectPost} = postContext;
-  const replyContext = useContext(ReplyContext)
-  const {newReply} =replyContext;
+  const { resetSelectPost } = postContext;
+  const replyContext = useContext(ReplyContext);
+  const { newReply } = replyContext;
   useEffect(() => {
- 
     userAuth();
     getUsers();
-    resetSelectPost()
-      // eslint-disable-next-line
-  }, [ newReply, userSelect, auth]);
+    resetSelectPost();
+    // eslint-disable-next-line
+  }, [newReply, userSelect, auth]);
 
-  // {formPostEdit ? <PostNew /> : <PostList></PostList> }
-  if(!user) return null;
+  if (!user || !users) return null;
   return (
     <div>
       <Header></Header>
       <ScoreList users={users} />
       <UsersList users={users} />
-      <PostNew  />
+      <PostNew />
       <PostList></PostList>
     </div>
   );

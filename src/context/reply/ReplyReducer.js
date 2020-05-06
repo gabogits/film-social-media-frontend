@@ -35,16 +35,20 @@ export default (state, action) => {
         ...state,
         reply: action.payload,
         formReplyEdit: false,
+        selectReply: null,
       };
     case DELETE_REPLY:
       return {
         ...state,
-        replies: state.replies.filter(reply => reply._id !== action.payload._id)
+        replies: state.replies.filter(
+          (reply) => reply._id !== action.payload._id
+        ),
       };
     case CANCEL_EDITREPLY:
       return {
         ...state,
         formReplyEdit: false,
+        selectReply: null,
       };
     default:
       return state;

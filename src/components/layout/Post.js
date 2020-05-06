@@ -17,26 +17,27 @@ const Post = (props) => {
   useEffect(() => {
     userAuth();
     if (posts.length === 0) {
-   
-        if(user) {
-            getPosts(null, user);
-        }
+      if (user) {
+        getPosts(null, user);
+      }
     }
-    
-    if (postItem === "edit" ) {
+
+    if (postItem === "edit") {
       getPost(query[3], true);
-    }else {
+    } else {
       getPost(postItem);
-      
     }
-    
   }, [postItem, posts, auth, postSelect]);
 
   if (!posts || !postSelect || !user) return null;
   return (
     <div>
       <Header></Header>
-      {!formPostEdit ? <PostItem  post={postSelect}  /> : <PostNew props= {props}  />}
+      {!formPostEdit ? (
+        <PostItem post={postSelect} />
+      ) : (
+        <PostNew props={props} />
+      )}
     </div>
   );
 };

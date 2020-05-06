@@ -10,7 +10,7 @@ import UserContext from "./../../context/user/UserContext";
 
 const Profile = (props) => {
   const userContext = useContext(UserContext);
-  const { formEdit, auth, user, users, userAuth, getUserById, getUsers, userSelect } = userContext;
+  const { formEdit, user, users, userAuth, getUserById, getUsers, userSelect } = userContext;
 
   const query = props.location.pathname.split("/")
   const profile = query[2];
@@ -36,7 +36,4 @@ useEffect( () =>{
     </div>
   );
 };
-/*
-      <PostList />
-      */
 export default Profile;

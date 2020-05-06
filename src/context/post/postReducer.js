@@ -7,6 +7,7 @@ import {
   UPDATE_POST,
   RESET_POST_SELECT,
   CANCEL_POST,
+  RESET_POSTS,
 } from "../../types";
 
 export default (state, action) => {
@@ -36,21 +37,28 @@ export default (state, action) => {
     case UPDATE_POST:
       return {
         ...state,
-        posts:[],
+        posts: [],
         post: action.payload,
         formPostEdit: false,
+        postSelect: null,
       };
-      case RESET_POST_SELECT:
-        return {
-          ...state,
-          postSelect: null,
-          formPostEdit: false,
-        };
-      
+    case RESET_POST_SELECT:
+      return {
+        ...state,
+        postSelect: null,
+        formPostEdit: false,
+      };
+    case RESET_POSTS:
+      return {
+        ...state,
+        posts: [],
+      };
+
     case CANCEL_POST:
       return {
         ...state,
         formPostEdit: false,
+        postSelect: null,
       };
     case DELETE_POST:
       return {

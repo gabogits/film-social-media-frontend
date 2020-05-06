@@ -1,13 +1,13 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-
+import Error from "../templates/Error";
 import UserContext from "./../../context/user/UserContext";
 
 const Login = () => {
   const userContext = useContext(UserContext);
-  const { userLogin } = userContext;
-  
-  const [user,  saveUser] = useState({
+  const { userLogin, message } = userContext;
+
+  const [user, saveUser] = useState({
     email: "",
     password: "",
   });
@@ -23,14 +23,10 @@ const Login = () => {
     e.preventDefault();
 
     if (email.trim() === "" || password.trim() === "") {
-
       return;
     }
-    userLogin(user)
-  
-
+    userLogin(user);
   };
-
   return (
     <section className="section-format">
       <form onSubmit={loginFormSubmit}>
@@ -58,7 +54,10 @@ const Login = () => {
             onChange={onChangeValue}
           />
         </div>
-
+        {message === "el usuario no existe" ||
+        message === "contraseña incorrecta" ? (
+          <Error msg={"Usuario o contraseña incorrecta"} />
+        ) : null}
         <button
           type="submit"
           className="button-primary u-full-width"
@@ -66,10 +65,6 @@ const Login = () => {
         >
           enviar
         </button>
-        <button type="button" className="button-secondary  u-full-width">
-          Cancelar
-        </button>
-
         <Link to={"/"}>Crea tu cuenta</Link>
       </form>
     </section>

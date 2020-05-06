@@ -2,8 +2,9 @@ import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import UserContext from "./../../context/user/UserContext";
+import Error from "../templates/Error";
 
-const SignupForm = (props) => {
+const SignupForm = () => {
   const userContext = useContext(UserContext);
   const {
     signUpUser,
@@ -11,6 +12,7 @@ const SignupForm = (props) => {
     updateUser,
     cancelEditUser,
     auth,
+    message,
   } = userContext;
 
   const userInitialState = {
@@ -21,7 +23,6 @@ const SignupForm = (props) => {
     avatar: "",
   };
   useEffect(() => {
- 
     if (userSelect === null) {
       saveUser(userInitialState);
     } else {
@@ -30,6 +31,7 @@ const SignupForm = (props) => {
   }, [userSelect]);
   const [user, saveUser] = useState(userInitialState);
   const { name, email, description, password, avatar } = user;
+
   const onChangeValue = (e) => {
     saveUser({
       ...user,
@@ -48,10 +50,10 @@ const SignupForm = (props) => {
         return;
       }
     }
+
     if (userSelect === null) {
       signUpUser(user);
     } else {
-  
       updateUser(user);
     }
 
@@ -85,6 +87,7 @@ const SignupForm = (props) => {
             onChange={onChangeValue}
           />
         </div>
+        {message == "El usuario ya existe" ? <Error msg={message} /> : null}
         {!userSelect ? (
           <div className="campo">
             <label>Contraseña</label>
@@ -126,13 +129,15 @@ const SignupForm = (props) => {
         >
           enviar
         </button>
-        <button
-          type="button"
-          className="button-secondary  u-full-width"
-          onClick={cancelEditUser}
-        >
-          Cancelar
-        </button>
+        {userSelect ? (
+          <button
+            type="button"
+            className="button-secondary  u-full-width"
+            onClick={cancelEditUser}
+          >
+            Cancelar
+          </button>
+        ) : null}
 
         <Link to={"/login"}>Ya tienes cuenta, ingresa aqui</Link>
       </form>
