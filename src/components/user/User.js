@@ -8,7 +8,7 @@ const User = ({ user, idx }) => {
   return (
     <li>
       <Link className="user-avatar-medium" to={`/profile/${_id}`}>
-        <div className="number-ranking">{idx + 1}</div>
+       
         <div className="avatar-dinamic">
         <img
           width="30px"

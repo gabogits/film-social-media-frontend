@@ -1,9 +1,11 @@
 import React, { useContext, Fragment } from "react";
 import { format, register } from "timeago.js";
+import { Link } from "react-router-dom";
 import ReplyNew from "./ReplyNew";
 import ReplyContext from "../../context/reply/ReplyContext";
 import UserContext from "../../context/user/UserContext";
-import { localeFunc } from "./../../helpers/";
+import { localeFunc, formatURL } from "./../../helpers/";
+
 register("es_ES", localeFunc);
 
 const Reply = ({ reply }) => {
@@ -18,12 +20,7 @@ const Reply = ({ reply }) => {
 
   /*
 
-    {creator === _id ? (
-            <div className="menu-opciones-item">
-              <button onClick={() => getReply(reply)}>Editar reply</button>
-              <button onClick={() => deleteReply(reply)}>Borrar reply</button>
-            </div>
-          ) : null}*/
+ */
   return (
     <Fragment>
       {formReplyEdit && reply._id === selectReply._id ? (
@@ -32,36 +29,60 @@ const Reply = ({ reply }) => {
         <div className="box-reply">
           <div className="box-info">
             <div className="avatar-small-2">
-              <img
-                src={
-                  pic !== "n/a" && pic !== undefined
-                    ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${pic}`
-                    : `./no-avatar.svg`
-                }
-                alt="img"
-              />
+              <Link
+                to={creator === user._id ? `/profile` : `/profile/${creator}`}
+              >
+                <img
+                  src={
+                    pic !== "n/a" && pic !== undefined
+                      ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${pic}`
+                      : `./no-avatar.svg`
+                  }
+                  alt="img"
+                />
+              </Link>
             </div>
 
             <div className="box-name-date">
-              <strong>{author}</strong>
-              <span> {format(registry, "es_ES")}</span>
+              <Link
+                to={creator === user._id ? `/profile` : `/profile/${creator}`}
+              >
+                <strong>{author}</strong>
+                <span> {format(registry, "es_ES")}</span>
+              </Link>
             </div>
           </div>
 
           <div className="box-body">
             <div className="box-body-txt">
-              <p>{text}</p>
+              <p dangerouslySetInnerHTML={formatURL(text)}></p>
             </div>
             {picture !== "n/a" && picture !== undefined ? (
               <div className="box-body-picture2">
                 <img
-
                   src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${picture}`}
                   alt="img"
                 />
               </div>
             ) : null}
           </div>
+
+          {creator === _id ? (
+            <div className="box-body-actions">
+              <div className="creator-options">
+                <a
+                  href="#!"
+                  onClick={() => getReply(reply)}
+                  className="icon-format-1 icon-edit"
+                ></a>
+                <a
+                  href="#!"
+                  onClick={() => deleteReply(reply)}
+                  className="icon-format-1 icon-delete"
+                ></a>
+              </div>
+            </div>
+          ) : null}
         </div>
       )}
     </Fragment>

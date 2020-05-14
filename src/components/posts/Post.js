@@ -6,7 +6,9 @@ import PostContext from "./../../context/post/PostContext";
 import ReplyContext from "./../../context/reply/ReplyContext";
 import UserContext from "../../context/user/UserContext";
 import { Link } from "react-router-dom";
-import { localeFunc } from "./../../helpers/";
+import { localeFunc, formatURL } from "./../../helpers/";
+var Text = require("react-format-text");
+
 register("es_ES", localeFunc);
 
 const Post = ({ post }) => {
@@ -19,13 +21,23 @@ const Post = ({ post }) => {
   const userContext = useContext(UserContext);
   const { user, setEvaluations } = userContext;
 
-  const { text, picture, creator, registry, author, pic, _id, score, replies } = post;
+  const {
+    text,
+    picture,
+    creator,
+    registry,
+    author,
+    pic,
+    _id,
+    score,
+    replies,
+  } = post;
   const rankingItems = [
-    { id: 1, value: 2 },
-    { id: 2, value: 4 },
-    { id: 3, value: 6 },
-    { id: 4, value: 8 },
-    { id: 5, value: 10 },
+    { id: 1, value: 1 },
+    { id: 2, value: 2 },
+    { id: 3, value: 3 },
+    { id: 4, value: 4 },
+    { id: 5, value: 5 },
   ];
 
   const scoreInit = 0;
@@ -38,7 +50,6 @@ const Post = ({ post }) => {
   }, []);
 
   const [starts, setStarts] = useState(scoreInit);
-  const [menuOptions, saveMenuOptions] = useState(false);
 
   const onClickStar = (value, postId, user, creator) => {
     setStarts(value);
@@ -50,57 +61,39 @@ const Post = ({ post }) => {
     setEvaluations(evaluation, user, creator);
   };
 
-  const showMenuOptions = () => {
-    saveMenuOptions(!menuOptions);
-  };
   if (!post || !user) return null;
   return (
     <div className="post box-format">
       <div className="box-head">
-        <div className="menu-options">
-          <div className="menu-options-show" onClick={() => showMenuOptions()}>
-            mostrar menu
-          </div>
-          {menuOptions ? (
-            <ul>
-              {creator === user._id ? (
-                <Fragment>
-                  <li>
-                    <Link to={`/post/edit/${_id}`}>editar post</Link>
-                  </li>
-                  <li>
-                    <a href="#!" onClick={() => deletePost(_id)}>
-                      Borrar post
-                    </a>
-                  </li>
-                </Fragment>
-              ) : null}
-              <li>
-                <Link to={`/post/${_id}`}>Obtener post</Link>
-              </li>
-            </ul>
-          ) : null}
-        </div>
+        <div className="menu-options"></div>
         <div className="box-info">
           <div className="avatar-small">
-            <img
-              src={
-                pic !== "n/a" && pic !== undefined
-                  ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${pic}`
-                  : `./no-avatar.svg`
-              }
-              alt="img"
-            />
+            <Link
+              to={creator === user._id ? `/profile` : `/profile/${creator}`}
+            >
+              <img
+                src={
+                  pic !== "n/a" && pic !== undefined
+                    ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${pic}`
+                    : `./no-avatar.svg`
+                }
+                alt="img"
+              />
+            </Link>
           </div>
           <div className="box-name-date">
-            <strong>{author}</strong>
-            <span> {format(registry, "es_ES")}</span>
+            <Link
+              to={creator === user._id ? `/profile` : `/profile/${creator}`}
+            >
+              <strong>{author}</strong>
+              <span> {format(registry, "es_ES")}</span>
+            </Link>
           </div>
         </div>
       </div>
       <div className="box-body">
         <div className="box-body-txt">
-          <p>{text}</p>
+          <p dangerouslySetInnerHTML={formatURL(text)}></p>
         </div>
         <div className="box-body-picture">
           {picture !== "n/a" && picture !== undefined ? (
@@ -117,19 +110,35 @@ const Post = ({ post }) => {
             <div className="ranking">
               {rankingItems.map((item) => (
                 <div
-                  className={`radio-score ${
-                    item.id <= starts / 2 ? " activeScore" : null
+                  className={`radio-score icon-format-1 icon-star ${
+                    item.id <= starts ? " activeScore" : null
                   }`}
                   key={item.id}
                   onClick={() => onClickStar(item.value, _id, user, creator)}
-                >
-                  {item.value}
-                </div>
+                ></div>
               ))}
             </div>
           </div>
-        ) : null}
-        <Link to={`/post/${_id}`} className="mobile-element">Comentar</Link>
+        ) : (
+          <div className="creator-options">
+            <Link
+              to={`/post/edit/${_id}`}
+              className="icon-format-1 icon-edit"
+            ></Link>
+
+            <a
+              href="#!"
+              onClick={() => deletePost(_id)}
+              className="icon-format-1 icon-delete"
+            ></a>
+          </div>
+        )}
+
+        <Link
+          to={`/post/${_id}`}
+          className="icon-format-1 icon-get-post"
+        ></Link>
+   
 
         {replies.length > 0 ? (
           <Link to={`/post/${_id}`} className="number-comments">
@@ -145,5 +154,4 @@ const Post = ({ post }) => {
     </div>
   );
 };
-// {!formReplyEdit ? <ReplyList post={post}  />: <ReplyNew  post={post} /> }
 export default Post;

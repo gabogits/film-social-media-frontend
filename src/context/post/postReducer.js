@@ -8,20 +8,38 @@ import {
   RESET_POST_SELECT,
   CANCEL_POST,
   RESET_POSTS,
+  LOADER,
+  NO_RESULTS
+
 } from "../../types";
 
 export default (state, action) => {
   switch (action.type) {
+ 
+
+    case LOADER: 
+    return {
+      ...state,
+      loader: true,
+    }
     case CREATE_POST:
       return {
         ...state,
         posts: [action.payload, ...state.posts],
+        loader: false,
       };
     case GET_POSTS:
+ 
       return {
         ...state,
-        posts: action.payload,
+        posts:  [...state.posts, ...action.payload],
+        results: true,
       };
+      case NO_RESULTS:
+        return {
+          ...state,
+          results: false,
+        }
     case GET_ONEPOST:
       return {
         ...state,
@@ -41,6 +59,7 @@ export default (state, action) => {
         post: action.payload,
         formPostEdit: false,
         postSelect: null,
+        loader: false,
       };
     case RESET_POST_SELECT:
       return {
@@ -64,7 +83,9 @@ export default (state, action) => {
       return {
         ...state,
         posts: state.posts.filter((post) => post._id !== action.payload._id),
-      };
+        loader: false,
+      }
+      
     default:
       return state;
   }

@@ -1,0 +1,17 @@
+@media (max-width: 1100px) {
+  .header-logo {
+    margin-left: 10px;
+  }
+
+  .mobile-element {
+    display: block;
+  }
+  .user-active ul li.hide-mobile {
+    display: none;
+  }
+  .sidebar-1,
+  .sidebar-2,
+  .sidebar-3 {
+    display: none;
+  }
+}

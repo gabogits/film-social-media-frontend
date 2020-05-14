@@ -1,0 +1,42 @@
+@media (max-width: 992px) {
+  .top-space {
+    padding: 70px 0 0;
+  }
+  .section-format {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  header {
+    padding: 6px 0;
+  }
+  .box-title h2 {
+    font-size: 20px;
+    text-align: center;
+  }
+  .top-space {
+    padding: 55px 0 55px;
+  }
+
+  .info-box {
+    margin: 40px 0 20px;
+  }
+  .info-box-inner {
+    display: initial;
+    justify-content: initial;
+  }
+  .info-table h3 {
+    font-size: 28px;
+  }
+  .avatar-big {
+    margin: 0 auto 20px;
+  }
+  .info-table {
+    width: 100%;
+    text-align: center;
+  }
+  .info-table p {
+    max-width: 100%;
+  }
+}

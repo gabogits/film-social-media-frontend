@@ -1,7 +1,7 @@
 import React from "react";
 
 const Error = ({ msg }) => {
-  return <p>{msg}</p>;
+  return <div className="alert">{msg}</div>;
 };
 
 export default Error;

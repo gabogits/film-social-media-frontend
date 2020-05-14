@@ -13,10 +13,11 @@ const SignUp = (props) => {
   }, [auth, props.history]);
 
   return (
-    <div>
+    <main className="top-space pad-bottom">
       <Header />
       <SignupForm />
-    </div>
+      <div className="back-full back-1" />
+    </main>
   );
 };
 

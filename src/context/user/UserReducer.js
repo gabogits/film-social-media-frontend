@@ -11,10 +11,18 @@ import {
   LOGIN_ERROR,
   SIGNUP_ERROR,
   HIDE_ERROR,
+  LOADER,
+  RESET_PROFILE
+ 
 } from "../../types";
 
 export default (state, action) => {
   switch (action.type) {
+    case LOADER: 
+      return {
+        ...state,
+        loader: true,
+      }
     case SIGNUP_USER:
       localStorage.setItem("token", action.payload.token);
       return {
@@ -22,6 +30,7 @@ export default (state, action) => {
         users: [...state.users, action.payload.newUser],
         auth: true,
         loading: false,
+        loader:false
       };
     case GET_USERS:
       return {
@@ -40,7 +49,7 @@ export default (state, action) => {
     case GET_USERBYID:
       return {
         ...state,
-        userSelect: action.payload,
+        profileSelect: action.payload,
       };
     case EDIT_USER:
       return {
@@ -54,6 +63,8 @@ export default (state, action) => {
         ...state,
         user: action.payload,
         formEdit: false,
+        loader:false,
+    
       };
     case CANCEL_EDIT_USER:
       return {
@@ -81,12 +92,18 @@ export default (state, action) => {
         auth: false,
         loading: false,
         message: action.payload,
+        loader:false
       };
     case HIDE_ERROR:
       return {
         ...state,
         message: null,
       };
+    case RESET_PROFILE: 
+    return {
+      ...state,
+      profileSelect: null,
+    };
     default:
       return state;
   }

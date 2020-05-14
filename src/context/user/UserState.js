@@ -17,6 +17,9 @@ import {
   LOGIN_ERROR,
   SIGNUP_ERROR,
   HIDE_ERROR,
+  LOADER,
+  RESET_PROFILE
+
 } from "./../../types/";
 import axiosClient from "../../config/axios";
 
@@ -30,10 +33,16 @@ const UserState = (props) => {
     auth: null,
     loading: true,
     message: null,
+    loader: false,
+    profileSelect: null
+
   };
   const [state, dispatch] = useReducer(UserReducer, initialState);
 
   const signUpUser = async (user) => {
+      dispatch({
+        type: LOADER,
+      });
     const userObj = keysAppend(user);
     try {
       const userSignUp = await axiosClient.post("/api/user", userObj);
@@ -59,13 +68,16 @@ const UserState = (props) => {
 
   const getUsers = async () => {
     const users = await axiosClient.get("/api/user");
+  
     dispatch({
       type: GET_USERS,
       payload: users.data,
     });
   };
   const getUserById = async (id) => {
+
     const userProfile = state.users.find((user) => user._id === id);
+    console.log(userProfile)
     dispatch({
       type: GET_USERBYID,
       payload: userProfile,
@@ -79,11 +91,15 @@ const UserState = (props) => {
   };
 
   const updateUser = async (user) => {
+    dispatch({
+      type: LOADER,
+    });
+  
     delete user.password;
 
     const userObj = keysAppend(user);
     const userEdit = await axiosClient.post(`/api/user/${user._id}`, userObj);
-
+    console.log("userEdit", userEdit)
     dispatch({
       type: UPDATE_USER,
       payload: userEdit.data,
@@ -91,6 +107,9 @@ const UserState = (props) => {
   };
 
   const userLogin = async (user) => {
+    dispatch({
+      type: LOADER,
+    });
     console.log(user);
     try {
       const userLog = await axiosClient.post("/api/auth", user);
@@ -180,7 +199,12 @@ const UserState = (props) => {
     await axiosClient.post(`/api/user/${creator}`, creatorPost);
     getUsers();
   };
-
+  const resetProfile =  () => {
+    dispatch({
+      type:  RESET_PROFILE,
+    });
+  }
+ 
   return (
     <UserContext.Provider
       value={{
@@ -191,6 +215,8 @@ const UserState = (props) => {
         auth: state.auth,
         loading: state.loading,
         message: state.message,
+        loader: state.loader,
+        profileSelect: state.profileSelect,
         signUpUser,
         userLogin,
         getUsers,
@@ -202,6 +228,7 @@ const UserState = (props) => {
         userAuth,
         setEvaluations,
         cancelEditUser,
+        resetProfile
       }}
     >
       {props.children}

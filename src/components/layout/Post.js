@@ -4,6 +4,7 @@ import PostItem from "./../posts/Post";
 import PostNew from "./../posts/PostNew";
 import UserContext from "./../../context/user/UserContext";
 import PostContext from "./../../context/post/PostContext";
+import BottomBar from "./BottomBar"
 
 const Post = (props) => {
   const userContext = useContext(UserContext);
@@ -31,14 +32,19 @@ const Post = (props) => {
 
   if (!posts || !postSelect || !user) return null;
   return (
-    <div>
+    <main className="top-space ">
       <Header></Header>
-      {!formPostEdit ? (
-        <PostItem post={postSelect} />
-      ) : (
-        <PostNew props={props} />
-      )}
-    </div>
+      <div className="container">
+        <div className="content-center">
+          {!formPostEdit ? (
+            <PostItem post={postSelect} />
+          ) : (
+            <PostNew props={props} />
+          )}
+        </div>
+      </div>
+      <BottomBar />
+    </main>
   );
 };
 

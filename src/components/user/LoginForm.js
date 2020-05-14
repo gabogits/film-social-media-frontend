@@ -2,10 +2,12 @@ import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import Error from "../templates/Error";
 import UserContext from "./../../context/user/UserContext";
+import Loader from "../templates/Loader"
+
 
 const Login = () => {
   const userContext = useContext(UserContext);
-  const { userLogin, message } = userContext;
+  const { userLogin, message, loader } = userContext;
 
   const [user, saveUser] = useState({
     email: "",
@@ -24,35 +26,38 @@ const Login = () => {
     e.preventDefault();
 
     if (email.trim() === "" || password.trim() === "") {
-      saveRequerid(false)
+      saveRequerid(false);
       return;
     }
-    saveRequerid(true)
+    saveRequerid(true);
     userLogin(user);
   };
   return (
-    <section className="section-format">
+    <section className="section-format box-format ">
       <form onSubmit={loginFormSubmit}>
-        <h2>Iniciar sesion</h2>
-
-        <div className="campo">
-          <label>Email</label>
+        <div className="section-format-head">
+          <div className="box-title">
+            <h2>Inicia sesion</h2>
+          </div>
+        </div>
+        <div className="field">
+          <label>Correo</label>
           <input
             type="email"
             className="u-full-width"
             name="email"
-            placeholder="Email"
+            placeholder="correo@algo.com"
             value={email}
             onChange={onChangeValue}
           />
         </div>
-        <div className="campo">
-          <label>Password</label>
+        <div className="field">
+          <label>Contraseña</label>
           <input
             name="password"
             type="password"
             className="u-full-width"
-            placeholder="Password"
+            placeholder="Espero no la hayas olvidado"
             value={password}
             onChange={onChangeValue}
           />
@@ -61,15 +66,22 @@ const Login = () => {
         message === "contraseña incorrecta" ? (
           <Error msg={"Usuario o contraseña incorrecta"} />
         ) : null}
-         {!requerid ?  <Error msg={'Faltan campos por llenar'} /> : null}
+        {!requerid ? <Error msg={"Faltan campos por llenar"} /> : null}
+        {loader ? <Loader /> : null }
+        {!loader ? 
+        <div className="section-format-actions">
         <button
           type="submit"
-          className="button-primary u-full-width"
+          className="button-primary-2 btn-color-1 btn-size-2 btn-orientation-auto"
           value="enviar"
         >
-          enviar
+          Inicia sesión
         </button>
-        <Link to={"/"}>Crea tu cuenta</Link>
+        </div>
+        : null }
+        <div className="other-actions">
+        <Link to={"/"} className="link-style">¿Aún no tienes cuenta? Es por acá.</Link>
+        </div>
       </form>
     </section>
   );

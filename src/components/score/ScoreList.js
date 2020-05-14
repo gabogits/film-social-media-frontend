@@ -17,17 +17,25 @@ const RankingList = ({ users }) => {
 
   return (
     <Fragment>
-    <div className="box-title">
-        <h4>  Ranking</h4>
+      <div className="box-title">
+        <h4>
+          <span className="icon-format-2 icon-star activeScore"></span>{" "}
+          Destacados
+        </h4>
+        <p>
+          ¿Qué es una red social sin la aprobación pública?.
+         Estas son las personas cuyo contenido ha obtenido más estrellas.
+        </p>
       </div>
+
       <div className="ranking-list">
         <ul>
-        {users
-          .sort((a, b) => b.userScoreTotal - a.userScoreTotal)
-          .map((user, idx) => (
-            <User key={user._id} user={user} idx={idx} />
-          ))}
-          </ul>
+          {users
+            .sort((a, b) => b.userScoreTotal - a.userScoreTotal)
+            .map((user, idx) => idx < 10 ?    <User key={user._id} user={user} />: null
+            
+            )}
+        </ul>
       </div>
     </Fragment>
   );

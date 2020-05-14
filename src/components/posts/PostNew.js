@@ -1,6 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 import PostContext from "../../context/post/PostContext";
 import UserContext from "../../context/user/UserContext";
+import TextareaAutosize from "react-textarea-autosize";
+import previewImg from "./../../helpers/previewImg";
+import Loader from "../templates/Loader";
 
 const PostNew = ({ props }) => {
   const postContext = useContext(PostContext);
@@ -10,6 +13,7 @@ const PostNew = ({ props }) => {
     updatePost,
     formPostEdit,
     cancelPost,
+    loader,
   } = postContext;
   const userContext = useContext(UserContext);
   const { user } = userContext;
@@ -17,21 +21,25 @@ const PostNew = ({ props }) => {
   const postInitValues = {
     text: "",
     picture: "",
-    score: 0,
   };
   useEffect(() => {
     if (postSelect === null) {
       savePost(postInitValues);
     } else {
+      console.log("postSelect", postSelect);
       savePost(postSelect);
     }
   }, [postSelect]);
 
   const [post, savePost] = useState(postInitValues);
+  const [pictureToUpload, savePictureToUpload] = useState(null);
 
-  const { text, score } = post;
+  const { text, picture } = post;
 
   const onChangeValue = (e) => {
+    if (e.target.name === "picture") {
+      previewImg(e, savePictureToUpload);
+    }
     savePost({
       ...post,
       [e.target.name]:
@@ -42,13 +50,14 @@ const PostNew = ({ props }) => {
   const postFormSubmit = (e) => {
     e.preventDefault();
 
-    if (text.trim() === "") {
-      return;
-    }
-    if (score === "") {
+    if (
+      (text === "" || text.trim() === "") &&
+      (picture === "n/a" || picture === undefined)
+    ) {
       return;
     }
 
+    console.log("si llega aqui");
     if (postSelect === null) {
       post.author = user.name;
       post.pic = user.avatar;
@@ -59,6 +68,7 @@ const PostNew = ({ props }) => {
     }
 
     savePost(postInitValues);
+    savePictureToUpload(null);
   };
 
   const cancelEdit = (e) => {
@@ -71,7 +81,11 @@ const PostNew = ({ props }) => {
   return (
     <div className="post-new box-format">
       <div className="box-title">
-        <h4>Agrega alguna publicación</h4>
+        {!formPostEdit ? (
+          <h4>Buen día {name}</h4>
+        ) : (
+          <h4>Edita tu publicación</h4>
+        )}
       </div>
       <div className="new-content">
         <div className="avatar-medium">
@@ -82,51 +96,68 @@ const PostNew = ({ props }) => {
                 : `./no-avatar.svg`
             }
           />
-      
-      </div>
-    <div className="new-content-form">
-      <form onSubmit={postFormSubmit}>
-        <div className="new-content-textarea textarea-1">
-        <div className="add-image">
-            <input
-              type="file"
-              className="u-full-width"
-              name="picture"
-              onChange={onChangeValue}
-            />
-          </div>
-          <textarea
-            placeholder={`agrega una publicacion ${name}`}
-            name="text"
-            value={text}
-            onChange={onChangeValue}
-          ></textarea>
         </div>
+        <div className="new-content-form">
+          <form onSubmit={postFormSubmit}>
+            <div className="new-content-textarea textarea-1">
+              <div className="add-image">
+                <input
+                  type="file"
+                  className="u-full-width"
+                  name="picture"
+                  onChange={onChangeValue}
+                />
+              </div>
 
-        <div className="new-content-actions">
-          
+              <TextareaAutosize
+                placeholder={`¿Qué tenemos para el dia de hoy?`}
+                name="text"
+                value={text}
+                onChange={onChangeValue}
+              />
+            </div>
+            {pictureToUpload ? (
+              <div className="preview-img">
+                <img src={pictureToUpload} />
+              </div>
+            ) : null}
+
+            {postSelect &&
+            !pictureToUpload &&
+            picture !== "n/a" &&
+            picture !== undefined ? (
+              <div className="preview-img">
+                <img
+                  src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${picture}`}
+                  alt="img"
+                />
+              </div>
+            ) : null}
+            {loader ? <Loader /> : null}
+            <div className="new-content-actions">
+              {formPostEdit ? (
+                <button
+                  type="button"
+                  className="button-primary btn-color-2 btn-size-1 btn-orientation-l"
+                  value="cancelar"
+                  onClick={cancelEdit}
+                >
+                  Cancelar
+                </button>
+              ) : null}
+
+              {(text !== "" && !loader) || (picture !== "" && !loader) ? (
+                <button
+                  type="submit"
+                  className="button-primary btn-color-1 btn-size-1 btn-orientation-r"
+                  value="Publicar"
+                >
+                  Publicar
+                </button>
+              ) : null}
+            </div>
+          </form>
         </div>
-        {formPostEdit ? (
-          <button
-            type="button"
-            className="button-primary u-full-width"
-            value="cancelar"
-            onClick={cancelEdit}
-          >
-            cancelar
-          </button>
-        ) : null}
-        {text.trim() !== "" ? (
-          <button
-            type="submit"
-            className="button-primary u-full-width"
-            value="Publicar"
-          >
-            Publicar
-          </button>
-        ) : null}
-      </form>
-      </div>
       </div>
     </div>
   );

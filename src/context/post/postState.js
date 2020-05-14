@@ -1,6 +1,5 @@
 import React, { useReducer, useContext } from "react";
 import PostContext from "./PostContext";
-import UserContext from "./../../context/user/UserContext";
 import PostReducer from "./PostReducer";
 import axiosClient from "./../../config/axios";
 import { keysAppend } from "../../helpers";
@@ -15,6 +14,8 @@ import {
   CANCEL_POST,
   RESET_POST_SELECT,
   RESET_POSTS,
+  LOADER,
+  NO_RESULTS,
 } from "../../types";
 
 const PostState = (props) => {
@@ -23,15 +24,20 @@ const PostState = (props) => {
     post: null,
     postSelect: null,
     formPostEdit: false,
+    limite: 5,
+    loader: false,
+    results: true,
   };
 
   const [state, dispatch] = useReducer(PostReducer, initialState);
 
   const newPost = async (post) => {
-    const objPost = keysAppend(post);
-
+    dispatch({
+      type: LOADER,
+    });
+    const postObj = keysAppend(post);
     try {
-      const postItem = await axiosClient.post("/api/post", objPost);
+      const postItem = await axiosClient.post("/api/post", postObj);
 
       dispatch({
         type: CREATE_POST,
@@ -39,30 +45,67 @@ const PostState = (props) => {
       });
     } catch (error) {}
   };
-  const getPosts = async (creator, user) => {
-    const posts = await axiosClient.get("/api/post", { params: creator });
-
-    const postTree = [];
-    for (const postItem of posts.data) {
-      const post = postItem._id;
-
-      const repliesPost = await axiosClient.get("api/reply", {
-        params: { post },
-      });
-      postItem.replies = repliesPost.data;
-      const evaluation = user.evaluations.find((item) => item.post == post);
-
-      if (evaluation) {
-        postItem.score = evaluation.score;
-      }
-
-      postTree.push(postItem);
+  const getPosts = async (creator, user, pagina) => {
+    const limite = state.limite;
+    let skip;
+    console.log(state.posts.length);
+    if (state.posts.length > 0) {
+      skip = state.posts.length;
+    } else {
+      skip = 0;
     }
 
-    dispatch({
-      type: GET_POSTS,
-      payload: posts.data,
-    });
+    const posts = await axiosClient.get(
+      `/api/post?skip=${skip}&limite=${limite}`,
+      { params: creator }
+    );
+    console.log(posts);
+
+    if (posts.data.length) {
+      const postTree = [];
+      for (const postItem of posts.data) {
+        const post = postItem._id;
+
+        const repliesPost = await axiosClient.get("api/reply", {
+          params: { post },
+        });
+        postItem.replies = repliesPost.data;
+        const evaluation = user.evaluations.find((item) => item.post == post);
+
+        if (evaluation) {
+          postItem.score = evaluation.score;
+        }
+
+        postTree.push(postItem);
+
+        /*
+         const postResp = posts.data;
+      const values = [...postResp,  ...state.posts ];
+
+    const lookup = values.reduce((a, e) => {
+      a[e._id] = ++a[e._id] || 0;
+      return a;
+    }, {});
+    
+    const doubles = values.filter(e => lookup[e._id]);
+
+    const newArray = [...doubles,  ...postResp]
+    
+    const postToList = newArray.filter(e => !lookup[e._id]);
+
+      
+    */
+      }
+
+      dispatch({
+        type: GET_POSTS,
+        payload: postTree,
+      });
+    } else {
+      dispatch({
+        type: NO_RESULTS,
+      });
+    }
   };
 
   const getPost = async (postId, edit) => {
@@ -82,8 +125,14 @@ const PostState = (props) => {
   };
 
   const updatePost = async (post) => {
+    dispatch({
+      type: LOADER,
+    });
+    console.log(post)
+    
     const postObj = keysAppend(post);
     const postEdited = await axiosClient.post(`/api/post/${post._id}`, postObj);
+    console.log(postEdited)
     try {
       dispatch({
         type: UPDATE_POST,
@@ -97,7 +146,10 @@ const PostState = (props) => {
     });
   };
   const deletePost = async (post) => {
-    const postDelete = await axiosClient.delete(`/api/post/${post._id}`);
+    dispatch({
+      type: LOADER,
+    });
+    const postDelete = await axiosClient.delete(`/api/post/${post}`);
     try {
       dispatch({
         type: DELETE_POST,
@@ -133,6 +185,8 @@ const PostState = (props) => {
         post: state.post,
         postSelect: state.postSelect,
         formPostEdit: state.formPostEdit,
+        loader: state.loader,
+        results: state.results,
         newPost,
         getPosts,
         getPost,

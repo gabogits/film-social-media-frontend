@@ -2,16 +2,17 @@ export function keysAppend(object) {
   const data = new FormData();
   const keys = Object.keys(object);
   for (const key of keys) {
-    if (object[key] !== "") {
+    console.log(key, object[key])
+  
       data.append(key, object[key]);
-    }
+
   }
 
   return data;
 }
 
 
-export  function localeFunc(number, index) {
+export  const  localeFunc = (number, index) => {
   return [
       ['justo ahora', 'en un rato'],
       ['hace %s segundos', 'en %s segundos'],
@@ -29,3 +30,21 @@ export  function localeFunc(number, index) {
       ['hace %s años', 'en %s años'],
   ][index];
 }
+
+export const formatURL = (string) => {
+  if (string) {
+    const words = string.split(" ");
+    let newString = "";
+    for (const  word of words) {
+      if (
+        word.indexOf("http://") >= 0 ||
+        word.indexOf("https://") >= 0
+      ) {
+        newString = `${newString} <a href ="${word}" target="_blank"> ${word}</a> `;
+      } else {
+        newString = newString + " " + word;
+      }
+    }
+    return { __html: newString };
+  }
+};

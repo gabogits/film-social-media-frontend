@@ -7,7 +7,7 @@ const Header = () => {
   const { signOut, user } = userContext;
 
   return (
-    <header>
+    <header className={user ? "private": "public"}>
       <div className="container">
         <div className="header-logo">
           {user ? (
@@ -21,28 +21,53 @@ const Header = () => {
         </div>
 
         <div className="user-active">
-          {user ? <p>hola {user.name} </p> : null}
+          <ul>
+            {!user ? (
+              <Fragment>
+                <li>
+                  <Link to={"/login"}>Inicia sesión</Link>
+                </li>
+                <li>
+                  <Link to={"/"}>Crea tu cuenta</Link>
+                </li>
+              </Fragment>
+            ) : (
+              <Fragment>
+                <li className="hide-mobile">
+                  <Link to={"/feed"}>Inicio</Link>
+                </li>
+                <li className="hide-mobile">
+                  <Link to={"/profile"}>Perfil</Link>
+                </li>
+                <li className="hide-mobile">
+                  <a href="#!" onClick={signOut}> Cerrar sesión</a>
+                </li>
+                <li>
+                  <div className="menu-user">
+                  
+                    <span>
+                    <Link to={"/profile"}>
+                      Hola <strong>{user.name}</strong>
+                      </Link>
+                    </span>
+                    <div className="avatar-small-2">
+                    <Link to={"/profile"}>
+                    <img
+                      src={
+                        user.avatar !== "n/a" && user.avatar !== undefined
+                          ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${user.avatar}`
+                          : `./no-avatar.svg`
+                      }
+                      alt="img"
+                    />
+                    </Link>
+                  </div>
+                    </div>
+                </li>
+              </Fragment>
+            )}
+          </ul>
         </div>
-        <ul>
-          {!user ? (
-            <Fragment>
-              <li>
-                <Link to={"/login"}>Iniciar sesión</Link>
-              </li>
-              <li>
-                <Link to={"/"}>Crear cuenta</Link>
-              </li>
-            </Fragment>
-          ) : (
-            <Fragment>
-              <li>
-                <Link to={"/feed"}>Inicio</Link>
-              </li>
-              <Link to={"/profile"}>Profile</Link>
-              <div onClick={signOut}>Cerrar sesión</div>
-            </Fragment>
-          )}
-        </ul>
       </div>
     </header>
   );

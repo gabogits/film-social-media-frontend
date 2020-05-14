@@ -5,6 +5,7 @@ import {
   UPDATE_REPLY,
   DELETE_REPLY,
   CANCEL_EDITREPLY,
+  LOADER
 } from "../../types";
 import ReplyContext from "./ReplyContext";
 import ReplyReducer from "./ReplyReducer";
@@ -17,11 +18,15 @@ const ReplyState = (props) => {
     reply: null,
     selectReply: null,
     formReplyEdit: false,
+    loader: false,
   };
 
   const [state, dispatch] = useReducer(ReplyReducer, initialState);
 
   const newReply = async (reply) => {
+    dispatch({
+      type: LOADER,
+    });
     const replyObj = keysAppend(reply);
 
     const replyItem = await axiosClient.post("api/reply", replyObj);
@@ -45,6 +50,9 @@ const ReplyState = (props) => {
     });
   };
   const updateReply = async (reply) => {
+    dispatch({
+      type: LOADER,
+    });
     const replyObj = keysAppend(reply);
 
     const replyEdit = await axiosClient.post(
@@ -63,6 +71,9 @@ const ReplyState = (props) => {
     });
   };
   const deleteReply = async (reply) => {
+    dispatch({
+      type: LOADER,
+    });
     const replyDelete = await axiosClient.delete(`api/reply/${reply._id}`);
     try {
       dispatch({
@@ -79,6 +90,7 @@ const ReplyState = (props) => {
         replies: state.replies,
         selectReply: state.selectReply,
         formReplyEdit: state.formReplyEdit,
+        loader: state.loader,
         newReply,
         getReplies,
         getReply,

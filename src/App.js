@@ -4,10 +4,13 @@ import Login from "./components/layout/Login";
 import Signup from "./components/layout/Signup";
 import Feed from "./components/layout/Feed";
 import Post from "./components/layout/Post";
+import Users from "./components/layout/Users";
+import Ranking from "./components/layout/Ranking";
 import Profile from "./components/layout/Profile";
 import PostState from "./context/post/PostState";
 import ReplyState from "./context/reply/ReplyState";
 import UserState from "./context/user/UserState";
+
 
 import tokenAuth from "./config/token";
 import PrivateRoute from "./components/routes/PrivateRoute";
@@ -28,6 +31,8 @@ function App() {
               <PrivateRoute exact path="/feed" component={Feed} />
               <PrivateRoute path="/post" component={Post} />
               <PrivateRoute path="/profile" component={Profile} />
+              <PrivateRoute path="/users" component={Users} />
+              <PrivateRoute path="/ranking" component={Ranking} />
             </Switch>
           </Router>
         </ReplyState>

@@ -29,3 +29,9 @@ export const SIGN_OUT = "SIGN_OUT";
 export const LOGIN_ERROR = "LOGIN_ERROR";
 export const SIGNUP_ERROR = "SIGNUP_ERROR";
 export const HIDE_ERROR = "HIDE_ERROR";
+export const LOADER = "LOADER";
+
+export const NO_RESULTS = "NO_RESULTS";
+
+
+export const RESET_PROFILE = "RESET_PROFILE";
