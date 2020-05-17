@@ -13,15 +13,16 @@ const Feed = () => {
   const userContext = useContext(UserContext);
   const { userAuth, user, users, getUsers, userSelect, auth, resetProfile } = userContext;
   const postContext = useContext(PostContext);
-  const { resetSelectPost, } = postContext;
+  const { resetSelectPost } = postContext;
   const replyContext = useContext(ReplyContext);
   const { newReply } = replyContext;
   useEffect(() => {
     userAuth();
     getUsers();
     resetSelectPost();
-    resetProfile();
+   
     // eslint-disable-next-line
+
   }, [newReply, userSelect, auth]);
 
   if (!user || !users) return null;

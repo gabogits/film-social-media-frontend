@@ -2,8 +2,7 @@ export function keysAppend(object) {
   const data = new FormData();
   const keys = Object.keys(object);
   for (const key of keys) {
-    console.log(key, object[key])
-  
+    console.log(key, object[key])  
       data.append(key, object[key]);
 
   }

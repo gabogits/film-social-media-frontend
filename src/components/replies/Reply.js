@@ -75,11 +75,11 @@ const Reply = ({ reply }) => {
                   onClick={() => getReply(reply)}
                   className="icon-format-1 icon-edit"
                 ></a>
-                <a
-                  href="#!"
+                <button
+                
                   onClick={() => deleteReply(reply)}
                   className="icon-format-1 icon-delete"
-                ></a>
+                ></button>
               </div>
             </div>
           ) : null}

@@ -12,8 +12,9 @@ var Text = require("react-format-text");
 register("es_ES", localeFunc);
 
 const Post = ({ post }) => {
+
   const postContext = useContext(PostContext);
-  const { deletePost } = postContext;
+  const { deletePost, postSelect } = postContext;
 
   const replyContext = useContext(ReplyContext);
   const { formReplyEdit, selectReply } = replyContext;
@@ -31,6 +32,7 @@ const Post = ({ post }) => {
     _id,
     score,
     replies,
+    numberReplies
   } = post;
   const rankingItems = [
     { id: 1, value: 1 },
@@ -126,11 +128,10 @@ const Post = ({ post }) => {
               className="icon-format-1 icon-edit"
             ></Link>
 
-            <a
-              href="#!"
+            <button
               onClick={() => deletePost(_id)}
               className="icon-format-1 icon-delete"
-            ></a>
+            ></button>
           </div>
         )}
 
@@ -138,16 +139,20 @@ const Post = ({ post }) => {
           to={`/post/${_id}`}
           className="icon-format-1 icon-get-post"
         ></Link>
-   
-
-        {replies.length > 0 ? (
+        <div className="center-btn" style="display:none">
+            <Link to={`/post/${_id}`} className="link-gray" >
+              <span  className="icon-format-1 icon-comment"></span>Comentar
+          </Link>
+        </div>
+        {numberReplies > 0 ? (
           <Link to={`/post/${_id}`} className="number-comments">
-            <strong>{replies.length}</strong> comentarios
+            <strong>{numberReplies}</strong> comentarios
           </Link>
         ) : null}
       </div>
-      <ReplyList post={post} />
-
+      {postSelect ? <ReplyList post={post} /> : null }
+      
+      
       {formReplyEdit && _id === selectReply.post ? null : (
         <ReplyNew post={post} />
       )}

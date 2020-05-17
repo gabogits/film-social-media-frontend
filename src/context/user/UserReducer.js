@@ -103,6 +103,7 @@ export default (state, action) => {
     return {
       ...state,
       profileSelect: null,
+      
     };
     default:
       return state;

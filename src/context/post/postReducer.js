@@ -1,6 +1,7 @@
 import {
   CREATE_POST,
   GET_POSTS,
+  GET_POSTS_PROFILE,
   GET_ONEPOST,
   GET_ONEPOSTEDIT,
   DELETE_POST,
@@ -9,7 +10,9 @@ import {
   CANCEL_POST,
   RESET_POSTS,
   LOADER,
-  NO_RESULTS
+  NO_RESULTS,
+  ERRORMSG,
+  PAGE
 
 } from "../../types";
 
@@ -26,6 +29,7 @@ export default (state, action) => {
       return {
         ...state,
         posts: [action.payload, ...state.posts],
+        postsProfile:  [ action.payload, ...state.postsProfile],
         loader: false,
       };
     case GET_POSTS:
@@ -33,6 +37,13 @@ export default (state, action) => {
       return {
         ...state,
         posts:  [...state.posts, ...action.payload],
+        results: true,
+      };
+      case GET_POSTS_PROFILE:
+ 
+      return {
+        ...state,
+        postsProfile:  [...state.postsProfile,  ...action.payload],
         results: true,
       };
       case NO_RESULTS:
@@ -56,9 +67,8 @@ export default (state, action) => {
       return {
         ...state,
         posts: [],
-        post: action.payload,
+        postSelect: action.payload,
         formPostEdit: false,
-        postSelect: null,
         loader: false,
       };
     case RESET_POST_SELECT:
@@ -70,22 +80,33 @@ export default (state, action) => {
     case RESET_POSTS:
       return {
         ...state,
-        posts: [],
+        postsProfile: [],
       };
 
     case CANCEL_POST:
       return {
         ...state,
         formPostEdit: false,
-        postSelect: null,
+      
       };
     case DELETE_POST:
       return {
         ...state,
         posts: state.posts.filter((post) => post._id !== action.payload._id),
         loader: false,
+        postSelect: null,
+        errormsg: null,
       }
-      
+      case ERRORMSG:
+        return {
+          ...state,
+          errormsg: action.payload,
+        }
+      case PAGE:
+        return {
+          ...state,
+          page: action.payload,
+        }
     default:
       return state;
   }

@@ -77,7 +77,7 @@ const UserState = (props) => {
   const getUserById = async (id) => {
 
     const userProfile = state.users.find((user) => user._id === id);
-    console.log(userProfile)
+
     dispatch({
       type: GET_USERBYID,
       payload: userProfile,
@@ -99,7 +99,7 @@ const UserState = (props) => {
 
     const userObj = keysAppend(user);
     const userEdit = await axiosClient.post(`/api/user/${user._id}`, userObj);
-    console.log("userEdit", userEdit)
+
     dispatch({
       type: UPDATE_USER,
       payload: userEdit.data,
@@ -110,7 +110,7 @@ const UserState = (props) => {
     dispatch({
       type: LOADER,
     });
-    console.log(user);
+   
     try {
       const userLog = await axiosClient.post("/api/auth", user);
       dispatch({

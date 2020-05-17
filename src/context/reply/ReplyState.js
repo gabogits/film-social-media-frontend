@@ -11,6 +11,8 @@ import ReplyContext from "./ReplyContext";
 import ReplyReducer from "./ReplyReducer";
 import axiosClient from "../../config/axios";
 import { keysAppend } from "../../helpers/";
+import PostContext from "../../context/post/PostContext";
+
 
 const ReplyState = (props) => {
   const initialState = {
@@ -75,6 +77,7 @@ const ReplyState = (props) => {
       type: LOADER,
     });
     const replyDelete = await axiosClient.delete(`api/reply/${reply._id}`);
+
     try {
       dispatch({
         type: DELETE_REPLY,
@@ -91,6 +94,8 @@ const ReplyState = (props) => {
         selectReply: state.selectReply,
         formReplyEdit: state.formReplyEdit,
         loader: state.loader,
+        reply: state.reply,
+        
         newReply,
         getReplies,
         getReply,

@@ -19,6 +19,7 @@ export default (state, action) => {
       return {
         ...state,
         replies: [action.payload, ...state.replies],
+        reply: action.payload,
         loader: false,
       };
 
@@ -42,6 +43,7 @@ export default (state, action) => {
         loader: false,
       };
     case DELETE_REPLY:
+
       return {
         ...state,
         replies: state.replies.filter(

@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 const User = ({ user, idx }) => {
   const { name, avatar, _id, userScoreTotal } = user;
 
-  console.log(idx)
   return (
     <li>
       <Link className="user-avatar-medium" to={`/profile/${_id}`}>

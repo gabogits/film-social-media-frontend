@@ -26,7 +26,7 @@ const PostNew = ({ props }) => {
     if (postSelect === null) {
       savePost(postInitValues);
     } else {
-      console.log("postSelect", postSelect);
+
       savePost(postSelect);
     }
   }, [postSelect]);
@@ -57,13 +57,13 @@ const PostNew = ({ props }) => {
       return;
     }
 
-    console.log("si llega aqui");
+
     if (postSelect === null) {
       post.author = user.name;
       post.pic = user.avatar;
       newPost(post);
     } else {
-      updatePost(post);
+      updatePost(post, user);
       props.history.push(`/post/${post._id}`);
     }
 

@@ -15,16 +15,18 @@ const Profile = (props) => {
     formEdit,
     user,
     userAuth,
+    resetProfile,
+    profileSelect
   } = userContext;
 
   const query = props.location.pathname.split("/");
   const profile = query[2];
   const postContext = useContext(PostContext);
-  const { resetPosts } = postContext;
+
 
   useEffect(() => {
     userAuth();
-    resetPosts();
+  
   }, []);
   if (!user) return null;
 
@@ -43,7 +45,7 @@ const Profile = (props) => {
       <div className="container display">
         <div className="content-center">
           {!profile || profile === user._id ? <PostNew /> : null}
-          <PostList creator={profile ? profile : user._id} />
+          <PostList creator={profile ? profile : user._id}  />
         </div>
       </div>
       <BottomBar />

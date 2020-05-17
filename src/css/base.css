@@ -360,7 +360,7 @@
   }
   
   .number-comments {
-    font-size: 15px;
+    font-size: 14px;
     color: #999;
     text-decoration: none;
     position: absolute;
@@ -640,3 +640,17 @@
     text-align: center;
     font-size: 15px;
   }
+
+  .link-gray {
+    font-size: 15px;
+    color: #999;
+    text-decoration: none;
+  }
+  .center-btn {
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+  }
+  

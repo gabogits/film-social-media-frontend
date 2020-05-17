@@ -7,6 +7,7 @@ import { keysAppend } from "../../helpers";
 import {
   CREATE_POST,
   GET_POSTS,
+  GET_POSTS_PROFILE,
   GET_ONEPOST,
   GET_ONEPOSTEDIT,
   UPDATE_POST,
@@ -16,17 +17,20 @@ import {
   RESET_POSTS,
   LOADER,
   NO_RESULTS,
+  ERRORMSG
 } from "../../types";
 
 const PostState = (props) => {
   const initialState = {
     posts: [],
+    postsProfile: [],
     post: null,
     postSelect: null,
     formPostEdit: false,
     limite: 5,
     loader: false,
     results: true,
+    errormsg: null
   };
 
   const [state, dispatch] = useReducer(PostReducer, initialState);
@@ -48,28 +52,62 @@ const PostState = (props) => {
   const getPosts = async (creator, user, pagina) => {
     const limite = state.limite;
     let skip;
-    console.log(state.posts.length);
-    if (state.posts.length > 0) {
+
+    /*
+    if ((state.posts.length > 0  && creator["creator"] === undefined) || (state.postsProfile.length > 0  && creator["creator"] !== undefined) ) {
       skip = state.posts.length;
     } else {
       skip = 0;
     }
+    */
 
+   if ( creator["creator"] === undefined) {
+    console.log(state.posts.length)
+    if (state.posts.length > 0 ) {
+        skip = state.posts.length;
+      }else {
+        skip = 0;
+      }
+   }
+   if ( creator["creator"] !== undefined) {
+    /*
+    if(pagina == 1) {
+      resetPosts();
+    }*/
+    console.log(state.postsProfile.length)
+    if (state.postsProfile.length > 0 ) {
+        skip = state.postsProfile.length;
+      }else {
+        skip = 0;
+      }
+   }
+   
+
+
+   try {
+     
+   
     const posts = await axiosClient.get(
       `/api/post?skip=${skip}&limite=${limite}`,
       { params: creator }
     );
-    console.log(posts);
-
-    if (posts.data.length) {
+    console.log(posts)
+      const totalReplies = {"totalReplies": true}
+    if ((posts.data.length) ) {
       const postTree = [];
+
+      
+ 
       for (const postItem of posts.data) {
         const post = postItem._id;
 
         const repliesPost = await axiosClient.get("api/reply", {
-          params: { post },
+          params: { post, totalReplies },
         });
-        postItem.replies = repliesPost.data;
+
+
+        
+        postItem.numberReplies = repliesPost.data;
         const evaluation = user.evaluations.find((item) => item.post == post);
 
         if (evaluation) {
@@ -77,6 +115,35 @@ const PostState = (props) => {
         }
 
         postTree.push(postItem);
+       
+      }
+    
+
+      if(creator["creator"] === undefined) {
+      
+
+        dispatch({
+          type: GET_POSTS,
+          payload: postTree,
+        });
+      }else {
+      
+     
+        dispatch({
+          type: GET_POSTS_PROFILE,
+          payload: postTree,
+        });
+      }
+    }  else {
+      dispatch({
+        type: NO_RESULTS,
+      });
+    }
+
+  } catch (error) {
+     console.log(error)
+  }
+
 
         /*
          const postResp = posts.data;
@@ -95,44 +162,64 @@ const PostState = (props) => {
 
       
     */
-      }
-
-      dispatch({
-        type: GET_POSTS,
-        payload: postTree,
-      });
-    } else {
-      dispatch({
-        type: NO_RESULTS,
-      });
-    }
   };
 
-  const getPost = async (postId, edit) => {
-    const postSel = state.posts.find((post) => post._id === postId);
+  const getPost = async (post, edit, user) => {
+    //const postSel = state.posts.find((post) => post._id === postId);
+    try {
+    const postSel = await axiosClient.get(`/api/post/${post}`);
+
+    const postItem = postSel.data;
+    const repliesPost = await axiosClient.get("api/reply", {
+      params: { post },
+    });
+    postItem.numberReplies = repliesPost.data.totalReplies;
+    postItem.replies = repliesPost.data.repliesFromPost;
+
+    const evaluation = user.evaluations.find((item) => item.post == post);
+
+    if (evaluation) {
+      postItem.score = evaluation.score;
+    }
 
     if (edit) {
       dispatch({
         type: GET_ONEPOSTEDIT,
-        payload: postSel,
+        payload: postItem,
       });
     } else {
       dispatch({
         type: GET_ONEPOST,
-        payload: postSel,
+        payload: postItem,
       });
     }
+  }catch(error) {
+    dispatch({
+      type: ERRORMSG,
+      payload: error.response.data,
+    });
+  
+  }
   };
 
-  const updatePost = async (post) => {
+  const updatePost = async (postChanged, user) => {
     dispatch({
       type: LOADER,
     });
-    console.log(post)
-    
-    const postObj = keysAppend(post);
-    const postEdited = await axiosClient.post(`/api/post/${post._id}`, postObj);
-    console.log(postEdited)
+    const post = postChanged._id;
+    const postObj = keysAppend(postChanged);
+    const postEdited = await axiosClient.post(`/api/post/${post}`, postObj);
+    const postItem = postEdited.data;
+    const repliesPost = await axiosClient.get("api/reply", {
+      params: { post },
+    });
+    postItem.replies = repliesPost.data;
+    const evaluation = user.evaluations.find((item) => item.post == post);
+
+    if (evaluation) {
+      postItem.score = evaluation.score;
+    }
+
     try {
       dispatch({
         type: UPDATE_POST,
@@ -156,7 +243,7 @@ const PostState = (props) => {
         payload: postDelete.data.post,
       });
     } catch (error) {
-      console.log(error);
+
     }
   };
   const resetSelectPost = () => {
@@ -169,6 +256,7 @@ const PostState = (props) => {
     }
   };
   const resetPosts = () => {
+    console.log("reset post")
     try {
       dispatch({
         type: RESET_POSTS,
@@ -182,11 +270,14 @@ const PostState = (props) => {
     <PostContext.Provider
       value={{
         posts: state.posts,
+        postsProfile:state.postsProfile,
         post: state.post,
         postSelect: state.postSelect,
         formPostEdit: state.formPostEdit,
         loader: state.loader,
         results: state.results,
+        errormsg:state.errormsg,
+      
         newPost,
         getPosts,
         getPost,
