@@ -139,7 +139,7 @@ const Post = ({ post }) => {
           to={`/post/${_id}`}
           className="icon-format-1 icon-get-post"
         ></Link>
-        <div className="center-btn" style="display:none">
+        <div className="center-btn" >
             <Link to={`/post/${_id}`} className="link-gray" >
               <span  className="icon-format-1 icon-comment"></span>Comentar
           </Link>
