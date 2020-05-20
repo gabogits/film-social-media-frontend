@@ -1,11 +1,10 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import UserContext from "../../context/user/UserContext";
-import PostContext from "../../context/post/PostContext";
 import ReplyContext from "../../context/reply/ReplyContext";
 import { useLocation } from "react-router-dom";
-import TextareaAutosize from "react-textarea-autosize";
+import TextareaAutosize from "react-autosize-textarea";
 import previewImg from "./../../helpers/previewImg";
-import Loader from "../templates/Loader"
+import Loader from "../templates/Loader";
 
 const ReplyNew = ({ post }) => {
   let location = useLocation();
@@ -16,12 +15,11 @@ const ReplyNew = ({ post }) => {
     updateReply,
     cancelEdit,
     formReplyEdit,
-    loader
+    loader,
   } = replyContext;
+
   const userContext = useContext(UserContext);
   const { user } = userContext;
-  const postContext = useContext(PostContext);
-  const { resetPosts } = postContext;
   const { avatar } = user;
 
   const replyinitialState = {
@@ -30,6 +28,7 @@ const ReplyNew = ({ post }) => {
   };
   const [pictureToUpload, savePictureToUpload] = useState(null);
 
+  const inputRef = useRef();
   useEffect(() => {
     if (selectReply === null) {
       saveReply(replyinitialState);
@@ -38,7 +37,14 @@ const ReplyNew = ({ post }) => {
         saveReply(selectReply);
       }
     }
-  }, [selectReply]);
+
+    const query = location.pathname.split("/");
+    const postItem = query[3];
+
+    if (postItem === "add" && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
   const [reply, saveReply] = useState(replyinitialState);
 
   const { text, picture } = reply;
@@ -74,13 +80,6 @@ const ReplyNew = ({ post }) => {
       updateReply(reply);
     }
 
-    const query = location.pathname.split("/");
-    const postItem = query[1];
-
-    if (postItem === "post") {
-      resetPosts();
-    }
-
     saveReply(replyinitialState);
     savePictureToUpload(null);
   };
@@ -89,6 +88,7 @@ const ReplyNew = ({ post }) => {
     <div className="new-content">
       <div className="avatar-small-2">
         <img
+        alt="img"
           src={
             avatar !== "n/a" && avatar !== undefined
               ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}`
@@ -107,8 +107,8 @@ const ReplyNew = ({ post }) => {
                 onChange={onChangeValue}
               />
             </div>
-
             <TextareaAutosize
+              ref={inputRef}
               placeholder={`Escribe un comentario`}
               name="text"
               value={text}
@@ -117,11 +117,15 @@ const ReplyNew = ({ post }) => {
           </div>
           {pictureToUpload ? (
             <div className="preview-img">
-              <img src={pictureToUpload} />
+              <img src={pictureToUpload}  alt="img" />
             </div>
           ) : null}
 
-          {selectReply && !post && !pictureToUpload && picture !== "n/a" && picture !== undefined ? (
+          {selectReply &&
+          !post &&
+          !pictureToUpload &&
+          picture !== "n/a" &&
+          picture !== undefined ? (
             <div className="preview-img">
               <img
                 src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${picture}`}
@@ -130,9 +134,9 @@ const ReplyNew = ({ post }) => {
             </div>
           ) : null}
 
-          {loader ? <Loader /> : null }
+          {loader ? <Loader /> : null}
           <div className="new-content-actions">
-            {formReplyEdit && !post ?  (
+            {formReplyEdit && !post ? (
               <button
                 type="button"
                 className="button-primary btn-color-2 btn-size-1 btn-orientation-l"
@@ -142,7 +146,7 @@ const ReplyNew = ({ post }) => {
                 Cancelar
               </button>
             ) : null}
-            {text !== "" && !loader  || picture !== "" && !loader  ? (
+            {(text !== "" && !loader) || (picture !== "" && !loader) ? (
               <button
                 type="submit"
                 className="button-primary btn-color-1 btn-size-1 btn-orientation-r"

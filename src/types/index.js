@@ -1,7 +1,7 @@
 export const CREATE_POST = "CREATE_POST";
 export const GET_POSTS = "GET_POSTS";
 export const GET_POSTS_PROFILE = "GET_POSTS_PROFILE";
-
+export const GET_POSTS_USER = "GET_POSTS_USER";
 
 export const GET_ONEPOST = "GET_ONEPOST";
 export const GET_ONEPOSTEDIT = "GET_ONEPOSTEDIT";
@@ -16,6 +16,9 @@ export const RESET_POSTS = "RESET_POSTS";
 export const NO_RESULTS = "NO_RESULTS";
 export const ERRORMSG = "ERRORMSG";
 export const PAGE = "PAGE"
+export const LOADER_DELETE = "LOADER_DELETE";
+
+
 
 export const GET_ONEREPLY = "GET_ONEREPLY";
 export const UPDATE_REPLY = "UPDATE_REPLY";

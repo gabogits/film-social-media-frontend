@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const User = ({ user, idx }) => {
+const User = ({ user }) => {
   const { name, avatar, _id, userScoreTotal } = user;
 
   return (
     <li>
-      <Link className="user-avatar-medium" to={`/profile/${_id}`}>
+      <Link className="user-avatar-medium" to={`/friend/${_id}`}>
        
         <div className="avatar-dinamic">
         <img
@@ -16,6 +16,7 @@ const User = ({ user, idx }) => {
               ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}`
               : `./no-avatar.svg`
           }
+          alt="img"
         />
         </div>
         <div className="user-info">

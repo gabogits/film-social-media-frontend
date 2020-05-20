@@ -10,7 +10,7 @@ const ProfileInfo = ({ profile }) => {
     getUserById,
     getUsers,
     profileSelect,
-    resetProfile
+    resetProfile,
   } = userContext;
 
   useEffect(() => {
@@ -23,11 +23,10 @@ const ProfileInfo = ({ profile }) => {
     } else {
       saveUserInfo(profileSelect);
     }
-    if(!profile) {
-      resetProfile()
+    if (!profile) {
+      resetProfile();
     }
-  }, [profileSelect,  users.length, profile]);
-
+  }, [profileSelect, users.length, profile]);
 
   const userInitValues = {
     name: "",
@@ -58,10 +57,7 @@ const ProfileInfo = ({ profile }) => {
               <strong>{name}</strong>
             </h3>
             <h5>{email}</h5>
-            <p>
-             
-              {description}
-            </p>
+            <p>{description}</p>
             {_id === user._id ? (
               <a
                 href="#!"

@@ -12,7 +12,7 @@ const UsersList = ({ users }) => {
       </div>
       <form>
         <ul>
-          {users.map((user, idx) => (
+          {users.map((user) => (
             <User key={user._id} user={user} />
           ))}
         </ul>

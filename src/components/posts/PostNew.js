@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import PostContext from "../../context/post/PostContext";
 import UserContext from "../../context/user/UserContext";
-import TextareaAutosize from "react-textarea-autosize";
+import TextareaAutosize from "react-autosize-textarea";
 import previewImg from "./../../helpers/previewImg";
 import Loader from "../templates/Loader";
 
@@ -26,7 +26,6 @@ const PostNew = ({ props }) => {
     if (postSelect === null) {
       savePost(postInitValues);
     } else {
-
       savePost(postSelect);
     }
   }, [postSelect]);
@@ -56,7 +55,6 @@ const PostNew = ({ props }) => {
     ) {
       return;
     }
-
 
     if (postSelect === null) {
       post.author = user.name;
@@ -90,6 +88,7 @@ const PostNew = ({ props }) => {
       <div className="new-content">
         <div className="avatar-medium">
           <img
+          alt="img"
             src={
               avatar !== "n/a" && avatar !== undefined
                 ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}`
@@ -118,7 +117,7 @@ const PostNew = ({ props }) => {
             </div>
             {pictureToUpload ? (
               <div className="preview-img">
-                <img src={pictureToUpload} />
+                <img src={pictureToUpload} alt="img" />
               </div>
             ) : null}
 

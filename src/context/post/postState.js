@@ -1,4 +1,4 @@
-import React, { useReducer, useContext } from "react";
+import React, { useReducer } from "react";
 import PostContext from "./PostContext";
 import PostReducer from "./PostReducer";
 import axiosClient from "./../../config/axios";
@@ -8,6 +8,7 @@ import {
   CREATE_POST,
   GET_POSTS,
   GET_POSTS_PROFILE,
+  GET_POSTS_USER,
   GET_ONEPOST,
   GET_ONEPOSTEDIT,
   UPDATE_POST,
@@ -16,21 +17,24 @@ import {
   RESET_POST_SELECT,
   RESET_POSTS,
   LOADER,
+  LOADER_DELETE,
   NO_RESULTS,
-  ERRORMSG
+  ERRORMSG,
 } from "../../types";
 
 const PostState = (props) => {
   const initialState = {
     posts: [],
     postsProfile: [],
+    postsUser: [],
     post: null,
     postSelect: null,
     formPostEdit: false,
     limite: 5,
     loader: false,
     results: true,
-    errormsg: null
+    errormsg: null,
+    deleting: false,
   };
 
   const [state, dispatch] = useReducer(PostReducer, initialState);
@@ -61,91 +65,87 @@ const PostState = (props) => {
     }
     */
 
-   if ( creator["creator"] === undefined) {
-    console.log(state.posts.length)
-    if (state.posts.length > 0 ) {
+    if (creator["creator"] === undefined) {
+      console.log("state.posts.length", state.posts.length);
+      if (state.posts.length > 0) {
         skip = state.posts.length;
-      }else {
+      } else {
         skip = 0;
       }
-   }
-   if ( creator["creator"] !== undefined) {
-    /*
-    if(pagina == 1) {
-      resetPosts();
-    }*/
-    console.log(state.postsProfile.length)
-    if (state.postsProfile.length > 0 ) {
-        skip = state.postsProfile.length;
-      }else {
-        skip = 0;
-      }
-   }
-   
-
-
-   try {
-     
-   
-    const posts = await axiosClient.get(
-      `/api/post?skip=${skip}&limite=${limite}`,
-      { params: creator }
-    );
-    console.log(posts)
-      const totalReplies = {"totalReplies": true}
-    if ((posts.data.length) ) {
-      const postTree = [];
-
-      
- 
-      for (const postItem of posts.data) {
-        const post = postItem._id;
-
-        const repliesPost = await axiosClient.get("api/reply", {
-          params: { post, totalReplies },
-        });
-
-
-        
-        postItem.numberReplies = repliesPost.data;
-        const evaluation = user.evaluations.find((item) => item.post == post);
-
-        if (evaluation) {
-          postItem.score = evaluation.score;
+    }
+    if (creator["creator"] !== undefined) {
+      if (creator["creator"] !== user._id) {
+        console.log("state.postsProfile.length", state.postsProfile.length);
+        if (state.postsProfile.length > 0) {
+          skip = state.postsProfile.length;
+        } else {
+          skip = 0;
         }
-
-        postTree.push(postItem);
-       
+      } else {
+        console.log("state.postsUser.length", state.postsUser.length);
+        if (state.postsUser.length > 0) {
+          skip = state.postsUser.length;
+        } else {
+          skip = 0;
+        }
       }
-    
-
-      if(creator["creator"] === undefined) {
-      
-
-        dispatch({
-          type: GET_POSTS,
-          payload: postTree,
-        });
-      }else {
-      
-     
-        dispatch({
-          type: GET_POSTS_PROFILE,
-          payload: postTree,
-        });
-      }
-    }  else {
-      dispatch({
-        type: NO_RESULTS,
-      });
     }
 
-  } catch (error) {
-     console.log(error)
-  }
+    try {
+      const posts = await axiosClient.get(
+        `/api/post?skip=${skip}&limite=${limite}`,
+        { params: creator }
+      );
 
+      const totalReplies = { totalReplies: true };
+      if (posts.data.length) {
+        const postTree = [];
 
-        /*
+        for (const postItem of posts.data) {
+          const post = postItem._id;
+
+          const repliesPost = await axiosClient.get("api/reply", {
+            params: { post, totalReplies },
+          });
+
+          postItem.numberReplies = repliesPost.data;
+          const evaluation = user.evaluations.find((item) => item.post === post);
+
+          if (evaluation) {
+            postItem.score = evaluation.score;
+          }
+
+          postTree.push(postItem);
+        }
+
+        if (creator["creator"] === undefined) {
+          dispatch({
+            type: GET_POSTS,
+            payload: postTree,
+          });
+        } else {
+          if (creator["creator"] !== user._id) {
+            dispatch({
+              type: GET_POSTS_PROFILE,
+              payload: postTree,
+            });
+          } else {
+            dispatch({
+              type: GET_POSTS_USER,
+              payload: postTree,
+            });
+          }
+        }
+      } else {
+        dispatch({
+          type: NO_RESULTS,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    /*
          const postResp = posts.data;
       const values = [...postResp,  ...state.posts ];
 
@@ -167,39 +167,38 @@ const PostState = (props) => {
   const getPost = async (post, edit, user) => {
     //const postSel = state.posts.find((post) => post._id === postId);
     try {
-    const postSel = await axiosClient.get(`/api/post/${post}`);
+      const postSel = await axiosClient.get(`/api/post/${post}`);
 
-    const postItem = postSel.data;
-    const repliesPost = await axiosClient.get("api/reply", {
-      params: { post },
-    });
-    postItem.numberReplies = repliesPost.data.totalReplies;
-    postItem.replies = repliesPost.data.repliesFromPost;
-
-    const evaluation = user.evaluations.find((item) => item.post == post);
-
-    if (evaluation) {
-      postItem.score = evaluation.score;
-    }
-
-    if (edit) {
-      dispatch({
-        type: GET_ONEPOSTEDIT,
-        payload: postItem,
+      const postItem = postSel.data;
+      const repliesPost = await axiosClient.get("api/reply", {
+        params: { post },
       });
-    } else {
+      postItem.numberReplies = repliesPost.data.totalReplies;
+      postItem.replies = repliesPost.data.repliesFromPost;
+
+      const evaluation = user.evaluations.find((item) => item.post === post);
+
+      if (evaluation) {
+        postItem.score = evaluation.score;
+      }
+
+      if (edit) {
+        dispatch({
+          type: GET_ONEPOSTEDIT,
+          payload: postItem,
+        });
+      } else {
+        dispatch({
+          type: GET_ONEPOST,
+          payload: postItem,
+        });
+      }
+    } catch (error) {
       dispatch({
-        type: GET_ONEPOST,
-        payload: postItem,
+        type: ERRORMSG,
+        payload: error.response.data,
       });
     }
-  }catch(error) {
-    dispatch({
-      type: ERRORMSG,
-      payload: error.response.data,
-    });
-  
-  }
   };
 
   const updatePost = async (postChanged, user) => {
@@ -213,8 +212,9 @@ const PostState = (props) => {
     const repliesPost = await axiosClient.get("api/reply", {
       params: { post },
     });
-    postItem.replies = repliesPost.data;
-    const evaluation = user.evaluations.find((item) => item.post == post);
+    postItem.numberReplies = repliesPost.data.totalReplies;
+    postItem.replies = repliesPost.data.repliesFromPost;
+    const evaluation = user.evaluations.find((item) => item.post === post);
 
     if (evaluation) {
       postItem.score = evaluation.score;
@@ -234,7 +234,7 @@ const PostState = (props) => {
   };
   const deletePost = async (post) => {
     dispatch({
-      type: LOADER,
+      type: LOADER_DELETE,
     });
     const postDelete = await axiosClient.delete(`/api/post/${post}`);
     try {
@@ -242,9 +242,7 @@ const PostState = (props) => {
         type: DELETE_POST,
         payload: postDelete.data.post,
       });
-    } catch (error) {
-
-    }
+    } catch (error) {}
   };
   const resetSelectPost = () => {
     try {
@@ -256,7 +254,6 @@ const PostState = (props) => {
     }
   };
   const resetPosts = () => {
-    console.log("reset post")
     try {
       dispatch({
         type: RESET_POSTS,
@@ -270,14 +267,15 @@ const PostState = (props) => {
     <PostContext.Provider
       value={{
         posts: state.posts,
-        postsProfile:state.postsProfile,
+        postsProfile: state.postsProfile,
+        postsUser: state.postsUser,
         post: state.post,
         postSelect: state.postSelect,
         formPostEdit: state.formPostEdit,
         loader: state.loader,
         results: state.results,
-        errormsg:state.errormsg,
-      
+        errormsg: state.errormsg,
+        deleting: state.deleting,
         newPost,
         getPosts,
         getPost,

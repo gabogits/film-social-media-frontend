@@ -4,7 +4,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import UserContext from "./../../context/user/UserContext";
 import Error from "../templates/Error";
 import previewImg from "./../../helpers/previewImg";
-import Loader from "../templates/Loader"
+import Loader from "../templates/Loader";
 
 const SignupForm = () => {
   const userContext = useContext(UserContext);
@@ -13,9 +13,8 @@ const SignupForm = () => {
     userSelect,
     updateUser,
     cancelEditUser,
-    auth,
     message,
-    loader
+    loader,
   } = userContext;
 
   const userInitialState = {
@@ -102,7 +101,7 @@ const SignupForm = () => {
             onChange={onChangeValue}
           />
         </div>
-        {message == "El usuario ya existe" ? <Error msg={message} /> : null}
+        {message === "El usuario ya existe" ? <Error msg={message} /> : null}
         {!userSelect ? (
           <div className="field">
             <label>Contraseña</label>
@@ -140,23 +139,24 @@ const SignupForm = () => {
           />
         </div>
         {pictureToUpload ? (
-            <div className="preview-img">
-              <img src={pictureToUpload} />
-            </div>
-          ) : null}
+          <div className="preview-img">
+            <img src={pictureToUpload} alt="img" />
+          </div>
+        ) : null}
 
-          {userSelect && !pictureToUpload  && avatar !== "n/a" && avatar !== undefined ? (
-            <div className="preview-img">
-              <img
-                src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}`}
-                alt="img"
-              />
-            </div>
-          ) : null}
+        {userSelect &&
+        !pictureToUpload &&
+        avatar !== "n/a" &&
+        avatar !== undefined ? (
+          <div className="preview-img">
+            <img
+              src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}`}
+              alt="img"
+            />
+          </div>
+        ) : null}
         {!requerid ? <Error msg={"Faltan campos por llenar"} /> : null}
         <div className="section-format-actions">
-         
-
           {userSelect ? (
             <button
               type="button"
@@ -166,33 +166,33 @@ const SignupForm = () => {
               Cancelar
             </button>
           ) : null}
-          {!loader && userSelect  ? 
-          <button
-            type="submit"
-            className="button-primary btn-color-1 btn-size-1 btn-orientation-r"
-            value="enviar"
-          >
-            Guardar cambios
-          </button>
-          : null}
+          {!loader && userSelect ? (
+            <button
+              type="submit"
+              className="button-primary btn-color-1 btn-size-1 btn-orientation-r"
+              value="enviar"
+            >
+              Guardar cambios
+            </button>
+          ) : null}
 
-          {!loader && !userSelect  ? 
-          <button
-            type="submit"
-            className="button-primary-2 btn-color-1 btn-size-1 btn-orientation-auto"
-            value="enviar"
-          >
-            Crear cuenta
-          </button>
-          : null}
+          {!loader && !userSelect ? (
+            <button
+              type="submit"
+              className="button-primary-2 btn-color-1 btn-size-1 btn-orientation-auto"
+              value="enviar"
+            >
+              Crear cuenta
+            </button>
+          ) : null}
         </div>
-        {loader ? <Loader /> : null }
+        {loader ? <Loader /> : null}
         <div className="other-actions">
-        {!userSelect ?
-          <Link to={"/login"} className="link-style">
-            ¿Ya tienes cuenta? Es por aquí.
-          </Link>
-          : null}
+          {!userSelect ? (
+            <Link to={"/login"} className="link-style">
+              ¿Ya tienes cuenta? Es por aquí.
+            </Link>
+          ) : null}
         </div>
       </form>
     </section>

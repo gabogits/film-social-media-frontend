@@ -23,8 +23,8 @@ const RankingList = ({ users }) => {
           Destacados
         </h4>
         <p>
-          ¿Qué es una red social sin la aprobación pública?.
-         Estas son las personas cuyo contenido ha obtenido más estrellas.
+          ¿Qué es una red social sin la aprobación pública?. Estas son las
+          personas cuyo contenido ha obtenido más estrellas.
         </p>
       </div>
 
@@ -32,8 +32,8 @@ const RankingList = ({ users }) => {
         <ul>
           {users
             .sort((a, b) => b.userScoreTotal - a.userScoreTotal)
-            .map((user, idx) => idx < 10 ?    <User key={user._id} user={user} />: null
-            
+            .map((user, idx) =>
+              idx < 10 ? <User key={user._id} user={user} /> : null
             )}
         </ul>
       </div>

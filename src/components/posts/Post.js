@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, Fragment } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { format, register } from "timeago.js";
 import ReplyList from "../replies/ReplyList";
 import ReplyNew from "../replies/ReplyNew";
@@ -7,32 +7,30 @@ import ReplyContext from "./../../context/reply/ReplyContext";
 import UserContext from "../../context/user/UserContext";
 import { Link } from "react-router-dom";
 import { localeFunc, formatURL } from "./../../helpers/";
-var Text = require("react-format-text");
+import Loader from "../templates/Loader";
 
 register("es_ES", localeFunc);
 
 const Post = ({ post }) => {
-
   const postContext = useContext(PostContext);
-  const { deletePost, postSelect } = postContext;
+  const { deletePost, postSelect, deleting } = postContext;
 
   const replyContext = useContext(ReplyContext);
   const { formReplyEdit, selectReply } = replyContext;
 
   const userContext = useContext(UserContext);
-  const { user, setEvaluations } = userContext;
+  const { user, setEvaluations, users } = userContext;
 
   const {
     text,
     picture,
     creator,
     registry,
-    author,
     pic,
     _id,
     score,
     replies,
-    numberReplies
+    numberReplies,
   } = post;
   const rankingItems = [
     { id: 1, value: 1 },
@@ -41,6 +39,11 @@ const Post = ({ post }) => {
     { id: 4, value: 4 },
     { id: 5, value: 5 },
   ];
+
+  function getUserData(creator) {
+    const userPostItem = users.find((item) => item._id === creator);
+    return userPostItem;
+  }
 
   const scoreInit = 0;
   useEffect(() => {
@@ -52,6 +55,7 @@ const Post = ({ post }) => {
   }, []);
 
   const [starts, setStarts] = useState(scoreInit);
+  const [itemToDelete, saveItemToDelete] = useState(null);
 
   const onClickStar = (value, postId, user, creator) => {
     setStarts(value);
@@ -63,7 +67,13 @@ const Post = ({ post }) => {
     setEvaluations(evaluation, user, creator);
   };
 
+  const deletePostHandler = (_id) => {
+    saveItemToDelete(_id);
+    deletePost(_id);
+  };
+
   if (!post || !user) return null;
+
   return (
     <div className="post box-format">
       <div className="box-head">
@@ -76,7 +86,9 @@ const Post = ({ post }) => {
               <img
                 src={
                   pic !== "n/a" && pic !== undefined
-                    ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${pic}`
+                    ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${
+                        getUserData(creator).avatar
+                      }`
                     : `./no-avatar.svg`
                 }
                 alt="img"
@@ -87,7 +99,7 @@ const Post = ({ post }) => {
             <Link
               to={creator === user._id ? `/profile` : `/profile/${creator}`}
             >
-              <strong>{author}</strong>
+              <strong>{getUserData(creator).name}</strong>
               <span> {format(registry, "es_ES")}</span>
             </Link>
           </div>
@@ -129,19 +141,15 @@ const Post = ({ post }) => {
             ></Link>
 
             <button
-              onClick={() => deletePost(_id)}
+              onClick={() => deletePostHandler(_id)}
               className="icon-format-1 icon-delete"
             ></button>
           </div>
         )}
 
-        <Link
-          to={`/post/${_id}`}
-          className="icon-format-1 icon-get-post"
-        ></Link>
-        <div className="center-btn" >
-            <Link to={`/post/${_id}`} className="link-gray" >
-              <span  className="icon-format-1 icon-comment"></span>Comentar
+        <div className="center-btn">
+          <Link to={`/post/${_id}/add`} className="link-gray">
+            <span className="icon-format-1 icon-comment"></span>Comentar
           </Link>
         </div>
         {numberReplies > 0 ? (
@@ -150,10 +158,13 @@ const Post = ({ post }) => {
           </Link>
         ) : null}
       </div>
-      {postSelect ? <ReplyList post={post} /> : null }
-      
-      
-      {formReplyEdit && _id === selectReply.post ? null : (
+      {deleting && _id === itemToDelete ? <Loader /> : null}
+      {postSelect && (replies.length > 0 || replies !== "") ? (
+        <ReplyList post={post} />
+      ) : null}
+
+      {(formReplyEdit && _id === selectReply.post) ||
+      postSelect === null ? null : (
         <ReplyNew post={post} />
       )}
     </div>

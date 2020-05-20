@@ -5,16 +5,16 @@ import {
   UPDATE_REPLY,
   DELETE_REPLY,
   CANCEL_EDITREPLY,
-  LOADER
+  LOADER,
 } from "../../types/";
 
 export default (state, action) => {
   switch (action.type) {
-    case LOADER: 
-    return {
-      ...state,
-      loader: true,
-    }
+    case LOADER:
+      return {
+        ...state,
+        loader: true,
+      };
     case CREATE_REPLY:
       return {
         ...state,
@@ -43,7 +43,6 @@ export default (state, action) => {
         loader: false,
       };
     case DELETE_REPLY:
-
       return {
         ...state,
         replies: state.replies.filter(

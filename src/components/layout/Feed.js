@@ -7,11 +7,11 @@ import UsersList from "./../user/UsersList";
 import UserContext from "../../context/user/UserContext";
 import PostContext from "../../context/post/PostContext";
 import ReplyContext from "../../context/reply/ReplyContext";
-import BottomBar from "./BottomBar"
+import BottomBar from "./BottomBar";
 
-const Feed = () => {
+const Feed = (props) => {
   const userContext = useContext(UserContext);
-  const { userAuth, user, users, getUsers, userSelect, auth, resetProfile } = userContext;
+  const { userAuth, user, users, getUsers, userSelect, auth } = userContext;
   const postContext = useContext(PostContext);
   const { resetSelectPost } = postContext;
   const replyContext = useContext(ReplyContext);
@@ -20,15 +20,14 @@ const Feed = () => {
     userAuth();
     getUsers();
     resetSelectPost();
-   
-    // eslint-disable-next-line
 
+    // eslint-disable-next-line
   }, [newReply, userSelect, auth]);
 
   if (!user || !users) return null;
   return (
     <main className="top-space">
-      <Header></Header>
+      <Header props={props}></Header>
       <div className="container">
         <div className={`sidebar-1`}>
           <div className="sidebar-content">
@@ -45,7 +44,7 @@ const Feed = () => {
           </div>
         </div>
       </div>
-      <BottomBar />
+      <BottomBar props={props} />
     </main>
   );
 };

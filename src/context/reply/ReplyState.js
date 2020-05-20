@@ -5,14 +5,12 @@ import {
   UPDATE_REPLY,
   DELETE_REPLY,
   CANCEL_EDITREPLY,
-  LOADER
+  LOADER,
 } from "../../types";
 import ReplyContext from "./ReplyContext";
 import ReplyReducer from "./ReplyReducer";
 import axiosClient from "../../config/axios";
 import { keysAppend } from "../../helpers/";
-import PostContext from "../../context/post/PostContext";
-
 
 const ReplyState = (props) => {
   const initialState = {
@@ -95,7 +93,7 @@ const ReplyState = (props) => {
         formReplyEdit: state.formReplyEdit,
         loader: state.loader,
         reply: state.reply,
-        
+
         newReply,
         getReplies,
         getReply,

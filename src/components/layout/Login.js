@@ -13,12 +13,10 @@ const Login = (props) => {
   }, [auth, props.history]);
 
   return (
-    <main className="top-space pad-bottom" >
-      <Header />
+    <main className="top-space pad-bottom">
+      <Header props={props} />
       <LoginForm />
-      <div className="back-full back-2">
-        
-        </div>
+      <div className="back-full back-2"></div>
     </main>
   );
 };

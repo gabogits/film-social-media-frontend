@@ -18,8 +18,7 @@ import {
   SIGNUP_ERROR,
   HIDE_ERROR,
   LOADER,
-  RESET_PROFILE
-
+  RESET_PROFILE,
 } from "./../../types/";
 import axiosClient from "../../config/axios";
 
@@ -34,15 +33,14 @@ const UserState = (props) => {
     loading: true,
     message: null,
     loader: false,
-    profileSelect: null
-
+    profileSelect: null,
   };
   const [state, dispatch] = useReducer(UserReducer, initialState);
 
   const signUpUser = async (user) => {
-      dispatch({
-        type: LOADER,
-      });
+    dispatch({
+      type: LOADER,
+    });
     const userObj = keysAppend(user);
     try {
       const userSignUp = await axiosClient.post("/api/user", userObj);
@@ -68,14 +66,13 @@ const UserState = (props) => {
 
   const getUsers = async () => {
     const users = await axiosClient.get("/api/user");
-  
+
     dispatch({
       type: GET_USERS,
       payload: users.data,
     });
   };
   const getUserById = async (id) => {
-
     const userProfile = state.users.find((user) => user._id === id);
 
     dispatch({
@@ -94,7 +91,7 @@ const UserState = (props) => {
     dispatch({
       type: LOADER,
     });
-  
+
     delete user.password;
 
     const userObj = keysAppend(user);
@@ -110,7 +107,7 @@ const UserState = (props) => {
     dispatch({
       type: LOADER,
     });
-   
+
     try {
       const userLog = await axiosClient.post("/api/auth", user);
       dispatch({
@@ -199,12 +196,12 @@ const UserState = (props) => {
     await axiosClient.post(`/api/user/${creator}`, creatorPost);
     getUsers();
   };
-  const resetProfile =  () => {
+  const resetProfile = () => {
     dispatch({
-      type:  RESET_PROFILE,
+      type: RESET_PROFILE,
     });
-  }
- 
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -224,11 +221,10 @@ const UserState = (props) => {
         editUser,
         updateUser,
         signOut,
-        signOut,
         userAuth,
         setEvaluations,
         cancelEditUser,
-        resetProfile
+        resetProfile,
       }}
     >
       {props.children}

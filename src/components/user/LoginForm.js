@@ -2,8 +2,7 @@ import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import Error from "../templates/Error";
 import UserContext from "./../../context/user/UserContext";
-import Loader from "../templates/Loader"
-
+import Loader from "../templates/Loader";
 
 const Login = () => {
   const userContext = useContext(UserContext);
@@ -67,20 +66,22 @@ const Login = () => {
           <Error msg={"Usuario o contraseña incorrecta"} />
         ) : null}
         {!requerid ? <Error msg={"Faltan campos por llenar"} /> : null}
-        {loader ? <Loader /> : null }
-        {!loader ? 
-        <div className="section-format-actions">
-        <button
-          type="submit"
-          className="button-primary-2 btn-color-1 btn-size-2 btn-orientation-auto"
-          value="enviar"
-        >
-          Inicia sesión
-        </button>
-        </div>
-        : null }
+        {loader ? <Loader /> : null}
+        {!loader ? (
+          <div className="section-format-actions">
+            <button
+              type="submit"
+              className="button-primary-2 btn-color-1 btn-size-2 btn-orientation-auto"
+              value="enviar"
+            >
+              Inicia sesión
+            </button>
+          </div>
+        ) : null}
         <div className="other-actions">
-        <Link to={"/"} className="link-style">¿Aún no tienes cuenta? Es por acá.</Link>
+          <Link to={"/"} className="link-style">
+            ¿Aún no tienes cuenta? Es por acá.
+          </Link>
         </div>
       </form>
     </section>

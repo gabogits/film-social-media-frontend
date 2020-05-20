@@ -14,7 +14,7 @@ const SignUp = (props) => {
 
   return (
     <main className="top-space pad-bottom">
-      <Header />
+      <Header props={props} />
       <SignupForm />
       <div className="back-full back-1" />
     </main>

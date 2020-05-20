@@ -39,4 +39,7 @@
   .info-table p {
     max-width: 100%;
   }
+  .btn-back {
+    display: none;
+  }
 }

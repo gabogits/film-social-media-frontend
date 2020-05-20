@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from "react";
+import React, { useContext, useEffect } from "react";
 import Header from "./Header";
 import UsersList from "./../user/UsersList";
 
@@ -17,15 +17,15 @@ const Users = (props) => {
 
   return (
     <main className="top-space">
-      <Header></Header>
+      <Header props={props}></Header>
       <div className="container">
-      <div className="content-center">
-        <div className="box-format">
-        <UsersList users={users} />
-        </div>
+        <div className="content-center">
+          <div className="box-format">
+            <UsersList users={users} />
+          </div>
         </div>
       </div>
-      <BottomBar />
+      <BottomBar props={props} />
     </main>
   );
 };

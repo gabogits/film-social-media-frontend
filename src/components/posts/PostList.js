@@ -8,9 +8,15 @@ import Loader from "../templates/Loader";
 
 const PostList = (creator) => {
   const userContext = useContext(UserContext);
-  const { userSelect, user, profileSelect } = userContext;
+  const { userSelect, user } = userContext;
   const postContext = useContext(PostContext);
-  const { posts, postsProfile, getPosts, results, newReply,  } = postContext;
+  const {
+    posts,
+    postsProfile,
+    postsUser,
+    getPosts,
+    results,
+  } = postContext;
 
   const [pagina, setPagina] = useState(1);
   const [isFetching, setIsFetching] = infiniteScroll(fetchMoreListItems);
@@ -22,47 +28,45 @@ const PostList = (creator) => {
   }
 
   useEffect(() => {
-    let mounted = true;
-   
     if (user) {
-    
-      if(mounted){
       getPosts(creator, user, pagina);
-      }
     }
-    return () => { 
-      mounted = false 
 
-    }
-    ;
     // eslint-disable-next-line
   }, [userSelect, pagina]);
 
-  
-
-  
-    return (
-      <Fragment>
-        {creator["creator"] === undefined ? (
-          <Fragment>
-            {posts.map((post) => (
-              <Post key={post._id} post={post} />
-            ))}
-          </Fragment>
-        ) : (
-          <Fragment>
-            {postsProfile.map((post) => (
-              <Post key={post._id} post={post} />
-            ))}
-          </Fragment>
-        )}
-        {isFetching && results ? <Loader /> : null}
-        {!results ? (
-          <div className="post box-format txt-center">
-            Ya no hay mas publicaciones
-          </div>
-        ) : null}
-      </Fragment>
-    );
-        }
+  return (
+    <Fragment>
+      {creator["creator"] === undefined ? (
+        <Fragment>
+          {posts.map((post) => (
+            <Post key={post._id} post={post} />
+          ))}
+        </Fragment>
+      ) : (
+        <Fragment>
+          {creator["creator"] !== user._id ? (
+            <Fragment>
+              {postsProfile.map((post) => (
+                <Post key={post._id} post={post} />
+              ))}
+            </Fragment>
+          ) : (
+            <Fragment>
+              {postsUser.map((post) => (
+                <Post key={post._id} post={post} />
+              ))}
+            </Fragment>
+          )}
+        </Fragment>
+      )}
+      {isFetching && results ? <Loader /> : null}
+      {!results ? (
+        <div className="post box-format txt-center">
+          Ya no hay mas publicaciones
+        </div>
+      ) : null}
+    </Fragment>
+  );
+};
 export default PostList;

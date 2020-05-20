@@ -18,9 +18,6 @@ const Reply = ({ reply }) => {
   const replyContext = useContext(ReplyContext);
   const { getReply, deleteReply, formReplyEdit, selectReply } = replyContext;
 
-  /*
-
- */
   return (
     <Fragment>
       {formReplyEdit && reply._id === selectReply._id ? (
@@ -76,7 +73,6 @@ const Reply = ({ reply }) => {
                   className="icon-format-1 icon-edit"
                 ></a>
                 <button
-                
                   onClick={() => deleteReply(reply)}
                   className="icon-format-1 icon-delete"
                 ></button>
