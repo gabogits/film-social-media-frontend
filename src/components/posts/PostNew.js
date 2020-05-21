@@ -28,6 +28,7 @@ const PostNew = ({ props }) => {
     } else {
       savePost(postSelect);
     }
+     // eslint-disable-next-line
   }, [postSelect]);
 
   const [post, savePost] = useState(postInitValues);
@@ -57,11 +58,10 @@ const PostNew = ({ props }) => {
     }
 
     if (postSelect === null) {
-      post.author = user.name;
-      post.pic = user.avatar;
+
       newPost(post);
     } else {
-      updatePost(post, user);
+      updatePost(post, user, true);
       props.history.push(`/post/${post._id}`);
     }
 
@@ -74,6 +74,8 @@ const PostNew = ({ props }) => {
     e.preventDefault();
     cancelPost();
   };
+  console.log(pictureToUpload)
+  console.log(postSelect)
   if (!user) return null;
   const { name, avatar } = user;
   return (
@@ -115,7 +117,7 @@ const PostNew = ({ props }) => {
                 onChange={onChangeValue}
               />
             </div>
-            {pictureToUpload ? (
+            {postSelect && pictureToUpload ? (
               <div className="preview-img">
                 <img src={pictureToUpload} alt="img" />
               </div>

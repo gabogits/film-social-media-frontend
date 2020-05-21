@@ -27,13 +27,13 @@ const Reply = ({ reply }) => {
           <div className="box-info">
             <div className="avatar-small-2">
               <Link
-                to={creator === user._id ? `/profile` : `/profile/${creator}`}
+                to={creator === user._id ? `/profile` : `/friend/${creator}`}
               >
                 <img
                   src={
                     pic !== "n/a" && pic !== undefined
                       ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${pic}`
-                      : `./no-avatar.svg`
+                      : `../../no-avatar.svg`
                   }
                   alt="img"
                 />
@@ -42,7 +42,7 @@ const Reply = ({ reply }) => {
 
             <div className="box-name-date">
               <Link
-                to={creator === user._id ? `/profile` : `/profile/${creator}`}
+                to={creator === user._id ? `/profile` : `/friend/${creator}`}
               >
                 <strong>{author}</strong>
                 <span> {format(registry, "es_ES")}</span>
@@ -67,11 +67,11 @@ const Reply = ({ reply }) => {
           {creator === _id ? (
             <div className="box-body-actions">
               <div className="creator-options">
-                <a
-                  href="#!"
+                <button
+                 
                   onClick={() => getReply(reply)}
                   className="icon-format-1 icon-edit"
-                ></a>
+                ></button>
                 <button
                   onClick={() => deleteReply(reply)}
                   className="icon-format-1 icon-delete"

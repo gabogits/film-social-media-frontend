@@ -37,6 +37,10 @@ export const RESET_PROFILE = "RESET_PROFILE";
 export const LOGIN_USER = "LOGIN_USER";
 export const LOGIN_ERROR = "LOGIN_ERROR";
 export const SIGN_OUT = "SIGN_OUT";
+export const SET_PAGE = "SET_PAGE";
+
+
+
 
 export const SIGNUP_ERROR = "SIGNUP_ERROR";
 export const HIDE_ERROR = "HIDE_ERROR";

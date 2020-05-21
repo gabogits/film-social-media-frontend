@@ -16,7 +16,7 @@ const User = ({ user }) => {
               ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}`
               : `./no-avatar.svg`
           }
-          alt="img"
+          alt={name}
         />
         </div>
         <div className="user-info">

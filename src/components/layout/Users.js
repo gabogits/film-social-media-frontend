@@ -11,6 +11,7 @@ const Users = (props) => {
   useEffect(() => {
     userAuth();
     getUsers();
+    // eslint-disable-next-line
   }, [auth]);
 
   if (!user || !users) return null;

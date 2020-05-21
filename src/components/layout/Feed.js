@@ -11,7 +11,7 @@ import BottomBar from "./BottomBar";
 
 const Feed = (props) => {
   const userContext = useContext(UserContext);
-  const { userAuth, user, users, getUsers, userSelect, auth } = userContext;
+  const { userAuth, user, users, getUsers, userSelect, auth, setPage } = userContext;
   const postContext = useContext(PostContext);
   const { resetSelectPost } = postContext;
   const replyContext = useContext(ReplyContext);
@@ -20,7 +20,7 @@ const Feed = (props) => {
     userAuth();
     getUsers();
     resetSelectPost();
-
+    setPage("feed");
     // eslint-disable-next-line
   }, [newReply, userSelect, auth]);
 

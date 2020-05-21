@@ -42,4 +42,25 @@
   .btn-back {
     display: none;
   }
+  .box-info .btn-back {
+    display: block;
+    position: relative;
+    left: 0;
+    background-size: 16px;
+    width: 29px;
+    background-position: left;
+}
+.post-view .post {
+  padding-top: 40px;
+}
+.post-view .box-head {
+
+  position: fixed;
+background: #fff;
+width: 100%;
+top: 40px;
+left: 0;
+padding: 8px;
+z-index: 1;
+}
 }

@@ -2,8 +2,7 @@ import React, { Fragment } from "react";
 import User from "./../user/User";
 
 const RankingList = ({ users }) => {
-  if (!users) return null;
-
+  
   users.map((user) => {
     let userScoreTotal = 0;
     for (var item of user.ranking) {
@@ -12,8 +11,9 @@ const RankingList = ({ users }) => {
         userScoreTotal = userScoreTotal + score;
       }
     }
-    user.userScoreTotal = userScoreTotal;
+    return user.userScoreTotal = userScoreTotal;
   });
+  if (!users) return null;
 
   return (
     <Fragment>

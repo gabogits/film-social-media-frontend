@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { format, register } from "timeago.js";
+import { useHistory, useLocation } from "react-router-dom";
 import ReplyList from "../replies/ReplyList";
 import ReplyNew from "../replies/ReplyNew";
 import PostContext from "./../../context/post/PostContext";
@@ -12,8 +13,10 @@ import Loader from "../templates/Loader";
 register("es_ES", localeFunc);
 
 const Post = ({ post }) => {
+  let history = useHistory();
+  let location = useLocation();
   const postContext = useContext(PostContext);
-  const { deletePost, postSelect, deleting } = postContext;
+  const { deletePost, postSelect, deleting, updatePost } = postContext;
 
   const replyContext = useContext(ReplyContext);
   const { formReplyEdit, selectReply } = replyContext;
@@ -26,10 +29,8 @@ const Post = ({ post }) => {
     picture,
     creator,
     registry,
-    pic,
     _id,
     score,
-    replies,
     numberReplies,
   } = post;
   const rankingItems = [
@@ -52,6 +53,7 @@ const Post = ({ post }) => {
     } else {
       setStarts(scoreInit);
     }
+     // eslint-disable-next-line
   }, []);
 
   const [starts, setStarts] = useState(scoreInit);
@@ -63,33 +65,45 @@ const Post = ({ post }) => {
       post: postId,
       score: value,
     };
+    console.log(post)
 
-    setEvaluations(evaluation, user, creator);
+
+  setEvaluations(evaluation, user, creator);
+    if(postSelect) {
+      updatePost(post, user)
+    }
+    
   };
 
   const deletePostHandler = (_id) => {
     saveItemToDelete(_id);
+   
     deletePost(_id);
   };
-
+  const back = () => {
+    
+    history.go(-1);
+  };
   if (!post || !user) return null;
-
+  const query = location.pathname.split("/");
+  const postItem = query[1];
   return (
     <div className="post box-format">
       <div className="box-head">
-        <div className="menu-options"></div>
+       
         <div className="box-info">
+       {postItem === "post" ? <div onClick={back} className="btn-back"></div>  : null }
           <div className="avatar-small">
             <Link
-              to={creator === user._id ? `/profile` : `/profile/${creator}`}
+              to={creator === user._id ? `/profile` : `/friend/${creator}`}
             >
               <img
                 src={
-                  pic !== "n/a" && pic !== undefined
+                  getUserData(creator).avatar !== "n/a" &&   getUserData(creator).avatar !== undefined
                     ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${
                         getUserData(creator).avatar
                       }`
-                    : `./no-avatar.svg`
+                    : `../../no-avatar.svg`
                 }
                 alt="img"
               />
@@ -97,7 +111,7 @@ const Post = ({ post }) => {
           </div>
           <div className="box-name-date">
             <Link
-              to={creator === user._id ? `/profile` : `/profile/${creator}`}
+              to={creator === user._id ? `/profile` : `/friend/${creator}`}
             >
               <strong>{getUserData(creator).name}</strong>
               <span> {format(registry, "es_ES")}</span>
@@ -159,7 +173,7 @@ const Post = ({ post }) => {
         ) : null}
       </div>
       {deleting && _id === itemToDelete ? <Loader /> : null}
-      {postSelect && (replies.length > 0 || replies !== "") ? (
+      {postSelect ? (
         <ReplyList post={post} />
       ) : null}
 

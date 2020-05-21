@@ -72,8 +72,7 @@ const PostState = (props) => {
       } else {
         skip = 0;
       }
-    }
-    if (creator["creator"] !== undefined) {
+    } else {
       if (creator["creator"] !== user._id) {
         console.log("state.postsProfile.length", state.postsProfile.length);
         if (state.postsProfile.length > 0) {
@@ -97,11 +96,31 @@ const PostState = (props) => {
         { params: creator }
       );
 
+      const postResp = posts.data;
+      let values;
+      if (creator["creator"] === undefined) {
+        values = [...postResp, ...state.posts];
+      } else {
+        if (creator["creator"] !== user._id) {
+          values = [...postResp, ...state.postsProfile];
+        } else {
+          values = [...postResp, ...state.postsUser];
+        }
+      }
+
+      const lookup = values.reduce((a, e) => {
+        a[e._id] = ++a[e._id] || 0;
+        return a;
+      }, {});
+
+      const doubles = values.filter((e) => lookup[e._id]);
+      const newArray = [...doubles, ...postResp];
+      const postToList = newArray.filter((e) => !lookup[e._id]);
       const totalReplies = { totalReplies: true };
-      if (posts.data.length) {
+      if (postToList.length) {
         const postTree = [];
 
-        for (const postItem of posts.data) {
+        for (const postItem of postToList) {
           const post = postItem._id;
 
           const repliesPost = await axiosClient.get("api/reply", {
@@ -109,7 +128,9 @@ const PostState = (props) => {
           });
 
           postItem.numberReplies = repliesPost.data;
-          const evaluation = user.evaluations.find((item) => item.post === post);
+          const evaluation = user.evaluations.find(
+            (item) => item.post === post
+          );
 
           if (evaluation) {
             postItem.score = evaluation.score;
@@ -146,30 +167,16 @@ const PostState = (props) => {
     }
 
     /*
-         const postResp = posts.data;
-      const values = [...postResp,  ...state.posts ];
-
-    const lookup = values.reduce((a, e) => {
-      a[e._id] = ++a[e._id] || 0;
-      return a;
-    }, {});
-    
-    const doubles = values.filter(e => lookup[e._id]);
-
-    const newArray = [...doubles,  ...postResp]
-    
-    const postToList = newArray.filter(e => !lookup[e._id]);
-
+     
       
     */
   };
 
-  const getPost = async (post, edit, user) => {
-    //const postSel = state.posts.find((post) => post._id === postId);
+  const getPost = async (post, edit, user, page) => {
     try {
-      const postSel = await axiosClient.get(`/api/post/${post}`);
+      let postSel = await axiosClient.get(`/api/post/${post}`);
+      let postItem = postSel.data;
 
-      const postItem = postSel.data;
       const repliesPost = await axiosClient.get("api/reply", {
         params: { post },
       });
@@ -181,7 +188,6 @@ const PostState = (props) => {
       if (evaluation) {
         postItem.score = evaluation.score;
       }
-
       if (edit) {
         dispatch({
           type: GET_ONEPOSTEDIT,
@@ -201,29 +207,39 @@ const PostState = (props) => {
     }
   };
 
-  const updatePost = async (postChanged, user) => {
+  const updatePost = async (postChanged, user, repliesList) => {
     dispatch({
       type: LOADER,
     });
-    const post = postChanged._id;
-    const postObj = keysAppend(postChanged);
-    const postEdited = await axiosClient.post(`/api/post/${post}`, postObj);
-    const postItem = postEdited.data;
-    const repliesPost = await axiosClient.get("api/reply", {
-      params: { post },
-    });
-    postItem.numberReplies = repliesPost.data.totalReplies;
-    postItem.replies = repliesPost.data.repliesFromPost;
-    const evaluation = user.evaluations.find((item) => item.post === post);
-
-    if (evaluation) {
-      postItem.score = evaluation.score;
-    }
-
     try {
+      const post = postChanged._id;
+      const postObj = keysAppend(postChanged);
+      const postEdited = await axiosClient.post(`/api/post/${post}`, postObj);
+      const postItem = postEdited.data;
+      let repliesPost;
+      if (repliesList) {
+        repliesPost = await axiosClient.get("api/reply", {
+          params: { post },
+        });
+        postItem.numberReplies = repliesPost.data.totalReplies;
+        postItem.replies = repliesPost.data.repliesFromPost;
+      } else {
+        const totalReplies = { totalReplies: true };
+        repliesPost = await axiosClient.get("api/reply", {
+          params: { post, totalReplies },
+        });
+        postItem.numberReplies = repliesPost.data;
+      }
+
+      const evaluation = user.evaluations.find((item) => item.post === post);
+
+      if (evaluation) {
+        postItem.score = evaluation.score;
+      }
+      console.log("actualizando");
       dispatch({
         type: UPDATE_POST,
-        payload: postEdited.data,
+        payload: postItem,
       });
     } catch (error) {}
   };
@@ -236,8 +252,9 @@ const PostState = (props) => {
     dispatch({
       type: LOADER_DELETE,
     });
-    const postDelete = await axiosClient.delete(`/api/post/${post}`);
     try {
+      const postDelete = await axiosClient.delete(`/api/post/${post}`);
+
       dispatch({
         type: DELETE_POST,
         payload: postDelete.data.post,

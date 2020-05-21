@@ -10,7 +10,7 @@ import BottomBar from "./BottomBar";
 
 const Profile = (props) => {
   const userContext = useContext(UserContext);
-  const { formEdit, user, userAuth, resetProfile } = userContext;
+  const { formEdit, user, userAuth, resetProfile, setPage } = userContext;
 
   const query = props.location.pathname.split("/");
   const profile = query[2];
@@ -19,10 +19,12 @@ const Profile = (props) => {
 
   useEffect(() => {
     userAuth();
+    setPage("friend");
     return () => {
       resetProfile();
       resetPosts();
     };
+    // eslint-disable-next-line
   }, [props.location]);
   if (!user) return null;
 

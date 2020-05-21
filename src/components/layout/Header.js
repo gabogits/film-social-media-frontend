@@ -4,10 +4,11 @@ import UserContext from "./../../context/user/UserContext";
 
 const Header = ({ props }) => {
   const userContext = useContext(UserContext);
-  const { signOut, user } = userContext;
+  const { signOut, user, page } = userContext;
   const query = props.location.pathname.split("/");
   const postItem = query[1];
   const back = () => {
+    
     props.history.go(-1);
   };
   return (
@@ -16,7 +17,7 @@ const Header = ({ props }) => {
         <div className="header-logo">
           {user ? (
             <Fragment>
-              {postItem !== "post" ? (
+              {postItem !== "post" && page === "feed" ? (
                 <Link to={"/feed"}>
                   <img
                     alt="img"
@@ -25,13 +26,13 @@ const Header = ({ props }) => {
                   />
                 </Link>
               ) : (
-                <a href="#" onClick={back}>
+                <button onClick={back}>
                   <img
                     alt="img"
                     width="30px"
                     src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${user.avatar}`}
                   />
-                </a>
+                </button>
               )}
             </Fragment>
           ) : null}
@@ -51,22 +52,30 @@ const Header = ({ props }) => {
             ) : (
               <Fragment>
                 <li className="hide-mobile">
-                  {postItem !== "post" ? (
-                    <Link to={"/feed"}>Inicio</Link>
+                  {postItem === "post" && page === "feed" ? (
+       
+                  <button onClick={back}>
+                    Inicio
+                  </button>
                   ) : (
-                    <a href="#" onClick={back}>
-                      Inicio
-                    </a>
+                    <Link to={"/feed"}>Inicio</Link>
                   )}
                 </li>
                 <li className="hide-mobile">
-                  <Link to={"/profile"}>Perfil</Link>
+                  {postItem === "post" && page === "profile" ? (
+                      <button   onClick={back}>
+                      Perfil
+                    </button>
+                  ) : (
+                    <Link to={"/profile"}>Perfil</Link>
+                  )}
+
+
                 </li>
                 <li className="hide-mobile">
-                  <a href="#!" onClick={signOut}>
-                    {" "}
+                  <button onClick={signOut}>
                     Cerrar sesión
-                  </a>
+                  </button>
                 </li>
                 <li>
                   <div className="menu-user">

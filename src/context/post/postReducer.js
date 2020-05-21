@@ -75,8 +75,17 @@ export default (state, action) => {
     case UPDATE_POST:
       return {
         ...state,
-        posts: [],
         postSelect: action.payload,
+        posts: state.posts.map((post) =>
+          post._id === action.payload._id
+            ? { ...post, ...action.payload }
+            : post
+        ),
+        postsUser: state.postsUser.map((post) =>
+          post._id === action.payload._id
+            ? { ...post, ...action.payload }
+            : post
+        ),
         formPostEdit: false,
         loader: false,
       };

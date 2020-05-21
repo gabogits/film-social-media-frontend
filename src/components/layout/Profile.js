@@ -9,13 +9,15 @@ import BottomBar from "./BottomBar";
 
 const Profile = (props) => {
   const userContext = useContext(UserContext);
-  const { formEdit, user, userAuth } = userContext;
+  const { formEdit, user, userAuth, setPage } = userContext;
 
   const query = props.location.pathname.split("/");
   const profile = query[2];
 
   useEffect(() => {
     userAuth();
+    setPage("profile")
+    // eslint-disable-next-line
   }, []);
   if (!user) return null;
 

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-import TextareaAutosize from "react-textarea-autosize";
+import TextareaAutosize from "react-autosize-textarea";
 import UserContext from "./../../context/user/UserContext";
 import Error from "../templates/Error";
 import previewImg from "./../../helpers/previewImg";
@@ -31,6 +31,7 @@ const SignupForm = () => {
     } else {
       saveUser(userSelect);
     }
+     // eslint-disable-next-line
   }, [userSelect]);
   const [user, saveUser] = useState(userInitialState);
   const [requerid, saveRequerid] = useState(true);
@@ -123,7 +124,7 @@ const SignupForm = () => {
             placeholder="La música y el cine que te gusta. Algo que te haga único(a) y diferente, según tú."
             name="description"
             value={description}
-            minRows={3}
+            rows={3}
             onChange={onChangeValue}
           />
         </div>

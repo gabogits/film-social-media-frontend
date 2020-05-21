@@ -26,6 +26,7 @@ const ProfileInfo = ({ profile }) => {
     if (!profile) {
       resetProfile();
     }
+    // eslint-disable-next-line
   }, [profileSelect, users.length, profile]);
 
   const userInitValues = {
@@ -47,7 +48,7 @@ const ProfileInfo = ({ profile }) => {
           <div className="avatar-big">
             {avatar ? (
               <img
-                src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}`}
+                src={avatar !== "n/a"   &&  avatar !== undefined ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}` :  `../no-avatar.svg`}
                 alt="img"
               />
             ) : null}
@@ -59,13 +60,12 @@ const ProfileInfo = ({ profile }) => {
             <h5>{email}</h5>
             <p>{description}</p>
             {_id === user._id ? (
-              <a
-                href="#!"
+              <button
                 className="link-style"
                 onClick={() => editUser(user)}
               >
                 Editar información
-              </a>
+              </button>
             ) : null}
           </div>
         </div>

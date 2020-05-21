@@ -44,6 +44,7 @@ const ReplyNew = ({ post }) => {
     if (postItem === "add" && inputRef.current) {
       inputRef.current.focus();
     }
+     // eslint-disable-next-line
   }, []);
   const [reply, saveReply] = useState(replyinitialState);
 

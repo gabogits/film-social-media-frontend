@@ -5,9 +5,10 @@ import UserContext from "./../../context/user/UserContext";
 
 const BottomBar = ({ props }) => {
   const userContext = useContext(UserContext);
-  const { signOut } = userContext;
+  const { signOut, page } = userContext;
   const query = props.location.pathname.split("/");
   const postItem = query[1];
+
   const back = () => {
     props.history.go(-1);
   };
@@ -17,14 +18,21 @@ const BottomBar = ({ props }) => {
       <div className="bottom-bar_inner">
         <ul>
           <li>
-            {postItem !== "post" ? (
-              <Link className="icon-bottom icon-home" to={"/feed"}></Link>
+            {postItem === "post" && page === "feed" ? (
+              <button className="icon-bottom icon-home" onClick={back}></button>
             ) : (
-              <a href="#" className="icon-bottom icon-home" onClick={back}></a>
+              <Link className="icon-bottom icon-home" to={"/feed"}></Link>
             )}
           </li>
           <li>
-            <Link className="icon-bottom icon-profile" to={"/profile"}></Link>
+            {postItem === "post" && page === "profile" ? (
+              <button
+                className="icon-bottom icon-profile"
+                onClick={back}
+              ></button>
+            ) : (
+              <Link className="icon-bottom icon-profile" to={"/profile"}></Link>
+            )}
           </li>
           <li>
             <Link to={"/ranking"} className={`icon-bottom icon-star2`}></Link>
@@ -33,11 +41,10 @@ const BottomBar = ({ props }) => {
             <Link to={"/users"} className={`icon-bottom icon-users`}></Link>
           </li>
           <li>
-            <a
-              href="#!"
+            <button
               onClick={signOut}
               className="icon-bottom icon-logout"
-            ></a>
+            ></button>
           </li>
         </ul>
       </div>

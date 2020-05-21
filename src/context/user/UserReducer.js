@@ -13,6 +13,7 @@ import {
   HIDE_ERROR,
   LOADER,
   RESET_PROFILE,
+  SET_PAGE,
 } from "../../types";
 
 export default (state, action) => {
@@ -102,6 +103,12 @@ export default (state, action) => {
         ...state,
         profileSelect: null,
       };
+    case SET_PAGE:
+      return {
+        ...state,
+        page: action.payload,
+      };
+
     default:
       return state;
   }

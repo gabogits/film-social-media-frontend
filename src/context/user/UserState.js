@@ -19,6 +19,7 @@ import {
   HIDE_ERROR,
   LOADER,
   RESET_PROFILE,
+  SET_PAGE
 } from "./../../types/";
 import axiosClient from "../../config/axios";
 
@@ -34,6 +35,7 @@ const UserState = (props) => {
     message: null,
     loader: false,
     profileSelect: null,
+    page: null,
   };
   const [state, dispatch] = useReducer(UserReducer, initialState);
 
@@ -196,6 +198,13 @@ const UserState = (props) => {
     await axiosClient.post(`/api/user/${creator}`, creatorPost);
     getUsers();
   };
+
+  const setPage = (page) => {
+    dispatch({
+      type: SET_PAGE,
+      payload: page,
+    });
+  } 
   const resetProfile = () => {
     dispatch({
       type: RESET_PROFILE,
@@ -214,6 +223,7 @@ const UserState = (props) => {
         message: state.message,
         loader: state.loader,
         profileSelect: state.profileSelect,
+        page: state.page,
         signUpUser,
         userLogin,
         getUsers,
@@ -225,6 +235,7 @@ const UserState = (props) => {
         setEvaluations,
         cancelEditUser,
         resetProfile,
+        setPage
       }}
     >
       {props.children}
