@@ -24,15 +24,7 @@ const Post = ({ post }) => {
   const userContext = useContext(UserContext);
   const { user, setEvaluations, users } = userContext;
 
-  const {
-    text,
-    picture,
-    creator,
-    registry,
-    _id,
-    score,
-    numberReplies,
-  } = post;
+  const { text, picture, creator, registry, _id, score, numberReplies } = post;
   const rankingItems = [
     { id: 1, value: 1 },
     { id: 2, value: 2 },
@@ -53,7 +45,7 @@ const Post = ({ post }) => {
     } else {
       setStarts(scoreInit);
     }
-     // eslint-disable-next-line
+    // eslint-disable-next-line
   }, []);
 
   const [starts, setStarts] = useState(scoreInit);
@@ -65,23 +57,18 @@ const Post = ({ post }) => {
       post: postId,
       score: value,
     };
-    console.log(post)
 
-
-  setEvaluations(evaluation, user, creator);
-    if(postSelect) {
-      updatePost(post, user)
+    setEvaluations(evaluation, user, creator);
+    if (postSelect) {
+      updatePost(post, user);
     }
-    
   };
 
   const deletePostHandler = (_id) => {
     saveItemToDelete(_id);
-   
     deletePost(_id);
   };
   const back = () => {
-    
     history.go(-1);
   };
   if (!post || !user) return null;
@@ -90,16 +77,16 @@ const Post = ({ post }) => {
   return (
     <div className="post box-format">
       <div className="box-head">
-       
         <div className="box-info">
-       {postItem === "post" ? <div onClick={back} className="btn-back"></div>  : null }
+          {postItem === "post" ? (
+            <div onClick={back} className="btn-back"></div>
+          ) : null}
           <div className="avatar-small">
-            <Link
-              to={creator === user._id ? `/profile` : `/friend/${creator}`}
-            >
+            <Link to={creator === user._id ? `/profile` : `/friend/${creator}`}>
               <img
                 src={
-                  getUserData(creator).avatar !== "n/a" &&   getUserData(creator).avatar !== undefined
+                  getUserData(creator).avatar !== "n/a" &&
+                  getUserData(creator).avatar !== undefined
                     ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${
                         getUserData(creator).avatar
                       }`
@@ -110,9 +97,7 @@ const Post = ({ post }) => {
             </Link>
           </div>
           <div className="box-name-date">
-            <Link
-              to={creator === user._id ? `/profile` : `/friend/${creator}`}
-            >
+            <Link to={creator === user._id ? `/profile` : `/friend/${creator}`}>
               <strong>{getUserData(creator).name}</strong>
               <span> {format(registry, "es_ES")}</span>
             </Link>
@@ -168,19 +153,20 @@ const Post = ({ post }) => {
         </div>
         {numberReplies > 0 ? (
           <Link to={`/post/${_id}`} className="number-comments">
-            <strong>{numberReplies}</strong> comentarios
+            <strong className="icon-comments">{numberReplies}</strong>
+             <span className="text-replies">{numberReplies > 1 ? "comentarios" : "comentario"}</span> 
           </Link>
         ) : null}
       </div>
-      {deleting && _id === itemToDelete ? <Loader /> : null}
-      {postSelect ? (
-        <ReplyList post={post} />
-      ) : null}
+      <div className="replies-content">
+        {deleting && _id === itemToDelete ? <Loader /> : null}
+        {postSelect ? <ReplyList post={post} /> : null}
 
-      {(formReplyEdit && _id === selectReply.post) ||
-      postSelect === null ? null : (
-        <ReplyNew post={post} />
-      )}
+        {(formReplyEdit && _id === selectReply.post) ||
+        postSelect === null ? null : (
+          <ReplyNew post={post} />
+        )}
+      </div>
     </div>
   );
 };

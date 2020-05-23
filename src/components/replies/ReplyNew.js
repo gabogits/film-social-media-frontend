@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import UserContext from "../../context/user/UserContext";
+import PostContext from "./../../context/post/PostContext";
 import ReplyContext from "../../context/reply/ReplyContext";
 import { useLocation } from "react-router-dom";
 import TextareaAutosize from "react-autosize-textarea";
@@ -21,7 +22,8 @@ const ReplyNew = ({ post }) => {
   const userContext = useContext(UserContext);
   const { user } = userContext;
   const { avatar } = user;
-
+  const postContext = useContext(PostContext);
+  const { updatePost } = postContext;
   const replyinitialState = {
     text: "",
     picture: "",
@@ -79,8 +81,9 @@ const ReplyNew = ({ post }) => {
       newReply(reply);
     } else {
       updateReply(reply);
+    
     }
-
+    updatePost(post, user, false);
     saveReply(replyinitialState);
     savePictureToUpload(null);
   };

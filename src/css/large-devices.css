@@ -14,4 +14,8 @@
   .sidebar-3 {
     display: none;
   }
+  .UsersList form {
+    max-height:initial;
+    overflow: auto;
+  }
 }

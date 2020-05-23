@@ -20,6 +20,7 @@ import {
   LOADER_DELETE,
   NO_RESULTS,
   ERRORMSG,
+  RESET_POSTS_STATE
 } from "../../types";
 
 const PostState = (props) => {
@@ -53,7 +54,7 @@ const PostState = (props) => {
       });
     } catch (error) {}
   };
-  const getPosts = async (creator, user, pagina) => {
+  const getPosts = async (creator, user) => {
     const limite = state.limite;
     let skip;
 
@@ -66,7 +67,6 @@ const PostState = (props) => {
     */
 
     if (creator["creator"] === undefined) {
-      console.log("state.posts.length", state.posts.length);
       if (state.posts.length > 0) {
         skip = state.posts.length;
       } else {
@@ -74,14 +74,12 @@ const PostState = (props) => {
       }
     } else {
       if (creator["creator"] !== user._id) {
-        console.log("state.postsProfile.length", state.postsProfile.length);
         if (state.postsProfile.length > 0) {
           skip = state.postsProfile.length;
         } else {
           skip = 0;
         }
       } else {
-        console.log("state.postsUser.length", state.postsUser.length);
         if (state.postsUser.length > 0) {
           skip = state.postsUser.length;
         } else {
@@ -126,7 +124,7 @@ const PostState = (props) => {
           const repliesPost = await axiosClient.get("api/reply", {
             params: { post, totalReplies },
           });
-
+ 
           postItem.numberReplies = repliesPost.data;
           const evaluation = user.evaluations.find(
             (item) => item.post === post
@@ -165,23 +163,21 @@ const PostState = (props) => {
     } catch (error) {
       console.log(error);
     }
-
-    /*
-     
-      
-    */
   };
 
   const getPost = async (post, edit, user, page) => {
     try {
       let postSel = await axiosClient.get(`/api/post/${post}`);
       let postItem = postSel.data;
-
+ delete user.password;
       const repliesPost = await axiosClient.get("api/reply", {
         params: { post },
       });
       postItem.numberReplies = repliesPost.data.totalReplies;
-      postItem.replies = repliesPost.data.repliesFromPost;
+      if(repliesPost.data.repliesFromPost.length > 0 ) {
+        postItem.replies = repliesPost.data.repliesFromPost;
+      }
+      
 
       const evaluation = user.evaluations.find((item) => item.post === post);
 
@@ -208,11 +204,15 @@ const PostState = (props) => {
   };
 
   const updatePost = async (postChanged, user, repliesList) => {
+    
     dispatch({
       type: LOADER,
     });
     try {
+      delete postChanged.replies;
+      delete postChanged.score; //esto esta de mas por solo se asigna el score al post
       const post = postChanged._id;
+  
       const postObj = keysAppend(postChanged);
       const postEdited = await axiosClient.post(`/api/post/${post}`, postObj);
       const postItem = postEdited.data;
@@ -231,12 +231,6 @@ const PostState = (props) => {
         postItem.numberReplies = repliesPost.data;
       }
 
-      const evaluation = user.evaluations.find((item) => item.post === post);
-
-      if (evaluation) {
-        postItem.score = evaluation.score;
-      }
-      console.log("actualizando");
       dispatch({
         type: UPDATE_POST,
         payload: postItem,
@@ -279,6 +273,15 @@ const PostState = (props) => {
       console.log(error);
     }
   };
+  const resetPostState = () => {
+    try {
+      dispatch({
+        type: RESET_POSTS_STATE,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <PostContext.Provider
@@ -301,6 +304,7 @@ const PostState = (props) => {
         deletePost,
         resetSelectPost,
         resetPosts,
+        resetPostState,
       }}
     >
       {props.children}

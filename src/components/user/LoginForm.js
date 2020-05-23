@@ -36,7 +36,7 @@ const Login = () => {
       <form onSubmit={loginFormSubmit}>
         <div className="section-format-head">
           <div className="box-title">
-            <h2>Inicia sesion</h2>
+            <h2>Inicia sesión</h2>
           </div>
         </div>
         <div className="field">

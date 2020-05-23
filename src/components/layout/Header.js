@@ -1,16 +1,24 @@
 import React, { useContext, Fragment } from "react";
 import { Link } from "react-router-dom";
 import UserContext from "./../../context/user/UserContext";
+import PostContext from "./../../context/post/PostContext";
 
 const Header = ({ props }) => {
   const userContext = useContext(UserContext);
   const { signOut, user, page } = userContext;
+  const postContext = useContext(PostContext);
+  const {
+    resetPostState
+  } = postContext;
   const query = props.location.pathname.split("/");
   const postItem = query[1];
   const back = () => {
-    
     props.history.go(-1);
   };
+  const SesionEnds = () => {
+    resetPostState()
+    signOut();
+  } 
   return (
     <header className={user ? "private" : "public"}>
       <div className="container">
@@ -22,7 +30,11 @@ const Header = ({ props }) => {
                   <img
                     alt="img"
                     width="30px"
-                    src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${user.avatar}`}
+                    src={
+                      user.avatar !== "n/a" && user.avatar !== undefined
+                        ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${user.avatar}`
+                        : `./no-avatar.svg`
+                    }
                   />
                 </Link>
               ) : (
@@ -30,7 +42,11 @@ const Header = ({ props }) => {
                   <img
                     alt="img"
                     width="30px"
-                    src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${user.avatar}`}
+                    src={
+                      user.avatar !== "n/a" && user.avatar !== undefined
+                        ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${user.avatar}`
+                        : `./no-avatar.svg`
+                    }
                   />
                 </button>
               )}
@@ -73,7 +89,7 @@ const Header = ({ props }) => {
 
                 </li>
                 <li className="hide-mobile">
-                  <button onClick={signOut}>
+                  <button onClick={SesionEnds}>
                     Cerrar sesión
                   </button>
                 </li>

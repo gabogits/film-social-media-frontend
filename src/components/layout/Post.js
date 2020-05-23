@@ -42,12 +42,9 @@ const Post = (props) => {
       saveShowMsg(true);
     }, 1000);
 
+    return () => resetSelectPost();
 
-    return () => {
-      console.log("reset");
-      resetSelectPost();
-    };
-   // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [auth, props.location.pathname, reply, replies]);
 
   const back = () => {

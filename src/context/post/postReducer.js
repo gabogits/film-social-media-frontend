@@ -10,6 +10,7 @@ import {
   RESET_POST_SELECT,
   CANCEL_POST,
   RESET_POSTS,
+  RESET_POSTS_STATE, 
   LOADER,
   NO_RESULTS,
   ERRORMSG,
@@ -124,6 +125,22 @@ export default (state, action) => {
         ...state,
         page: action.payload,
       };
+    case  RESET_POSTS_STATE: 
+    return {
+      ...state,
+      posts: [],
+      postsProfile: [],
+      postsUser: [],
+      post: null,
+      postSelect: null,
+      formPostEdit: false,
+      limite: 7,
+      loader: false,
+      results: true,
+      errormsg: null,
+      deleting: false,
+    };
+    
     default:
       return state;
   }

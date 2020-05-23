@@ -59,7 +59,6 @@ const ReplyState = (props) => {
       `api/reply/${reply._id}`,
       replyObj
     );
-    console.log(reply)
     dispatch({
       type: UPDATE_REPLY,
       payload: replyEdit.data,

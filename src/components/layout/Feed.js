@@ -5,21 +5,18 @@ import PostList from "./../posts/PostList";
 import ScoreList from "../score/ScoreList";
 import UsersList from "./../user/UsersList";
 import UserContext from "../../context/user/UserContext";
-import PostContext from "../../context/post/PostContext";
 import ReplyContext from "../../context/reply/ReplyContext";
 import BottomBar from "./BottomBar";
 
 const Feed = (props) => {
   const userContext = useContext(UserContext);
   const { userAuth, user, users, getUsers, userSelect, auth, setPage } = userContext;
-  const postContext = useContext(PostContext);
-  const { resetSelectPost } = postContext;
   const replyContext = useContext(ReplyContext);
   const { newReply } = replyContext;
   useEffect(() => {
     userAuth();
     getUsers();
-    resetSelectPost();
+
     setPage("feed");
     // eslint-disable-next-line
   }, [newReply, userSelect, auth]);

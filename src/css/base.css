@@ -111,6 +111,10 @@ header {
   position: relative;
   width: 100%;
 }
+.UsersList form {
+  max-height: 490px;
+  overflow: auto;
+}
 .UsersList ul {
   width: 100%;
   overflow: hidden;
@@ -359,7 +363,9 @@ header {
   position: absolute;
   right: 0;
 }
-
+.number-comments strong {
+  margin: 0 7px 0 0;
+}
 .number-comments:hover {
   text-decoration: none;
 }
@@ -410,10 +416,6 @@ header {
   -o-transition: 0.4s;
 }
 
-.score-bullets {
-  margin: 0 10px 0 0;
-}
-
 .box-body-actions .icon-format-1 {
   margin: 0 10px 0 0;
 }
@@ -423,7 +425,7 @@ header {
   padding: 20px;
   margin: 20px 0 20px;
 }
-.box-replies-content .new-content-form {
+.replies-content .new-content-form {
   width: calc(100% - 50px) !important;
 }
 
@@ -633,6 +635,8 @@ section.bottom-bar {
   background-size: 20px;
   height: 20px;
 }
+
+
 .btn-back {
   display: block;
   width: 35px;
@@ -685,4 +689,18 @@ section.bottom-bar {
 
 .msg-deleted-nofound.active {
   opacity: 1;
+}
+.shade {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+
+  left: 0;
+  top: 0;
+  z-index: 2;
+  display: none;
+}
+.shade.active {
+
+  display: block;
 }

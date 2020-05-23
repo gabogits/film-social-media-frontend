@@ -2,15 +2,13 @@ export const CREATE_POST = "CREATE_POST";
 export const GET_POSTS = "GET_POSTS";
 export const GET_POSTS_PROFILE = "GET_POSTS_PROFILE";
 export const GET_POSTS_USER = "GET_POSTS_USER";
-
 export const GET_ONEPOST = "GET_ONEPOST";
 export const GET_ONEPOSTEDIT = "GET_ONEPOSTEDIT";
 
-export const CREATE_REPLY = "CREATE_POST";
-export const GET_REPLIES = "GET_POST";
 export const UPDATE_POST = "UPDATE_POST";
 export const DELETE_POST = "DELETE_POST";
 export const CANCEL_POST = "CANCEL_POST";
+export const RESET_POSTS_STATE = "RESET_POSTS_STATE";
 export const RESET_POST_SELECT = "RESET_POST_SELECT";
 export const RESET_POSTS = "RESET_POSTS";
 export const NO_RESULTS = "NO_RESULTS";
@@ -19,7 +17,8 @@ export const PAGE = "PAGE"
 export const LOADER_DELETE = "LOADER_DELETE";
 
 
-
+export const CREATE_REPLY = "CREATE_POST";
+export const GET_REPLIES = "GET_POST";
 export const GET_ONEREPLY = "GET_ONEREPLY";
 export const UPDATE_REPLY = "UPDATE_REPLY";
 export const DELETE_REPLY = "DELETE_REPLY";

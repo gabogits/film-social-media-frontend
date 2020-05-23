@@ -16,56 +16,63 @@ const PostList = (creator) => {
     postsUser,
     getPosts,
     results,
+  
   } = postContext;
 
-  const [pagina, setPagina] = useState(1);
   const [isFetching, setIsFetching] = infiniteScroll(fetchMoreListItems);
+  const [active, setActive] = useState(false);
+
   function fetchMoreListItems() {
+    setActive(true)
     setTimeout(() => {
-      setPagina(pagina + 1);
       setIsFetching(false);
-    }, 2000);
+      setActive(false)
+    }, 1000);
   }
 
   useEffect(() => {
+  
     if (user) {
-      getPosts(creator, user, pagina);
+      getPosts(creator, user);
     }
 
     // eslint-disable-next-line
-  }, [userSelect, pagina]);
+  }, [userSelect, isFetching]);
 
   return (
     <Fragment>
-      {creator["creator"] === undefined ? (
-        <Fragment>
-          {posts.map((post) => (
-            <Post key={post._id} post={post} />
-          ))}
-        </Fragment>
-      ) : (
-        <Fragment>
-          {creator["creator"] !== user._id ? (
-            <Fragment>
-              {postsProfile.map((post) => (
-                <Post key={post._id} post={post} />
-              ))}
-            </Fragment>
-          ) : (
-            <Fragment>
-              {postsUser.map((post) => (
-                <Post key={post._id} post={post} />
-              ))}
-            </Fragment>
-          )}
-        </Fragment>
-      )}
-      {isFetching && results ? <Loader /> : null}
-      {!results ? (
-        <div className="post box-format txt-center">
-          Ya no hay mas publicaciones
-        </div>
-      ) : null}
+      <div className={`shade ${active ? "active": ""}`}></div>
+      <Fragment>
+        {creator["creator"] === undefined ? (
+          <Fragment>
+            {posts.map((post) => (
+              <Post key={post._id} post={post} />
+            ))}
+          </Fragment>
+        ) : (
+          <Fragment>
+            {creator["creator"] !== user._id ? (
+              <Fragment>
+                {postsProfile.map((post) => (
+                  <Post key={post._id} post={post} />
+                ))}
+              </Fragment>
+            ) : (
+              <Fragment>
+                {postsUser.map((post) => (
+                  <Post key={post._id} post={post} />
+                ))}
+              </Fragment>
+            )}
+          </Fragment>
+        )}
+        {isFetching && results ? <Loader /> : null}
+        {!results ? (
+          <div className="post box-format txt-center">
+            Ya no hay mas publicaciones
+          </div>
+        ) : null}
+      </Fragment>
     </Fragment>
   );
 };

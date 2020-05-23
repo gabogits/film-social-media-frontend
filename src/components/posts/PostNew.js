@@ -74,8 +74,7 @@ const PostNew = ({ props }) => {
     e.preventDefault();
     cancelPost();
   };
-  console.log(pictureToUpload)
-  console.log(postSelect)
+ 
   if (!user) return null;
   const { name, avatar } = user;
   return (
@@ -117,7 +116,7 @@ const PostNew = ({ props }) => {
                 onChange={onChangeValue}
               />
             </div>
-            {postSelect && pictureToUpload ? (
+            { pictureToUpload ? (
               <div className="preview-img">
                 <img src={pictureToUpload} alt="img" />
               </div>
@@ -126,7 +125,7 @@ const PostNew = ({ props }) => {
             {postSelect &&
             !pictureToUpload &&
             picture !== "n/a" &&
-            picture !== undefined ? (
+            picture !== undefined  ? (
               <div className="preview-img">
                 <img
                   src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${picture}`}
