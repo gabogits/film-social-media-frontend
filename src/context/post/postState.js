@@ -54,7 +54,7 @@ const PostState = (props) => {
       });
     } catch (error) {}
   };
-  const getPosts = async (creator, user) => {
+  const getPosts = async (creator, user, pagina) => {
     const limite = state.limite;
     let skip;
 

@@ -18,13 +18,14 @@ const PostList = (creator) => {
     results,
   
   } = postContext;
-
+  const [page, setPage] = useState(1);
   const [isFetching, setIsFetching] = infiniteScroll(fetchMoreListItems);
   const [active, setActive] = useState(false);
 
   function fetchMoreListItems() {
     setActive(true)
     setTimeout(() => {
+      setPage(page + 1);
       setIsFetching(false);
       setActive(false)
     }, 1000);
@@ -33,11 +34,11 @@ const PostList = (creator) => {
   useEffect(() => {
   
     if (user) {
-      getPosts(creator, user);
+      getPosts(creator, user, page);
     }
 
     // eslint-disable-next-line
-  }, [userSelect, isFetching]);
+  }, [userSelect, page]);
 
   return (
     <Fragment>
