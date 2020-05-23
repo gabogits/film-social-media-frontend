@@ -28,7 +28,7 @@ const PostNew = ({ props }) => {
     } else {
       savePost(postSelect);
     }
-     // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [postSelect]);
 
   const [post, savePost] = useState(postInitValues);
@@ -58,7 +58,6 @@ const PostNew = ({ props }) => {
     }
 
     if (postSelect === null) {
-
       newPost(post);
     } else {
       updatePost(post, user, true);
@@ -74,9 +73,10 @@ const PostNew = ({ props }) => {
     e.preventDefault();
     cancelPost();
   };
- 
+
   if (!user) return null;
   const { name, avatar } = user;
+
   return (
     <div className="post-new box-format">
       <div className="box-title">
@@ -89,11 +89,11 @@ const PostNew = ({ props }) => {
       <div className="new-content">
         <div className="avatar-medium">
           <img
-          alt="img"
+            alt="img"
             src={
               avatar !== "n/a" && avatar !== undefined
                 ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}`
-                : `./no-avatar.svg`
+                : `./../../no-avatar.svg`
             }
           />
         </div>
@@ -116,7 +116,7 @@ const PostNew = ({ props }) => {
                 onChange={onChangeValue}
               />
             </div>
-            { pictureToUpload ? (
+            {pictureToUpload ? (
               <div className="preview-img">
                 <img src={pictureToUpload} alt="img" />
               </div>
@@ -125,12 +125,15 @@ const PostNew = ({ props }) => {
             {postSelect &&
             !pictureToUpload &&
             picture !== "n/a" &&
-            picture !== undefined  ? (
+            picture !== undefined &&
+            formPostEdit ? (
               <div className="preview-img">
-                <img
-                  src={`${process.env.REACT_APP_BACKEND_URL}/api/image/${picture}`}
-                  alt="img"
-                />
+               
+                  <img
+                    src={picture ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${picture}`: null}
+                    alt="img"
+                  />
+              
               </div>
             ) : null}
             {loader ? <Loader /> : null}

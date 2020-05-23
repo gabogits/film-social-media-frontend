@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { format, register } from "timeago.js";
 import { useHistory, useLocation } from "react-router-dom";
 import ReplyList from "../replies/ReplyList";
@@ -16,7 +16,7 @@ const Post = ({ post }) => {
   let history = useHistory();
   let location = useLocation();
   const postContext = useContext(PostContext);
-  const { deletePost, postSelect, deleting, updatePost } = postContext;
+  const { deletePost, postSelect, deleting, scorePost } = postContext;
 
   const replyContext = useContext(ReplyContext);
   const { formReplyEdit, selectReply } = replyContext;
@@ -38,30 +38,17 @@ const Post = ({ post }) => {
     return userPostItem;
   }
 
-  const scoreInit = 0;
-  useEffect(() => {
-    if (score > 0) {
-      setStarts(score);
-    } else {
-      setStarts(scoreInit);
-    }
-    // eslint-disable-next-line
-  }, []);
-
-  const [starts, setStarts] = useState(scoreInit);
   const [itemToDelete, saveItemToDelete] = useState(null);
 
   const onClickStar = (value, postId, user, creator) => {
-    setStarts(value);
+    value = score === value ? 0 : value;
+    //setStarts(value);
+    scorePost(postId, value);
     const evaluation = {
       post: postId,
       score: value,
     };
-
     setEvaluations(evaluation, user, creator);
-    if (postSelect) {
-      updatePost(post, user);
-    }
   };
 
   const deletePostHandler = (_id) => {
@@ -90,7 +77,7 @@ const Post = ({ post }) => {
                     ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${
                         getUserData(creator).avatar
                       }`
-                    : `../../no-avatar.svg`
+                      : `./../../no-avatar.svg`
                 }
                 alt="img"
               />
@@ -124,7 +111,7 @@ const Post = ({ post }) => {
               {rankingItems.map((item) => (
                 <div
                   className={`radio-score icon-format-1 icon-star ${
-                    item.id <= starts ? " activeScore" : null
+                    item.id <= score ? " activeScore" : null
                   }`}
                   key={item.id}
                   onClick={() => onClickStar(item.value, _id, user, creator)}

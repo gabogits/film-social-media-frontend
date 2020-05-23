@@ -10,14 +10,18 @@ register("es_ES", localeFunc);
 
 const Reply = ({ reply }) => {
   const userContext = useContext(UserContext);
-  const { user } = userContext;
+  const { user, users } = userContext;
   const { _id } = user;
 
-  const { text, picture, creator, registry, pic, author } = reply;
+  const { text, picture, creator, registry, author } = reply;
 
   const replyContext = useContext(ReplyContext);
   const { getReply, deleteReply, formReplyEdit, selectReply } = replyContext;
-
+  function getUserData(creator) {
+    const userPostItem = users.find((item) => item._id === creator);
+    return userPostItem;
+  }
+ 
   return (
     <Fragment>
       {formReplyEdit && reply._id === selectReply._id ? (
@@ -31,9 +35,12 @@ const Reply = ({ reply }) => {
               >
                 <img
                   src={
-                    pic !== "n/a" && pic !== undefined
-                      ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${pic}`
-                      : `../../no-avatar.svg`
+                    getUserData(creator).avatar !== "n/a" &&
+                    getUserData(creator).avatar !== undefined
+                      ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${
+                          getUserData(creator).avatar
+                        }`
+                        : `./../../no-avatar.svg`
                   }
                   alt="img"
                 />

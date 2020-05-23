@@ -96,7 +96,7 @@ const ReplyNew = ({ post }) => {
           src={
             avatar !== "n/a" && avatar !== undefined
               ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}`
-              : `./no-avatar.svg`
+              : `./../../no-avatar.svg`
           }
         />
       </div>

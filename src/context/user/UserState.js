@@ -190,9 +190,7 @@ const UserState = (props) => {
       score: evaluation.score,
     };
     ranking.push(itemRanking);
-
     creatorPost.ranking = ranking;
-
     delete creatorPost.password;
 
     await axiosClient.post(`/api/user/${creator}`, creatorPost);

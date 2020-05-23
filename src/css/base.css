@@ -685,6 +685,7 @@ section.bottom-bar {
 
 .msg-deleted-nofound {
   opacity: 0;
+ 
 }
 
 .msg-deleted-nofound.active {

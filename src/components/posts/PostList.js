@@ -32,11 +32,9 @@ const PostList = (creator) => {
   }
 
   useEffect(() => {
-  
     if (user) {
       getPosts(creator, user, page);
     }
-
     // eslint-disable-next-line
   }, [userSelect, page]);
 

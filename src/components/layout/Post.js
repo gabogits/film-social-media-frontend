@@ -48,6 +48,7 @@ const Post = (props) => {
   }, [auth, props.location.pathname, reply, replies]);
 
   const back = () => {
+    
     props.history.go(-1);
   };
 

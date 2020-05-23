@@ -14,13 +14,14 @@ import {
   UPDATE_POST,
   DELETE_POST,
   CANCEL_POST,
+  SCORE_POST,
   RESET_POST_SELECT,
   RESET_POSTS,
   LOADER,
   LOADER_DELETE,
   NO_RESULTS,
   ERRORMSG,
-  RESET_POSTS_STATE
+  RESET_POSTS_STATE,
 } from "../../types";
 
 const PostState = (props) => {
@@ -124,7 +125,7 @@ const PostState = (props) => {
           const repliesPost = await axiosClient.get("api/reply", {
             params: { post, totalReplies },
           });
- 
+
           postItem.numberReplies = repliesPost.data;
           const evaluation = user.evaluations.find(
             (item) => item.post === post
@@ -169,15 +170,14 @@ const PostState = (props) => {
     try {
       let postSel = await axiosClient.get(`/api/post/${post}`);
       let postItem = postSel.data;
- delete user.password;
+      delete user.password;
       const repliesPost = await axiosClient.get("api/reply", {
         params: { post },
       });
       postItem.numberReplies = repliesPost.data.totalReplies;
-      if(repliesPost.data.repliesFromPost.length > 0 ) {
+      if (repliesPost.data.repliesFromPost.length > 0) {
         postItem.replies = repliesPost.data.repliesFromPost;
       }
-      
 
       const evaluation = user.evaluations.find((item) => item.post === post);
 
@@ -198,13 +198,12 @@ const PostState = (props) => {
     } catch (error) {
       dispatch({
         type: ERRORMSG,
-        payload: error.response.data,
+        payload: error.response.data.msg,
       });
     }
   };
 
   const updatePost = async (postChanged, user, repliesList) => {
-    
     dispatch({
       type: LOADER,
     });
@@ -212,7 +211,7 @@ const PostState = (props) => {
       delete postChanged.replies;
       delete postChanged.score; //esto esta de mas por solo se asigna el score al post
       const post = postChanged._id;
-  
+
       const postObj = keysAppend(postChanged);
       const postEdited = await axiosClient.post(`/api/post/${post}`, postObj);
       const postItem = postEdited.data;
@@ -230,7 +229,11 @@ const PostState = (props) => {
         });
         postItem.numberReplies = repliesPost.data;
       }
+      const evaluation = user.evaluations.find((item) => item.post === post);
 
+      if (evaluation) {
+        postItem.score = evaluation.score;
+      }
       dispatch({
         type: UPDATE_POST,
         payload: postItem,
@@ -281,7 +284,17 @@ const PostState = (props) => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
+  const scorePost = (_id, score) => {
+    const post = {
+      _id,
+      score,
+    };
+    dispatch({
+      type: SCORE_POST,
+      payload: post,
+    });
+  };
 
   return (
     <PostContext.Provider
@@ -305,6 +318,7 @@ const PostState = (props) => {
         resetSelectPost,
         resetPosts,
         resetPostState,
+        scorePost,
       }}
     >
       {props.children}

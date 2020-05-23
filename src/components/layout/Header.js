@@ -33,7 +33,7 @@ const Header = ({ props }) => {
                     src={
                       user.avatar !== "n/a" && user.avatar !== undefined
                         ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${user.avatar}`
-                        : `./no-avatar.svg`
+                        : `./../../no-avatar.svg`
                     }
                   />
                 </Link>
@@ -45,7 +45,7 @@ const Header = ({ props }) => {
                     src={
                       user.avatar !== "n/a" && user.avatar !== undefined
                         ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${user.avatar}`
-                        : `./no-avatar.svg`
+                        : `./../../no-avatar.svg`
                     }
                   />
                 </button>
@@ -107,7 +107,7 @@ const Header = ({ props }) => {
                           src={
                             user.avatar !== "n/a" && user.avatar !== undefined
                               ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${user.avatar}`
-                              : `./no-avatar.svg`
+                              : `./../../no-avatar.svg`
                           }
                           alt="img"
                         />

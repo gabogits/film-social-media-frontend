@@ -7,10 +7,11 @@ import {
   GET_ONEPOSTEDIT,
   DELETE_POST,
   UPDATE_POST,
+  SCORE_POST,
   RESET_POST_SELECT,
   CANCEL_POST,
   RESET_POSTS,
-  RESET_POSTS_STATE, 
+  RESET_POSTS_STATE,
   LOADER,
   NO_RESULTS,
   ERRORMSG,
@@ -90,6 +91,25 @@ export default (state, action) => {
         formPostEdit: false,
         loader: false,
       };
+    case SCORE_POST:
+      return {
+        ...state,
+        posts: state.posts.map((post) =>
+          post._id === action.payload._id
+            ? { ...post, score: action.payload.score }
+            : post
+        ),
+        postsProfile: state.postsProfile.map((post) =>
+          post._id === action.payload._id
+            ? { ...post, ...action.payload }
+            : post
+        ),
+
+        postSelect: state.postSelect
+          ? { ...state.postSelect, score: action.payload.score }
+          : null,
+      };
+
     case RESET_POST_SELECT:
       return {
         ...state,
@@ -125,22 +145,22 @@ export default (state, action) => {
         ...state,
         page: action.payload,
       };
-    case  RESET_POSTS_STATE: 
-    return {
-      ...state,
-      posts: [],
-      postsProfile: [],
-      postsUser: [],
-      post: null,
-      postSelect: null,
-      formPostEdit: false,
-      limite: 7,
-      loader: false,
-      results: true,
-      errormsg: null,
-      deleting: false,
-    };
-    
+    case RESET_POSTS_STATE:
+      return {
+        ...state,
+        posts: [],
+        postsProfile: [],
+        postsUser: [],
+        post: null,
+        postSelect: null,
+        formPostEdit: false,
+        limite: 7,
+        loader: false,
+        results: true,
+        errormsg: null,
+        deleting: false,
+      };
+
     default:
       return state;
   }
