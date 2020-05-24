@@ -12,6 +12,8 @@ import {
   GET_ONEPOST,
   GET_ONEPOSTEDIT,
   UPDATE_POST,
+  PREV_DELETE,
+  CANCEL_DELETE,
   DELETE_POST,
   CANCEL_POST,
   SCORE_POST,
@@ -37,6 +39,8 @@ const PostState = (props) => {
     results: true,
     errormsg: null,
     deleting: false,
+    modalDelete:null,
+    itemToDelete: null
   };
 
   const [state, dispatch] = useReducer(PostReducer, initialState);
@@ -245,16 +249,30 @@ const PostState = (props) => {
       type: CANCEL_POST,
     });
   };
-  const deletePost = async (post) => {
+  const prevDelete = (id) => {
+    dispatch({
+      type: PREV_DELETE,
+      payload: id,
+    });
+  }
+  const cancelDelete = (id) => {
+    dispatch({
+      type: CANCEL_DELETE,
+    });
+  }
+  const deletePost = async () => {
     dispatch({
       type: LOADER_DELETE,
     });
     try {
-      const postDelete = await axiosClient.delete(`/api/post/${post}`);
+      const postDelete = await axiosClient.delete(`/api/post/${state.itemToDelete}`);
 
       dispatch({
         type: DELETE_POST,
         payload: postDelete.data.post,
+      });
+      dispatch({
+        type: CANCEL_DELETE,
       });
     } catch (error) {}
   };
@@ -296,6 +314,7 @@ const PostState = (props) => {
     });
   };
 
+ 
   return (
     <PostContext.Provider
       value={{
@@ -309,6 +328,8 @@ const PostState = (props) => {
         results: state.results,
         errormsg: state.errormsg,
         deleting: state.deleting,
+        modalDelete: state.modalDelete,
+        itemToDelete:  state.itemToDelete,
         newPost,
         getPosts,
         getPost,
@@ -319,6 +340,8 @@ const PostState = (props) => {
         resetPosts,
         resetPostState,
         scorePost,
+        prevDelete,
+        cancelDelete,
       }}
     >
       {props.children}

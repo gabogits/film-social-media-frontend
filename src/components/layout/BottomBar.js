@@ -2,17 +2,26 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
 import UserContext from "./../../context/user/UserContext";
+import PostContext from "./../../context/post/PostContext";
 
 const BottomBar = ({ props }) => {
   const userContext = useContext(UserContext);
   const { signOut, page } = userContext;
+  const postContext = useContext(PostContext);
+  const {
+    resetPostState
+  } = postContext;
+
   const query = props.location.pathname.split("/");
   const postItem = query[1];
 
   const back = () => {
     props.history.go(-1);
   };
-
+  const SesionEnds = () => {
+    resetPostState()
+    signOut();
+  } 
   return (
     <section className="bottom-bar mobile-element">
       <div className="bottom-bar_inner">
@@ -42,7 +51,7 @@ const BottomBar = ({ props }) => {
           </li>
           <li>
             <button
-              onClick={signOut}
+              onClick={SesionEnds}
               className="icon-bottom icon-logout"
             ></button>
           </li>

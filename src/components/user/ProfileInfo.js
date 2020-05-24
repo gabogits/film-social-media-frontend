@@ -48,7 +48,7 @@ const ProfileInfo = ({ profile }) => {
           <div className="avatar-big">
             {avatar ? (
               <img
-                src={avatar !== "n/a"   &&  avatar !== undefined ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}` :  `../no-avatar.svg`}
+                src={avatar !== "n/a"   &&  avatar !== undefined ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${avatar}` :  `./../../no-avatar-white.svg`}
                 alt="img"
               />
             ) : null}

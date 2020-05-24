@@ -10,13 +10,14 @@ import { Link } from "react-router-dom";
 import { localeFunc, formatURL } from "./../../helpers/";
 import Loader from "../templates/Loader";
 
+
 register("es_ES", localeFunc);
 
 const Post = ({ post }) => {
   let history = useHistory();
   let location = useLocation();
   const postContext = useContext(PostContext);
-  const { deletePost, postSelect, deleting, scorePost } = postContext;
+  const {  postSelect, deleting, scorePost, prevDelete, itemToDelete } = postContext;
 
   const replyContext = useContext(ReplyContext);
   const { formReplyEdit, selectReply } = replyContext;
@@ -38,22 +39,14 @@ const Post = ({ post }) => {
     return userPostItem;
   }
 
-  const [itemToDelete, saveItemToDelete] = useState(null);
-
   const onClickStar = (value, postId, user, creator) => {
     value = score === value ? 0 : value;
-    //setStarts(value);
     scorePost(postId, value);
     const evaluation = {
       post: postId,
       score: value,
     };
     setEvaluations(evaluation, user, creator);
-  };
-
-  const deletePostHandler = (_id) => {
-    saveItemToDelete(_id);
-    deletePost(_id);
   };
   const back = () => {
     history.go(-1);
@@ -127,7 +120,7 @@ const Post = ({ post }) => {
             ></Link>
 
             <button
-              onClick={() => deletePostHandler(_id)}
+              onClick={() => prevDelete(_id)}
               className="icon-format-1 icon-delete"
             ></button>
           </div>

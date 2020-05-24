@@ -6,6 +6,8 @@ import {
   GET_ONEPOST,
   GET_ONEPOSTEDIT,
   DELETE_POST,
+  PREV_DELETE,
+  CANCEL_DELETE,
   UPDATE_POST,
   SCORE_POST,
   RESET_POST_SELECT,
@@ -127,10 +129,23 @@ export default (state, action) => {
         ...state,
         formPostEdit: false,
       };
+      case PREV_DELETE:  
+      return {
+        ...state,
+        modalDelete: true,
+        itemToDelete: action.payload,
+      };
+      case CANCEL_DELETE:  
+      return {
+        ...state,
+        modalDelete: false,
+        itemToDelete: null,
+      }; 
     case DELETE_POST:
       return {
         ...state,
         posts: state.posts.filter((post) => post._id !== action.payload._id),
+        postsUser: state.postsUser.filter((post) => post._id !== action.payload._id),
         deleting: false,
         postSelect: null,
         errormsg: null,
@@ -159,6 +174,8 @@ export default (state, action) => {
         results: true,
         errormsg: null,
         deleting: false,
+        modalDelete: false,
+        itemToDelete: null,
       };
 
     default:

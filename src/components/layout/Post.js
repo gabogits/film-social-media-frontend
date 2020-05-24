@@ -7,6 +7,7 @@ import PostContext from "./../../context/post/PostContext";
 import ReplyContext from "../../context/reply/ReplyContext";
 import BottomBar from "./BottomBar";
 import Loader from "../templates/Loader";
+import ModalDelete from "../templates/ModalDelete";
 
 const Post = (props) => {
   const userContext = useContext(UserContext);
@@ -19,6 +20,7 @@ const Post = (props) => {
     formPostEdit,
     errormsg,
     resetSelectPost,
+    modalDelete
   } = postContext;
   const query = props.location.pathname.split("/");
   const postItem = query[2];
@@ -53,11 +55,11 @@ const Post = (props) => {
   };
 
   return (
-    <main className="top-space post-view">
+    <main className={`top-space post-view ${modalDelete ? "shadow": null}`}>
       <div onClick={back} className="btn-back"></div>
       <Header props={props}></Header>
       <div className="container">
-        <div className="content-center">
+        <div className="content-center"> 
           {postSelect ? (
             <Fragment>
               {!formPostEdit ? (
@@ -84,6 +86,7 @@ const Post = (props) => {
           )}
         </div>
       </div>
+      <ModalDelete />
       <BottomBar props={props} />
     </main>
   );

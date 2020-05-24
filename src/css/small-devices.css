@@ -1,6 +1,6 @@
 @media (max-width: 550px) {
   .section-format {
-    padding: 20px;
+    padding: 35px 20px;
     margin: 0 10px;
   }
   .box-format {
@@ -15,24 +15,25 @@
     width: 120px;
     max-width: initial;
     margin: 0 0 0 10px;
-  }  
-  .icon-comments { 
+  }
+  .icon-comments {
     display: block;
   }
   .text-replies {
-    display: none
+    display: none;
   }
   .icon-comments {
-    background: url(/static/media/comments.4be37e7b.svg) no-repeat center 0;
+    background: url("../assets/comments.svg") no-repeat center 0;
     background-size: 25px;
     height: 25px;
-}
-.number-comments {
-  top: 8px;
-  max-width: 40px;
-}
-.number-comments strong {
-  margin: 0 20px 0 0;
-  padding: 0 0 0 32px;
-}
+  }
+  .number-comments {
+    top: 8px;
+    max-width: 40px;
+  }
+  .number-comments strong {
+    margin: 0 20px 0 0;
+    padding: 0 0 0 32px;
+    font-weight: normal;
+  }
 }

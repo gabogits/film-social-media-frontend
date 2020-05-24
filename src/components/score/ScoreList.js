@@ -33,7 +33,7 @@ const RankingList = ({ users }) => {
           {users
             .sort((a, b) => b.userScoreTotal - a.userScoreTotal)
             .map((user, idx) =>
-              idx < 10 ? <User key={user._id} user={user} /> : null
+              idx < 10 ? <User key={user._id} userItem={user} /> : null
             )}
         </ul>
       </div>

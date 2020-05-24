@@ -75,6 +75,7 @@ export default (state, action) => {
         ...state,
         auth: true,
         loading: false,
+        loader: false,
       };
     case LOGIN_ERROR:
     case SIGN_OUT:
@@ -91,6 +92,9 @@ export default (state, action) => {
         loading: false,
         message: action.payload,
         loader: false,
+        formEdit: false,
+        profileSelect: null,
+        page: null,
       };
     case HIDE_ERROR:
       return {

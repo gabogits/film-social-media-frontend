@@ -17,6 +17,10 @@ export const NO_RESULTS = "NO_RESULTS";
 export const ERRORMSG = "ERRORMSG";
 export const PAGE = "PAGE"
 export const LOADER_DELETE = "LOADER_DELETE";
+export const PREV_DELETE = "PREV_DELETE";
+export const CANCEL_DELETE = "CANCEL_DELETE";
+
+
 
 export const CREATE_REPLY = "CREATE_POST";
 export const GET_REPLIES = "GET_POST";

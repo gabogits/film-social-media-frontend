@@ -1,4 +1,10 @@
 @media (max-width: 1100px) {
+  .box-title p {
+    font-size: 14px;
+  }
+  .name-user {
+    font-size: 14px;
+  }
   .header-logo {
     margin-left: 10px;
   }
@@ -15,7 +21,10 @@
     display: none;
   }
   .UsersList form {
-    max-height:initial;
+    max-height: initial;
     overflow: auto;
+  }
+  .post-pro {
+    padding: 0 0 50px;
   }
 }
