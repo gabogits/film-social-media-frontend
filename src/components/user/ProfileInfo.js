@@ -39,7 +39,7 @@ const ProfileInfo = ({ profile }) => {
 
   const [userInfo, saveUserInfo] = useState(userInitValues);
 
-  const { name, avatar, email, description, _id } = userInfo;
+  const { name, avatar,  description, _id } = userInfo;
 
   return (
     <div className="info-box">
@@ -57,7 +57,6 @@ const ProfileInfo = ({ profile }) => {
             <h3>
               <strong>{name}</strong>
             </h3>
-            <h5>{email}</h5>
             <p>{description}</p>
             {_id === user._id ? (
               <button

@@ -43,7 +43,7 @@ export default (state, action) => {
     case GET_POSTS:
       return {
         ...state,
-        posts: [...state.posts, ...action.payload],
+        posts: [...state.posts, ...action.payload  ],
         results: true,
       };
     case GET_POSTS_PROFILE:
