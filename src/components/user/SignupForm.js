@@ -74,6 +74,7 @@ const SignupForm = () => {
   return (
     <section className="section-format box-format ">
       <form onSubmit={SigupFormSubmit}>
+  
         <div className="section-format-head">
           <div className="box-title">
             {!userSelect ? <h2>Crea tu cuenta</h2> : <h2>Edita tus datos</h2>}

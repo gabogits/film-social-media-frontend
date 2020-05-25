@@ -8,7 +8,9 @@
   .header-logo {
     margin-left: 10px;
   }
-
+  .private .header-logo {
+    margin-left: 10px;
+}
   .mobile-element {
     display: block;
   }

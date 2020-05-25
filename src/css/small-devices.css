@@ -36,4 +36,7 @@
     padding: 0 0 0 32px;
     font-weight: normal;
   }
+  .logo {
+    width: 180px;
+}
 }

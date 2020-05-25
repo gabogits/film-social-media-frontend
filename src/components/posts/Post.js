@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { format, register } from "timeago.js";
 import { useHistory, useLocation } from "react-router-dom";
 import ReplyList from "../replies/ReplyList";

@@ -5,6 +5,10 @@
   .section-format {
     padding: 20px;
   }
+  .logo {
+    width: 210px;
+
+}
 }
 
 @media (max-width: 768px) {
@@ -14,7 +18,10 @@
   header.private {
     padding: 7px 0;
   }
-
+  .logo {
+    width: 210px;
+    margin: 0 auto 20px;
+}
   .box-title h2 {
     font-size: 20px;
     text-align: center;

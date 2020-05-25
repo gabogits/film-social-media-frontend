@@ -7,51 +7,23 @@ const Header = ({ props }) => {
   const userContext = useContext(UserContext);
   const { signOut, user, page } = userContext;
   const postContext = useContext(PostContext);
-  const {
-    resetPostState
-  } = postContext;
+  const { resetPostState } = postContext;
   const query = props.location.pathname.split("/");
   const postItem = query[1];
   const back = () => {
     props.history.go(-1);
   };
   const SesionEnds = () => {
-    resetPostState()
+    resetPostState();
     signOut();
-  } 
+  };
   return (
     <header className={user ? "private" : "public"}>
       <div className="container">
         <div className="header-logo">
-          {user ? (
-            <Fragment>
-              {postItem !== "post" && page === "feed" ? (
-                <Link to={"/feed"}>
-                  <img
-                    alt="img"
-                    width="30px"
-                    src={
-                      user.avatar !== "n/a" && user.avatar !== undefined
-                        ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${user.avatar}`
-                        : `./../../no-avatar-white.svg`
-                    }
-                  />
-                </Link>
-              ) : (
-                <button onClick={back}>
-                  <img
-                    alt="img"
-                    width="30px"
-                    src={
-                      user.avatar !== "n/a" && user.avatar !== undefined
-                        ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${user.avatar}`
-                        : `./../../no-avatar-white.svg`
-                    }
-                  />
-                </button>
-              )}
-            </Fragment>
-          ) : null}
+          <Link to={!user ? "/" : "/feed"}>
+            <img  src="./../../faves_logo.svg" alt="logo" />
+          </Link>
         </div>
 
         <div className="user-active">
@@ -69,29 +41,20 @@ const Header = ({ props }) => {
               <Fragment>
                 <li className="hide-mobile">
                   {postItem === "post" && page === "feed" ? (
-       
-                  <button onClick={back}>
-                    Inicio
-                  </button>
+                    <button onClick={back}>Inicio</button>
                   ) : (
                     <Link to={"/feed"}>Inicio</Link>
                   )}
                 </li>
                 <li className="hide-mobile">
                   {postItem === "post" && page === "profile" ? (
-                      <button   onClick={back}>
-                      Perfil
-                    </button>
+                    <button onClick={back}>Perfil</button>
                   ) : (
                     <Link to={"/profile"}>Perfil</Link>
                   )}
-
-
                 </li>
                 <li className="hide-mobile">
-                  <button onClick={SesionEnds}>
-                    Cerrar sesión
-                  </button>
+                  <button onClick={SesionEnds}>Cerrar sesión</button>
                 </li>
                 <li>
                   <div className="menu-user">
@@ -103,7 +66,6 @@ const Header = ({ props }) => {
                     <div className="avatar-small-2">
                       <Link to={"/profile"}>
                         <img
-                          
                           src={
                             user.avatar !== "n/a" && user.avatar !== undefined
                               ? `${process.env.REACT_APP_BACKEND_URL}/api/image/${user.avatar}`

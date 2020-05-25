@@ -25,8 +25,29 @@ header {
   z-index: 2;
   padding: 10px 0;
 }
+.logo {
+  width: 310px;
+  margin: 0 auto 40px;
+  z-index: 1;
+  position: relative;
+}
+
+.logo img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 .header-logo {
   float: left;
+  width: 72px;
+}
+
+.header-logo img{
+  width: 100%;
+}
+.private .header-logo {
+  margin: 4px 0 0 0px;
 }
 .header-logo button {
   padding: 0;

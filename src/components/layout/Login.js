@@ -15,6 +15,9 @@ const Login = (props) => {
   return (
     <main className="top-space pad-bottom">
       <Header props={props} />
+      <div className="logo">
+        <img src=".`./../../faves_logo.svg" alt="logo" />
+      </div>
       <LoginForm />
       <div className="back-full back-2"></div>
     </main>
