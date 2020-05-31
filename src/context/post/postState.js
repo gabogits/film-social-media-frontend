@@ -62,15 +62,6 @@ const PostState = (props) => {
   const getPosts = async (creator, user, pagina) => {
     const limite = state.limite;
     let skip;
-
-    /*
-    if ((state.posts.length > 0  && creator["creator"] === undefined) || (state.postsProfile.length > 0  && creator["creator"] !== undefined) ) {
-      skip = state.posts.length;
-    } else {
-      skip = 0;
-    }
-    */
-
     if (creator["creator"] === undefined) {
       if (state.posts.length > 0) {
         skip = state.posts.length;
@@ -94,11 +85,12 @@ const PostState = (props) => {
     }
 
     try {
+   
       const posts = await axiosClient.get(
         `/api/post?skip=${skip}&limite=${limite}`,
         { params: creator }
       );
-
+       
       const postResp = posts.data;
       let values;
       if (creator["creator"] === undefined) {
@@ -271,9 +263,7 @@ const PostState = (props) => {
         type: DELETE_POST,
         payload: postDelete.data.post,
       });
-      dispatch({
-        type: CANCEL_DELETE,
-      });
+     
     } catch (error) {}
   };
   const resetSelectPost = () => {

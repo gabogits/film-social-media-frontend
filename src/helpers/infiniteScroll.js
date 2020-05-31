@@ -16,15 +16,20 @@ const useInfiniteScroll = (callback) => {
   }, [isFetching]);
 
   function handleScroll() {
+
     if (
-      ((window.innerHeight + window.scrollY) >= document.body.offsetHeight)  ||
+     
+      window.innerHeight + parseInt(document.documentElement.scrollTop) <
+      (document.documentElement.offsetHeight -50) ||
       isFetching
     )
       return;
-    setIsFetching(true);
+      return setIsFetching(true);
   }
    // eslint-disable-next-line
   return [isFetching, setIsFetching];
 };
 
 export default useInfiniteScroll;
+
+

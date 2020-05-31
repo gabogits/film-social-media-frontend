@@ -6,6 +6,9 @@ import {
   DELETE_REPLY,
   CANCEL_EDITREPLY,
   LOADER,
+  CLOSE_LOADER,
+  PREV_DELETE_REPLY,
+  CANCEL_DELETE_REPLY
 } from "../../types/";
 
 export default (state, action) => {
@@ -42,6 +45,18 @@ export default (state, action) => {
         selectReply: null,
         loader: false,
       };
+      case PREV_DELETE_REPLY:  
+      return {
+        ...state,
+        modalDeleteReply: true,
+        itemToDelete: action.payload,
+      };
+      case CANCEL_DELETE_REPLY:  
+      return {
+        ...state,
+        modalDeleteReply: false,
+        itemToDelete: null,
+      }; 
     case DELETE_REPLY:
       return {
         ...state,
@@ -49,6 +64,8 @@ export default (state, action) => {
           (reply) => reply._id !== action.payload._id
         ),
         loader: false,
+        modalDeleteReply: false,
+        itemToDelete: null,
       };
     case CANCEL_EDITREPLY:
       return {
@@ -56,6 +73,11 @@ export default (state, action) => {
         formReplyEdit: false,
         selectReply: null,
       };
+      case CLOSE_LOADER:
+        return {
+          ...state,
+          loader: false,
+        };
     default:
       return state;
   }

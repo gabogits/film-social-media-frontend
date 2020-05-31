@@ -117,6 +117,11 @@ export default (state, action) => {
         ...state,
         postSelect: null,
         formPostEdit: false,
+        loader:false,
+        errormsg: null,
+        deleting: false,
+        modalDelete: false,
+        itemToDelete: null,
       };
     case RESET_POSTS:
       return {
@@ -149,6 +154,8 @@ export default (state, action) => {
         deleting: false,
         postSelect: null,
         errormsg: null,
+        modalDelete: false,
+        itemToDelete: null,
       };
     case ERRORMSG:
       return {

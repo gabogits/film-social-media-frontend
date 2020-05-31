@@ -8,7 +8,7 @@ import ReplyContext from "../../context/reply/ReplyContext";
 import BottomBar from "./BottomBar";
 import Loader from "../templates/Loader";
 import ModalDelete from "../templates/ModalDelete";
-
+import ModalDeleteReply from "../templates/ModalDeleteReply";
 const Post = (props) => {
   const userContext = useContext(UserContext);
   const { auth, userAuth, user, getUsers, page } = userContext;
@@ -26,7 +26,7 @@ const Post = (props) => {
   const postItem = query[2];
 
   const replyContext = useContext(ReplyContext);
-  const { reply, replies } = replyContext;
+  const { reply, replies, modalDeleteReply } = replyContext;
   const [showMsg, saveShowMsg] = useState(false);
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const Post = (props) => {
   };
 
   return (
-    <main className={`top-space post-view ${modalDelete ? "shadow": null}`}>
+    <main className={`top-space post-view ${modalDelete || modalDeleteReply ? "shadow": null}`}>
       <div onClick={back} className="btn-back"></div>
       <Header props={props}></Header>
       <div className="container">
@@ -87,6 +87,7 @@ const Post = (props) => {
         </div>
       </div>
       <ModalDelete />
+      <ModalDeleteReply />
       <BottomBar props={props} />
     </main>
   );

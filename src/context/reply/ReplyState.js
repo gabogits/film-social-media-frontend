@@ -6,6 +6,9 @@ import {
   DELETE_REPLY,
   CANCEL_EDITREPLY,
   LOADER,
+  CLOSE_LOADER,
+  PREV_DELETE_REPLY,
+  CANCEL_DELETE_REPLY
 } from "../../types";
 import ReplyContext from "./ReplyContext";
 import ReplyReducer from "./ReplyReducer";
@@ -19,6 +22,8 @@ const ReplyState = (props) => {
     selectReply: null,
     formReplyEdit: false,
     loader: false,
+    modalDeleteReply:null,
+    itemToDelete: null
   };
 
   const [state, dispatch] = useReducer(ReplyReducer, initialState);
@@ -27,63 +32,96 @@ const ReplyState = (props) => {
     dispatch({
       type: LOADER,
     });
-    const replyObj = keysAppend(reply);
 
-    const replyItem = await axiosClient.post("api/reply", replyObj);
 
     try {
+      const replyObj = keysAppend(reply);
+
+      const replyItem = await axiosClient.post("api/reply", replyObj);
       dispatch({
         type: CREATE_REPLY,
         payload: replyItem.data.reply,
       });
     } catch (error) {
       console.log(error);
+      closeLoader();
     }
   };
 
   const getReplies = async (post) => {};
 
   const getReply = (reply) => {
-    dispatch({
-      type: GET_ONEREPLY,
-      payload: reply,
-    });
+    try {
+      dispatch({
+        type: GET_ONEREPLY,
+        payload: reply,
+      });
+    } catch (error) {
+      closeLoader();
+    }
+   
   };
   const updateReply = async (reply) => {
-    dispatch({
-      type: LOADER,
-    });
-    const replyObj = keysAppend(reply);
+    try {
+      dispatch({
+        type: LOADER,
+      });
+      const replyObj = keysAppend(reply);
 
-    const replyEdit = await axiosClient.post(
-      `api/reply/${reply._id}`,
-      replyObj
-    );
-    dispatch({
-      type: UPDATE_REPLY,
-      payload: replyEdit.data,
-    });
+      const replyEdit = await axiosClient.post(
+        `api/reply/${reply._id}`,
+        replyObj
+      );
+      dispatch({
+        type: UPDATE_REPLY,
+        payload: replyEdit.data,
+      });
+    } catch (error) {
+      closeLoader();
+    }
   };
   const cancelEdit = () => {
-    dispatch({
-      type: CANCEL_EDITREPLY,
-    });
+    try {
+      dispatch({
+        type: CANCEL_EDITREPLY,
+      });
+    } catch (error) {
+      closeLoader();
+    }
+  
   };
-  const deleteReply = async (reply) => {
+  const prevDelete = (id) => {
+    dispatch({
+      type: PREV_DELETE_REPLY,
+      payload: id,
+    });
+  }
+  const cancelDelete = (id) => {
+    dispatch({
+      type: CANCEL_DELETE_REPLY,
+    });
+  }
+  const deleteReply = async () => {
     dispatch({
       type: LOADER,
     });
-    const replyDelete = await axiosClient.delete(`api/reply/${reply._id}`);
-
-    try {
+    try {   
+    const replyDelete = await axiosClient.delete(`api/reply/${state.itemToDelete}`);
       dispatch({
         type: DELETE_REPLY,
         payload: replyDelete.data,
       });
     } catch (error) {
       console.log(error);
+      closeLoader();
     }
   };
+  const closeLoader = async () => {
+    dispatch({
+      type: CLOSE_LOADER,
+    });
+  };
+
   return (
     <ReplyContext.Provider
       value={{
@@ -92,13 +130,16 @@ const ReplyState = (props) => {
         formReplyEdit: state.formReplyEdit,
         loader: state.loader,
         reply: state.reply,
-
+        modalDeleteReply: state.modalDeleteReply,
+        itemToDelete:  state.itemToDelete,
         newReply,
         getReplies,
         getReply,
         updateReply,
         deleteReply,
         cancelEdit,
+        prevDelete,
+        cancelDelete,
       }}
     >
       {props.children}

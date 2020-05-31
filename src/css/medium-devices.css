@@ -13,10 +13,10 @@
 
 @media (max-width: 768px) {
   header.public {
-    padding: 11px 0;
+    padding: 12.5px 0;
 }
   header.private {
-    padding: 7px 0;
+    padding: 9px 0;
   }
   .logo {
     width: 210px;

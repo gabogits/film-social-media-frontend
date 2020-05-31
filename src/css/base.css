@@ -43,7 +43,7 @@ header {
   width: 72px;
 }
 
-.header-logo img{
+.header-logo img {
   width: 100%;
 }
 .private .header-logo {
@@ -72,17 +72,19 @@ header {
   margin: 0 15px;
 }
 
-.user-active ul li > a, .user-active ul li > button {
+.user-active ul li > a,
+.user-active ul li > button {
   color: #fff;
   display: block;
   font-size: 15px;
   margin: 0;
-    background: none;
+  background: none;
 }
-.private .user-active ul li > a, .private .user-active ul li > button {
+.private .user-active ul li > a,
+.private .user-active ul li > button {
   padding: 5px 0 0;
   margin: 0;
-    background: none;
+  background: none;
 }
 .user-active li span {
   color: #fff;
@@ -92,7 +94,8 @@ header {
   padding: 5px 0 0;
   margin: 0 15px 0 0;
 }
-.user-active li span a, .user-active li span button {
+.user-active li span a,
+.user-active li span button {
   color: #fff;
   margin: 0;
   padding: 0;
@@ -290,7 +293,6 @@ header {
   top: 20px;
   z-index: 1;
 }
-
 
 .avatar-small {
   width: 40px;
@@ -612,53 +614,53 @@ section.bottom-bar {
   width: 100%;
   bottom: 0;
 }
-.bottom-bar_inner ul{
-  padding: 1px 0;
+.bottom-bar_inner ul {
+  height:48px
 }
 .bottom-bar_inner ul li {
   width: 20%;
-  height: 36px;
+  height: 100%;
   display: inline-block;
   margin: 0;
   padding: 0;
 }
 
-.bottom-bar_inner ul li a, .bottom-bar_inner ul li button {
+.bottom-bar_inner ul li a,
+.bottom-bar_inner ul li button {
   width: 100%;
   height: 100%;
   display: block;
 }
 
 .icon-home {
-  background: url("../assets/home.svg") no-repeat center 10px;
+  background: url("../assets/home.svg") no-repeat center;
   background-size: 23px;
 }
 .icon-profile {
-  background: url("../assets/profile.svg") no-repeat center 12px;
+  background: url("../assets/profile.svg") no-repeat center;
   background-size: 20px auto;
 }
 
 .icon-star2 {
-  background: url("../assets/star2.svg") no-repeat center 11px;
+  background: url("../assets/star2.svg") no-repeat center;
   background-size: 22px auto;
 }
 
 .icon-users {
-  background: url("../assets/users.svg") no-repeat center 9px;
+  background: url("../assets/users.svg") no-repeat center;
   background-size: 24px;
 }
 
 .icon-logout {
-  background: url("../assets/logout.svg") no-repeat center 11px;
+  background: url("../assets/logout.svg") no-repeat center;
   background-size: 20px;
 }
 
 .icon-comment {
-  background: url("../assets/write.svg") no-repeat center 0;
+  background: url("../assets/write.svg") no-repeat center;
   background-size: 20px;
   height: 20px;
 }
-
 
 .btn-back {
   display: block;
@@ -708,7 +710,6 @@ section.bottom-bar {
 
 .msg-deleted-nofound {
   opacity: 0;
- 
 }
 
 .msg-deleted-nofound.active {
@@ -729,15 +730,15 @@ section.bottom-bar {
 }
 
 main.shadow:after {
-  content:"";
-  left:0;
-  top:0;
-  background:#000;
-  width:100%;
-  height:100%;
-  position:fixed;
-  display:block;
-  opacity: .5;
+  content: "";
+  left: 0;
+  top: 0;
+  background: #000;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  display: block;
+  opacity: 0.5;
   z-index: 2;
 }
 
@@ -751,16 +752,15 @@ main.shadow:after {
   margin: 0 auto;
   padding: 35px 20px;
   border-radius: 5px;
-  display:none;
+  display: none;
 
   z-index: 3;
 }
 .small-size {
-    max-width: 312px;
+  max-width: 312px;
 }
 .modal-box.small-size.active {
-  display:block;
-
+  display: block;
 }
 .modal-box-inner p {
   color: #fff;
@@ -770,7 +770,7 @@ main.shadow:after {
 }
 
 .modal-box-inner .new-content-actions {
-  float:none;
-  margin:0 auto;
+  float: none;
+  margin: 0 auto;
   width: auto;
 }

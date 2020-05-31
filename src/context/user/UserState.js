@@ -19,7 +19,7 @@ import {
   HIDE_ERROR,
   LOADER,
   RESET_PROFILE,
-  SET_PAGE
+  SET_PAGE,
 } from "./../../types/";
 import axiosClient from "../../config/axios";
 
@@ -162,6 +162,7 @@ const UserState = (props) => {
   };
 
   const setEvaluations = async (evaluation, user, creator) => {
+    
     let evaluations = user.evaluations.filter(
       (item) => item.post !== evaluation.post
     );
@@ -175,13 +176,14 @@ const UserState = (props) => {
       type: UPDATE_USER,
       payload: userEdit.data,
     });
-
+    /*
     const creatorPost = state.users.find(
       (userItem) => userItem._id === creator
     );
-
-    let ranking = creatorPost.ranking.filter(
-      (item) => item.post !== evaluation.post
+*/
+    const creatorPost = await axiosClient.get(`/api/user/${creator}`);
+    let ranking = creatorPost.data.ranking.filter((item) =>
+      item.post === evaluation.post && item.user === user._id ? null : item
     );
 
     const itemRanking = {
@@ -202,7 +204,7 @@ const UserState = (props) => {
       type: SET_PAGE,
       payload: page,
     });
-  } 
+  };
   const resetProfile = () => {
     dispatch({
       type: RESET_PROFILE,
@@ -233,7 +235,7 @@ const UserState = (props) => {
         setEvaluations,
         cancelEditUser,
         resetProfile,
-        setPage
+        setPage,
       }}
     >
       {props.children}

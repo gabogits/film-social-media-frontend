@@ -16,7 +16,7 @@ const Reply = ({ reply }) => {
   const { text, picture, creator, registry, author } = reply;
 
   const replyContext = useContext(ReplyContext);
-  const { getReply, deleteReply, formReplyEdit, selectReply } = replyContext;
+  const { getReply, prevDelete, formReplyEdit, selectReply } = replyContext;
   function getUserData(creator) {
     const userPostItem = users.find((item) => item._id === creator);
     return userPostItem;
@@ -80,7 +80,8 @@ const Reply = ({ reply }) => {
                   className="icon-format-1 icon-edit"
                 ></button>
                 <button
-                  onClick={() => deleteReply(reply)}
+                  onClick={() => prevDelete(reply._id)}
+                 
                   className="icon-format-1 icon-delete"
                 ></button>
               </div>

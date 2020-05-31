@@ -19,6 +19,7 @@ export const PAGE = "PAGE"
 export const LOADER_DELETE = "LOADER_DELETE";
 export const PREV_DELETE = "PREV_DELETE";
 export const CANCEL_DELETE = "CANCEL_DELETE";
+export const CLOSE_LOADER = "CLOSE_LOADER";
 
 
 
@@ -28,6 +29,8 @@ export const GET_ONEREPLY = "GET_ONEREPLY";
 export const UPDATE_REPLY = "UPDATE_REPLY";
 export const DELETE_REPLY = "DELETE_REPLY";
 export const CANCEL_EDITREPLY = "CANCEL_EDITREPLY";
+export const PREV_DELETE_REPLY = "PREV_DELETE_REPLY";
+export const CANCEL_DELETE_REPLY = "CANCEL_DELETE_REPLY";
 
 export const SIGNUP_USER = "SIGNUP_USER";
 export const GET_USERS = "GET_USERS";
