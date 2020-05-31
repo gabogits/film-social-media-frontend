@@ -28,7 +28,7 @@ const PostList = (creator) => {
       setPage(page + 1);
       setIsFetching(false);
       setActive(false)
-    }, 4000);
+    }, 3500);
   }
 
   useEffect(() => {
